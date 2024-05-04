@@ -3,7 +3,7 @@ import OtpInput from "react-otp-input";
 import "./Otp.css";
 // import { auth } from '../../firebase_config';
 import { useDispatch, useSelector } from "react-redux";
-import { OtpVerification, ResendOtp } from "../../actions/RegisterAction";
+import { OtpVerification, ResendOtp } from "../../redux/slice/RegisterAction";
 import { useNavigate } from "react-router-dom";
 // import { RecaptchaVerifier, signInWithPhoneNumber } from "firebase/auth";
 // import Cookies from 'js-cookie';

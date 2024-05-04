@@ -3,9 +3,9 @@ import { Link, useNavigate } from "react-router-dom";
 import { useFormik } from "formik";
 import * as Yup from "yup";
 import "./Register.css";
-import { UserData } from "../../actions/RegisterAction";
+import { UserData } from "../../redux/slice/RegisterAction";
 import { useDispatch, useSelector } from "react-redux";
-import { registerUserAsync } from "../../actions/RegisterAction";
+import { registerUserAsync } from "../../redux/slice/RegisterAction";
 import Loader from "../../components/loader/loader";
 import Cookies from "js-cookie";
 

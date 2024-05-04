@@ -4,7 +4,7 @@ import { Link, useNavigate } from "react-router-dom";
 import { useFormik } from "formik";
 import * as Yup from "yup";
 import { useDispatch, useSelector } from "react-redux";
-import { loginAsync } from "../../actions/LoginActions";
+import { loginAsync } from "../../redux/slice/LoginActions";
 
 interface LoginProps {}
 

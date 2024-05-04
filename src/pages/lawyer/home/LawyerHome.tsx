@@ -3,7 +3,7 @@ import { TiThMenu } from "react-icons/ti";
 import { IoClose } from "react-icons/io5";
 import { RiDashboard3Fill } from "react-icons/ri";
 import { useDispatch } from 'react-redux';
-import { logout } from '../../../actions/LoginActions';
+import { logout } from '../../../redux/slice/LoginActions';
 import { FiLogOut } from "react-icons/fi";
 
 

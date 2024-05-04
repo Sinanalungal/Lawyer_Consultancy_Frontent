@@ -10,6 +10,8 @@ import toast, { Toaster } from 'react-hot-toast';
 import AdminRoute from './route/AdminRoute';
 import LawyerRoute from './route/LawyerRoute';
 import UserRoute from './route/UserRoute';
+import ForgotPasswordForm from './pages/forgotpassword/ForgotPassword';
+import ResetPasswordPage from './pages/forgotpassword/ResetPassword';
 
 // const notify = () => toast('Here is your toast.');
 
@@ -23,7 +25,8 @@ function App() {
     />
     <Router>
       <Routes>
-        {/* <Route path="/" element={<Homepage />} /> */}
+        <Route path="/forgotpassword" element={<ForgotPasswordForm />} />
+        <Route path="/reset-password/:token" element={<ResetPasswordPage />} />
         <Route path="/register" element={<Register />} />
         <Route path="/" element={<Login />} />
         <Route path="/otp" element={<OtpPage />} />

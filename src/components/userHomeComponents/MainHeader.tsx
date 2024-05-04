@@ -14,7 +14,7 @@ const Header: React.FC = () => {
         </svg>
         <img
           className="object-cover w-full h-56 rounded-lg  lg:rounded-none lg:shadow-none md:h-96 lg:h-full"
-          src="./image-banner.png"
+          src="./homepagemobile.jpg"
           alt=""
         />
       </div>

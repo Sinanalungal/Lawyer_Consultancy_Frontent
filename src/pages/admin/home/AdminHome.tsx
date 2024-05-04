@@ -1,18 +1,24 @@
 import React, { ReactElement, useState, lazy, Suspense } from 'react';
 import { TiThMenu } from "react-icons/ti";
-import { IoClose } from "react-icons/io5";
+import { IoClose , IoNotificationsCircleSharp } from "react-icons/io5";
 import { RiDashboard3Fill } from "react-icons/ri";
 import { GoLaw } from "react-icons/go";
-import { FaUsers } from "react-icons/fa";
+import { FaUsers,FaMoneyBill  } from "react-icons/fa";
 import { FiLogOut } from "react-icons/fi";
 import { useDispatch } from 'react-redux';
-import { logout } from '../../../actions/LoginActions';
+import { logout } from '../../../redux/slice/LoginActions';
+import { ImBlog } from "react-icons/im";
+
 
 
 // // Lazy-loaded components
 const DashboardComponent = lazy(() => import('../homePages/DashboardComponent'));
 const LawyersComponent = lazy(() => import('../homePages/LawyersComponent'));
 const UsersComponent = lazy(() => import('../homePages/UsersComponent'));
+const PlansComponent = lazy(() => import('../homePages/SubscriptionPlans'));
+const BlogsComponent = lazy(() => import('../homePages/BlogsComponent'));
+const NotificationComponent = lazy(() => import('../homePages/NotificationComponent'));
+
 
 
 function AdminHome() {
@@ -29,6 +35,9 @@ function AdminHome() {
       { name: 'Dashboard', icon: <RiDashboard3Fill size={30} />, onClick: () => {} },
       { name: 'Lawyers', icon: <GoLaw  size={30} />, onClick: () => {} },
       { name: 'Users', icon: <FaUsers  size={30} />, onClick: () => {} },
+      { name: 'Plans', icon: <FaMoneyBill  size={30} />, onClick: () => {} },
+      { name: 'Blogs', icon: <ImBlog  size={30} />, onClick: () => {} },
+      { name: 'Notifications', icon: <IoNotificationsCircleSharp  size={30} />, onClick: () => {} },
    ];
 
    // Toggle sidebar
@@ -77,7 +86,7 @@ function AdminHome() {
             <div className='w-full fixed z-40 h-[70px] flex items-center bg-slate-50 shadow-sm justify-between px-4'>
                <TiThMenu className='cursor-pointer' onClick={handleSidebarToggle} size={30} />
                <div className={`${open?'sm:mr-64':'sm:mr-28'} flex items-center rounded-xl `}>
-                  <div className='w-12 h-12 bg-black mr-3'></div>
+                  <div className='w-11 h-11 bg-black mr-3 rounded-full'></div>
                   <div onClick={()=>dispatch(logout())}><FiLogOut size={27}/></div>
                </div>
             </div>
@@ -86,6 +95,9 @@ function AdminHome() {
                   {ind === 0 && <DashboardComponent />}
                   {ind === 1 &&  <LawyersComponent />}
                   {ind === 2 &&  <UsersComponent />}
+                  {ind === 3 &&  <PlansComponent />}
+                  {ind === 4 &&  <BlogsComponent />}
+                  {ind === 5 &&  <NotificationComponent />}
                </Suspense>
             </div>
             </div>
