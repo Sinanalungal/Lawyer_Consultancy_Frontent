@@ -6,7 +6,6 @@ import * as Yup from "yup";
 import { useDispatch, useSelector } from "react-redux";
 import { loginAsync } from "../../redux/slice/LoginActions";
 import GoogleLoginButton from "../../components/googleLoginButton/GoogleLoginButton";
-import LoginButton from "../../components/googleLoginButton/GoogleLoginButton";
 
 interface LoginProps {}
 

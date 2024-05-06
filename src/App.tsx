@@ -16,7 +16,7 @@ import { GoogleOAuthProvider } from '@react-oauth/google';
 // const notify = () => toast('Here is your toast.');
 
 function App() {
-  const clientId ='309868200059-jkqiuiu598kn5s4tb2s51q0rchhge0v8.apps.googleusercontent.com'
+  // const clientId =
   return (
     <>
     <Toaster
@@ -24,7 +24,7 @@ function App() {
       reverseOrder={false}
     />
     <Router>
-      <GoogleOAuthProvider clientId={clientId}>
+      <GoogleOAuthProvider clientId={process.env.CLIENT_ID}>
       <Routes>
         <Route path="/forgotpassword" element={<ForgotPasswordForm />} />
         <Route path="/reset-password/:token" element={<ResetPasswordPage />} />
