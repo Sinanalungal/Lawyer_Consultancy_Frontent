@@ -5,6 +5,8 @@ import { useFormik } from "formik";
 import * as Yup from "yup";
 import { useDispatch, useSelector } from "react-redux";
 import { loginAsync } from "../../redux/slice/LoginActions";
+import GoogleLoginButton from "../../components/googleLoginButton/GoogleLoginButton";
+import LoginButton from "../../components/googleLoginButton/GoogleLoginButton";
 
 interface LoginProps {}
 
@@ -49,7 +51,7 @@ const Login: React.FC<LoginProps> = () => {
     validationSchema: validationSchema,
     onSubmit: (values) => {
       console.log("Form values:", values);
-      dispatch(loginAsync(values)); // Dispatch the action directly without assigning to a variable
+      dispatch(loginAsync(values)); 
     },
   });
 
@@ -135,8 +137,8 @@ const Login: React.FC<LoginProps> = () => {
                     </button>
                   </div>
 
-                  <div className="text-center text-grey-dark mt-3">
-                    <span className="font-bold text-xs">
+                  <div className="text-center flex flex-col items-center text-grey-dark mt-3">
+                    <span className="font-bold text-xs mb-4">
                       Don't have any account ?{" "}
                       <Link
                         to="/register"
@@ -145,6 +147,8 @@ const Login: React.FC<LoginProps> = () => {
                         Register
                       </Link>
                     </span>
+                    <GoogleLoginButton />
+                    {/* <LoginButton/> */}
                   </div>
                 </div>
               </form>

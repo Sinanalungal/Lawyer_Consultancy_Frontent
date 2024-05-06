@@ -12,11 +12,11 @@ import LawyerRoute from './route/LawyerRoute';
 import UserRoute from './route/UserRoute';
 import ForgotPasswordForm from './pages/forgotpassword/ForgotPassword';
 import ResetPasswordPage from './pages/forgotpassword/ResetPassword';
-
+import { GoogleOAuthProvider } from '@react-oauth/google';
 // const notify = () => toast('Here is your toast.');
 
 function App() {
-
+  const clientId ='309868200059-jkqiuiu598kn5s4tb2s51q0rchhge0v8.apps.googleusercontent.com'
   return (
     <>
     <Toaster
@@ -24,6 +24,7 @@ function App() {
       reverseOrder={false}
     />
     <Router>
+      <GoogleOAuthProvider clientId={clientId}>
       <Routes>
         <Route path="/forgotpassword" element={<ForgotPasswordForm />} />
         <Route path="/reset-password/:token" element={<ResetPasswordPage />} />
@@ -34,6 +35,7 @@ function App() {
         <Route path="/lawyer/*" element={<LawyerRoute/>} />
         <Route path="/user/*" element={<UserRoute/>} />
       </Routes>
+      </GoogleOAuthProvider>
     </Router>
     </>
     
