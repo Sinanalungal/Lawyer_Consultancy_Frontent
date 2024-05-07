@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useFormik } from "formik";
 import * as Yup from "yup";
 import { FaArrowDown } from "react-icons/fa";
@@ -14,6 +14,18 @@ const ExtraDataAccess: React.FC<ExtraDataAccessProps> = () => {
   const { user } = useSelector((state: any) => state.login);
   const dispatch = useDispatch();
   const [openPassword, setOpenPassword] = useState(false);
+  const [otpverification, setOtpVerification] = useState(false);
+  const [email, setEmail] = useState('');
+  const [timer,setTimer]=useState('0');
+  const [seconds,setSeconds]=useState(0);
+
+  useEffect(() => {
+    const { access } = user;
+    console.log(access, "this is the access token");
+    const decodedToken = JSON.parse(atob(access.split(".")[1]));
+    const { email } = decodedToken;
+    setEmail(email);
+  }, [user]);
 
   const validationSchema = Yup.object({
     phone_number: Yup.string()
@@ -28,26 +40,26 @@ const ExtraDataAccess: React.FC<ExtraDataAccessProps> = () => {
           )
           .required("Password is required")
       : Yup.string().notRequired(), // No validation if openPassword is false
+    otp: Yup.string()
+      .length(6, "Please enter a valid 6-digit OTP")
   });
 
   const formik = useFormik({
     initialValues: {
       phone_number: "",
       password: "",
+      otp: "", // Added OTP field to form values
     },
     validationSchema: validationSchema,
     onSubmit: async (values) => {
-      const { access } = user;
-      console.log(access, "this is the access token");
-      const decodedToken = JSON.parse(atob(access.split(".")[1]));
-      const { email } = decodedToken;
       if (!openPassword) {
         console.log(values.phone_number);
         const res = await axios.post(`${BASE_URL}api/save-data-request/`, {
           email: email,
           phone_number: values.phone_number,
+          otp: values.otp,
         });
-        if (res.status == 200) {
+        if (res.status === 200) {
           toast.success(res.data.message);
           dispatch(modaloff());
         } else {
@@ -59,8 +71,9 @@ const ExtraDataAccess: React.FC<ExtraDataAccessProps> = () => {
           email: email,
           phone_number: values.phone_number,
           password: values.password,
+          otp: values.otp, 
         });
-        if (res.status == 200) {
+        if (res.status === 200) {
           toast.success(res.data.message);
           dispatch(modaloff());
         } else {
@@ -69,6 +82,32 @@ const ExtraDataAccess: React.FC<ExtraDataAccessProps> = () => {
       }
     },
   });
+
+  setTimeout(() => {
+    const calculateTimeLeft = (expirationTime: string) => {
+      const now = Math.floor(Date.now() / 1000); // Current time in seconds
+      const timeDiff = new Date(expirationTime).getTime() / 1000 - now; // Time difference in seconds
+      return Math.max(Math.floor(timeDiff), 0); // Ensure timer is not negative
+    };
+    const time=calculateTimeLeft(timer)
+    setSeconds(time)
+  },1000)
+
+  const sendOTP = async () => {
+    const { phone_number } = formik.values;
+    if (formik.isValid && phone_number !== '' && email !== '') {
+      const res = await axios.post(`${BASE_URL}api/otpsend/`, {
+        phone_number: phone_number,
+        email: email,
+      });
+      if (res.status === 200) {
+        setOtpVerification(true);
+        toast.info('OTP Sent to your phone number');
+        setTimer(res.data.timer);
+        console.log(res.data);
+      }
+    }
+  };
 
   return (
     <form onSubmit={formik.handleSubmit}>
@@ -128,13 +167,49 @@ const ExtraDataAccess: React.FC<ExtraDataAccessProps> = () => {
             Set Password <FaArrowDown />
           </div>
         )}
+        {otpverification && (
+          <div className="mb-4">
+            <label
+              htmlFor="otp"
+              className="block text-sm font-semibold mb-2"
+            >
+              OTP
+            </label>
+            <input
+              id="otp"
+              name="otp"
+              className="shadow appearance-none border rounded w-full py-2 px-3 text-grey-darker mb-1"
+              type="text"
+              placeholder="Enter OTP"
+              value={formik.values.otp}
+              onChange={formik.handleChange}
+              onBlur={formik.handleBlur}
+            />
+            {formik.touched.otp && formik.errors.otp && (
+              <div className="text-red-500 text-xs mt-1">
+                {formik.errors.otp}
+              </div>
+            )}
+          {seconds >0 ?(<p className="text-xs w-full flex justify-end cursor-pointer"> {`00:${seconds  > 9 ? seconds  : `0${seconds }`}`}</p>):(<p className="text-xs w-full flex justify-end cursor-pointer " onClick={()=>sendOTP()}>Resend OTP ?</p>)}
+          </div>
+        )}
         <div className="flex items-center w-full justify-center">
-          <button
-            className="bg-black hover:bg-blue-dark text-white font-bold py-2 px-4 rounded"
-            type="submit"
-          >
-            Save
-          </button>
+          {otpverification ? (
+            <button
+              className="bg-black hover:bg-blue-dark text-white font-bold py-2 px-4 rounded"
+              type="submit"
+            >
+              Save
+            </button>
+          ) : (
+            <button
+              onClick={() => sendOTP()}
+              className="bg-black hover:bg-blue-dark text-white font-bold py-2 px-4 rounded"
+              type="button"
+            >
+              Send OTP
+            </button>
+          )}
         </div>
       </div>
     </form>
