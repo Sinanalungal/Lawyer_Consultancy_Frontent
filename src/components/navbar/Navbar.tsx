@@ -46,7 +46,7 @@ const Navbar: React.FC<NavbarProps> = ({ title, items }) => {
       <nav
         className={`fixed navbar dark:bg-black z-30 dark:text-white w-full flex md:text-base font-bold text-xs items-center px-6 md:px-24 justify-between h-20 ${
           isFixed
-            ? "fixed top-0 w-full bg-black dark:bg-white text-white dark:text-black shadow-lg dark:shadow-gray-300 dark:shadow-sm z-50 transition-all duration-300 ease-in-out"
+            ? "fixed top-0 w-full bg-black dark:bg-white text-white dark:text-black shadow-lg dark:shadow-gray-300 dark:shadow-sm z-40 transition-all duration-300 ease-in-out"
             : ""
         }`}
       >

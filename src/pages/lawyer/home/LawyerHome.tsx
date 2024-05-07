@@ -46,7 +46,7 @@ function LawyerHome() {
       <>
          <div className='w-full h-screen flex'>
             {open && (
-               <div className='w-full sm:hidden min-h-screen fixed ease-in-out z-50 bg-white'>
+               <div className='w-full sm:hidden min-h-screen fixed ease-in-out z-40 bg-white'>
                   <div className='w-full p-5 flex justify-end'>
                      <IoClose className='cursor-pointer' onClick={handleSidebarToggle} size={30} />
                   </div>

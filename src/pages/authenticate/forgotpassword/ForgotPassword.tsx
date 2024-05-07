@@ -1,7 +1,7 @@
 import React, { useState, FormEvent } from 'react';
 import axios from 'axios';
-import { BASE_URL } from '../../constants';
-import toast from 'react-hot-toast';
+import { BASE_URL } from '../../../constants';
+import {  toast } from 'react-toastify';
 import { useNavigate } from 'react-router-dom';
 
 const ForgotPasswordForm: React.FC = () => {

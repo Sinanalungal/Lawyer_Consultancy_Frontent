@@ -1,7 +1,7 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import axios from "axios";
 import { BASE_URL } from "../../constants";
-import toast from "react-hot-toast";
+import {  toast } from 'react-toastify';
 
 interface UserData {
   full_name: string;
@@ -66,7 +66,7 @@ export const registerUserAsync = createAsyncThunk(
           toast.success('Successfully Registered!')
         }else{
           toast.success('Proceed to otp verification')
-          toast.custom('otp send into your phone number')
+          toast.info('otp send into your phone number')
         }
           
         

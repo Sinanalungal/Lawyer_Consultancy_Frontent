@@ -3,11 +3,12 @@ import { Link, useNavigate } from "react-router-dom";
 import { useFormik } from "formik";
 import * as Yup from "yup";
 import "./Register.css";
-import { UserData } from "../../redux/slice/RegisterAction";
+import { UserData } from "../../../redux/slice/RegisterAction";
 import { useDispatch, useSelector } from "react-redux";
-import { registerUserAsync } from "../../redux/slice/RegisterAction";
-import Loader from "../../components/loader/loader";
+import { registerUserAsync } from "../../../redux/slice/RegisterAction";
+import Loader from "../../../components/loader/loader";
 import Cookies from "js-cookie";
+import GoogleLoginButton from "../../../components/googleLoginButton/GoogleLoginButton";
 
 interface RegisterProps {}
 
@@ -226,8 +227,8 @@ const Register: React.FC<RegisterProps> = () => {
                     </button> */}
                       </div>
 
-                      <div className="text-center text-grey-dark mt-3">
-                        <span className="font-bold text-xs">
+                      <div className="text-center flex flex-col items-center text-grey-dark mt-3">
+                        <span className="font-bold text-xs mb-3">
                           Already have an account?{" "}
                           <Link
                             to="/login"
@@ -236,6 +237,7 @@ const Register: React.FC<RegisterProps> = () => {
                             Login
                           </Link>
                         </span>
+                        <GoogleLoginButton />
                       </div>
                     </div>
                   </form>

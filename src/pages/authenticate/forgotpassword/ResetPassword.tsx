@@ -1,8 +1,8 @@
 import React, { useState, FormEvent } from 'react';
 import axios from 'axios';
 import { Navigate, useNavigate, useParams } from 'react-router-dom';
-import { BASE_URL } from '../../constants';
-import toast from 'react-hot-toast';
+import { BASE_URL } from '../../../constants';
+import {  toast } from 'react-toastify';
 
 const ResetPasswordPage: React.FC = () => {
     const {token}=useParams()

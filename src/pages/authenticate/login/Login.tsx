@@ -4,8 +4,8 @@ import { Link, useNavigate } from "react-router-dom";
 import { useFormik } from "formik";
 import * as Yup from "yup";
 import { useDispatch, useSelector } from "react-redux";
-import { loginAsync } from "../../redux/slice/LoginActions";
-import GoogleLoginButton from "../../components/googleLoginButton/GoogleLoginButton";
+import { loginAsync } from "../../../redux/slice/LoginActions";
+import GoogleLoginButton from "../../../components/googleLoginButton/GoogleLoginButton";
 
 interface LoginProps {}
 
@@ -26,6 +26,8 @@ const Login: React.FC<LoginProps> = () => {
         "Password must contain at least 8 characters, one letter, one number, and one special character"
       ),
   });
+
+  
 
   useEffect(() => {
     if (registered) {
@@ -122,7 +124,7 @@ const Login: React.FC<LoginProps> = () => {
                       </div>
                     ) : null}
                     <div className="text-center w-full flex justify-end text-blue-950">
-                      <Link to="#" className="hover:underline  text-[10px]">
+                      <Link to="/forgotpassword" className="hover:underline  text-[10px]">
                         Forgot Password?
                       </Link>
                     </div>{" "}

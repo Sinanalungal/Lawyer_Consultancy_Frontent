@@ -3,8 +3,10 @@ import OtpInput from "react-otp-input";
 import "./Otp.css";
 // import { auth } from '../../firebase_config';
 import { useDispatch, useSelector } from "react-redux";
-import { OtpVerification, ResendOtp } from "../../redux/slice/RegisterAction";
+import { OtpVerification, ResendOtp } from "../../../redux/slice/RegisterAction";
 import { useNavigate } from "react-router-dom";
+import { IoIosClose } from "react-icons/io";
+
 // import { RecaptchaVerifier, signInWithPhoneNumber } from "firebase/auth";
 // import Cookies from 'js-cookie';
 
@@ -12,6 +14,7 @@ interface OtpProps {}
 
 const OtpPage: React.FC<OtpProps> = () => {
   const [otp, setOtp] = useState("");
+  const [closed,setClosed] = useState(false);
   const { user, loading, error, timer } = useSelector(
     (state: any) => state.register
   );
@@ -50,6 +53,7 @@ const OtpPage: React.FC<OtpProps> = () => {
     if (variable.meta.requestStatus == "rejected") {
       navigate("/register");
     }
+    setClosed(false)
   };
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -110,9 +114,10 @@ const OtpPage: React.FC<OtpProps> = () => {
 
               <form onSubmit={handleSubmit}>
                 <div className="bg-white items-center justify-center  shadow-md rounded px-8 pt-10 pb-10 mb-4 flex flex-col">
-                  <h1 className="mb-8 text-2xl font-bold font-serif  dark:text-white">
+                  <h1 className={`${closed?"mb-6":"mb-3"} text-2xl font-bold font-serif  dark:text-white`}>
                     OTP Verification
                   </h1>
+                  <div className={`${closed?'hidden h-0 ':''}bg-yellow-100 mb-4 text-yellow-600 text-xs p-4 w-full rounded-md flex justify-between`}><span className={`${closed?'hidden':''}`}>otp shared into your phone number</span><span className={`${closed?"hidden":""} text-gray-600 cursor-pointer`} onClick={()=>setClosed(true)}><IoIosClose size={18}/></span></div>
                   <OtpInput
                     value={otp}
                     onChange={handleInputChange}
@@ -122,7 +127,7 @@ const OtpPage: React.FC<OtpProps> = () => {
                     renderInput={renderInput}
                   />
                   {seconds > 0 ? (
-                    <p className="font-semibold text-sm cursor-pointer mt-3 mb-5  text-gray-700">
+                    <p className="font-semibold text-sm cursor-pointer mt-4 mb-5  text-gray-700">
                       {`00:${seconds > 9 ? seconds : `0${seconds}`}`}
                     </p>
                   ) : (

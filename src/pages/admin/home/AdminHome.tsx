@@ -57,7 +57,7 @@ function AdminHome() {
       <>
          <div className='w-full h-screen flex'>
             {open && (
-               <div className='w-full sm:hidden min-h-screen fixed ease-in-out z-50 bg-white'>
+               <div className='w-full sm:hidden min-h-screen fixed ease-in-out z-40 bg-white'>
                   <div className='w-full p-5 flex justify-end'>
                      <IoClose className='cursor-pointer' onClick={handleSidebarToggle} size={30} />
                   </div>
@@ -75,7 +75,7 @@ function AdminHome() {
                   ))}
                </div>
             )}
-            <div className={`${open ? 'w-64' : 'w-28'} h-full z-50 fixed max-sm:hidden shadow-md bg-slate-50`}>
+            <div className={`${open ? 'w-64' : 'w-28'} h-full z-40 fixed max-sm:hidden shadow-md bg-slate-50`}>
                <div className='h-[70px] w-full bg-slate-50'></div>
                {options.map((option, index) => (
                   open?(<div key={index} onClick={()=> handleOptionClick(index) } className={(ind==index?'w-full bg-slate-700  shadow-lg h-16 flex justify-start text-white items-center p-5 cursor-pointer':'w-full  h-16 flex justify-start dark:text-black text-dark items-center p-5 cursor-pointer')}><span>{option.icon}</span> <span className='ml-3  font-semibold'>{option.name}</span></div>):(<div key={index} onClick={()=> handleOptionClick(index) } className={ind==index?'w-full  h-16 p-3 text-white bg-slate-700 shadow-xl flex items-center justify-center cursor-pointer':'w-full  h-16 p-3  text-black flex items-center justify-center cursor-pointer'}>{option.icon}</div>)
