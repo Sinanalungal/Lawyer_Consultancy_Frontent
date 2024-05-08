@@ -43,7 +43,6 @@ const Table: React.FC<TableProps> = ({ columns, data, itemsPerPage = 5 , buttonD
       setCurrentPage((prevPage) => prevPage - 1);
     }
   };
-console.log(buttonDetail?.label)
   return (
     <div className="overflow-hidden bg-white shadow-md m-1 rounded-lg">
       <div className="px-6 py-4 shadow-md bg-slate-50">

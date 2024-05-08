@@ -3,8 +3,6 @@ import axios from 'axios';
 import { BASE_URL } from '../../constants';
 import {  toast } from 'react-toastify';
 
-// import { RootState } from '../store';
-// import { loginUserAPI } from '../../api/auth'; // Example API function
 
 interface LoginState {
   loader: boolean;
@@ -24,10 +22,45 @@ const initialState: LoginState = {
   dataRequired: false
 };
 
+//============================================================
+// interface IntecepterData{
+//   baseUrl:string;
+//   user:any;
+// }
+
+// export const InterceptorManage = createAsyncThunk(
+//   'login/InterceptorManage',
+//   async (Data:IntecepterData, { rejectWithValue }) => {
+//     try {
+//       const accessToken = Data.user.access;
+//       console.log(accessToken)
+//       if (!accessToken) {
+//         throw new Error('Access token is missing');
+//       }
+//       console.log('token checking...')
+//       const decodedToken = JSON.parse(atob(accessToken.split('.')[1]));
+//       const expirationTimeOfAccessToken = decodedToken.exp * 1000; 
+//       const accessTokenValid = Date.now() >= expirationTimeOfAccessToken;
+//       if (accessTokenValid || Date.now() + 20000 >= expirationTimeOfAccessToken) {
+//         const refreshToken = Data.user.refresh;
+//         const response = await axios.post(`${Data.baseUrl}/token/refresh/`, { refresh: refreshToken });
+        
+//       }
+
+
+//     } catch (error) {
+//       console.log(error);
+      
+//     }
+//   }
+// );
+//============================================================================
+
 export const GoogleLoginAsync = createAsyncThunk(
   'login/GoogleLoginAsync',
   async (code:string, { rejectWithValue }) => {
     try {
+      console.log(code,'code here')
       // Assuming BASE_URL is defined elsewhere in your code
       const response = await axios.post(`${BASE_URL}api/login-with-google/`, {code:code}); 
       console.log(response.data,'this is the data')
@@ -65,7 +98,7 @@ export const loginAsync = createAsyncThunk(
 
        const decodedToken = JSON.parse(atob(token.split('.')[1]));
         const { full_name, phone_number, email, role, is_verified,registering } = decodedToken;
-        
+        // console.log(exp,'expiration time')
         if (response.data.registering){
           toast.success('Login successful')
         }
@@ -80,6 +113,13 @@ export const loginAsync = createAsyncThunk(
     }
 );
 
+
+// ------------------------------------------------------
+
+
+
+// ---------------------------------------------------------------------------------
+
 const loginSlice = createSlice({
   name: 'login',
   initialState,
@@ -90,6 +130,9 @@ const loginSlice = createSlice({
         state.error = null;
         state.user = null;
         
+      },
+      setAccess(state,value){
+        state.user = value;
       },
       loginSuccess(state, action: PayloadAction<Record<string, any>>) {
         state.loader = false;
@@ -155,5 +198,5 @@ const loginSlice = createSlice({
   },
 });
 
-export const { loginStart, loginSuccess, loginFailure, logout ,modaloff } = loginSlice.actions;
+export const { loginStart, loginSuccess, loginFailure, logout ,modaloff ,setAccess } = loginSlice.actions;
 export default loginSlice.reducer;

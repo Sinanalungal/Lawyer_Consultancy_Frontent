@@ -1,8 +1,11 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import { FaEdit } from "react-icons/fa";
 import Table from '../../../components/table/Table';
+import axios from 'axios';
+import { BASE_URL } from '../../../constants';
 
 const buttonDetail={ key: '', label: '' } 
+
 
 const headers = [
   { key: 'image', label: 'Image' },
@@ -15,43 +18,37 @@ const headers = [
   { key: 'blocked', label: 'Status' },
 ];
 
-const data = [
-  {
-    image:<img className='w-12 h-12 rounded-md bg-cover' src= './justice.jpg'></img>,
-    name: 'John Michael',
-    phone:'92038845545',
-    email: 'john@example.com',
-    status: <div className='px-2 py-1 text-xs bg-green-300 text-black inline-block rounded-md'>blocked</div>,
-    department: 'Family',
-    certificates: 'Bachelor of Law',
-    blocked: <div className='px-2 py-1 text-xs bg-red-300 text-black inline-block rounded-md'>blocked</div>,
-  }, {
-    name: 'John Michael',
-    email: 'john@example.com',
-    status: <div className='px-2 py-1 text-xs bg-green-300 text-black inline-block rounded-md'>blocked</div>,
-    department: 'Family',
-    certificates: 'Bachelor of Law',
-    blocked: <div className='px-2 py-1 text-xs bg-red-300 text-black inline-block rounded-md'>blocked</div>,
-  },
-  {
-    name: 'John Michael',
-    email: 'john@example.com',
-    status: <div className='px-2 py-1 text-xs bg-green-300 text-black inline-block rounded-md'>blocked</div>,
-    department: 'Family',
-    certificates: 'Bachelor of Law',
-    blocked: <div className='px-2 py-1 text-xs bg-red-300 text-black inline-block rounded-md'>blocked</div>,
-  }, {
-    name: 'John Michael',
-    email: 'john@example.com',
-    status: <div className='px-2 py-1 text-xs bg-green-300 text-black inline-block rounded-md'>blocked</div>,
-    department: 'Family',
-    certificates: 'Bachelor of Law',
-    blocked: <div className='px-2 py-1 text-xs bg-red-300 text-black inline-block rounded-md'>blocked</div>,
-  },
-  
-];
+
 
 function LawyersComponent() {
+  const [lawyers, setLawyers] = React.useState<any>([]);
+
+  useEffect(()=>{
+    async function fetchData(role: string){
+      const response =await axios.get(`${BASE_URL}adminside/user-data/?role=${role}`)
+      setLawyers(response.data)
+      console.log(response.data)
+    }
+    fetchData('lawyer')
+  },[])
+
+  const data = lawyers.map((lawyer: any) => ({
+    // image: <img className='w-12 h-12 rounded-md bg-cover' src='' alt='Lawyer' />,
+    name: lawyer.full_name, // Assuming full_name is the property for the lawyer's name
+    phone: lawyer.phone_number,
+    email: lawyer.email,
+    status: lawyer.is_verified ? (
+      <div className='px-2 py-1 text-xs bg-green-300 text-black inline-block rounded-md'>Online</div>
+    ) : (
+      <div className='px-2 py-1 text-xs bg-red-300 text-black inline-block rounded-md'>Offline</div>
+    ),
+    department: 'Family', // Example department
+    certificates: 'Bachelor of Law', // Example certificates
+    blocked: lawyer.is_blocked ? (
+      <div className='px-2 py-1 text-xs bg-red-300 text-black inline-block rounded-md'>Blocked</div>
+    ) : null,
+  }));
+
   return (
     <>
     <div className='w-full flex justify-center max-sm:text-2xl text-4xl font-bold p-12 h-auto'>Lawyers List</div>

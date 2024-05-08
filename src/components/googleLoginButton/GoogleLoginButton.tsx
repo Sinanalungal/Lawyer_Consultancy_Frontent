@@ -6,7 +6,7 @@ import { GoogleLoginAsync } from "../../redux/slice/LoginActions";
 function GoogleLoginButton() {
   const dispatch = useDispatch();
   const handleSuccess = async (response: any) => {
-    console.log(response);
+    console.log(response,'thi is respponse');
     const res = await dispatch(GoogleLoginAsync(response.code));
     console.log(res.payload.registering, "res");
     // if(res.payload.registering == true){
