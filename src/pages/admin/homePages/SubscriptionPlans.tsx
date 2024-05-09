@@ -1,4 +1,5 @@
 import Table from '../../../components/table/Table';
+import AdminHome from '../home/AdminHome';
 
 const buttonDetail={ key: '', label: '' } 
 
@@ -52,8 +53,8 @@ const data = [
 function SubscriptionPlans() {
   return (
     <>
-    <div className='w-full flex justify-center max-sm:text-2xl text-4xl font-bold p-12 h-auto'>Subscriptions</div>
-    <Table columns={headers} data={data} itemsPerPage={15} buttonDetail={buttonDetail} />
+    <AdminHome ind={3} component={<div><div className='w-full flex justify-center max-sm:text-2xl text-4xl font-bold p-12 h-auto'>Subscriptions</div>
+    <Table columns={headers} data={data} itemsPerPage={15} buttonDetail={buttonDetail} /></div>}/>
     </>
   )
 }

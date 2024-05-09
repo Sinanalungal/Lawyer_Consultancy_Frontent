@@ -1,10 +1,15 @@
 import React from 'react';
+import AdminHome from '../home/AdminHome';
 
 
 
 function DashboardComponent() {
   return (
-    <>DashboardComponent</>
+    <>
+    <AdminHome ind={0} component={
+      <div>DashboardComponent</div>
+    }/>
+    </>
   );
 }
 

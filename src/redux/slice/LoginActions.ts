@@ -79,7 +79,7 @@ export const GoogleLoginAsync = createAsyncThunk(
 
     } catch (error) {
       console.log(error);
-      toast.error('Login failed')
+      toast.error(error.response.data.detail)
       return rejectWithValue({ message: 'Login failed' }); 
     }
   }
@@ -89,7 +89,6 @@ export const loginAsync = createAsyncThunk(
     'login/loginAsync',
     async (loginData: { username: string, password: string }, { rejectWithValue }) => {
       try {
-        // Assuming BASE_URL is defined elsewhere in your code
         const response = await axios.post(`${BASE_URL}token/userdata/`, loginData); 
         console.log(response.data)
         toast.success('Login successful')
@@ -107,7 +106,8 @@ export const loginAsync = createAsyncThunk(
 
       } catch (error) {
         console.log(error);
-        toast.error('Login failed')
+        // toast.error(error.message)
+        toast.error(error.response.data.detail)
         return rejectWithValue({ message: 'Login failed' }); 
       }
     }

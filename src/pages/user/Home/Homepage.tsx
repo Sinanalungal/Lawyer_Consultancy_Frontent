@@ -5,11 +5,10 @@ import Header from '../../../components/userHomeComponents/MainHeader';
 import Content from '../../../components/userHomeComponents/ServiceComponent';
 
 const Homepage: React.FC = () => {
-    const navItems = ['Home', 'About', 'Services', 'Contact'];
 
     return (
         <div className="homepage">
-            <Navbar title="My Website" items={navItems} />
+            <Navbar/>
             <div className=" homepage_elements max-sm:hidden dark:bg-black items-center relative max-lg:h-[420px] h-[600px]" style={{ backgroundImage: `url("./homepageimg.png")`, backgroundSize: "contain", backgroundRepeat: 'no-repeat', backgroundPositionX: 'right', width: "100%" }}>
                 <div className="h-[80%] md:w-[60%] sm:w-[65%] dark:text-white flex flex-col justify-center">
                     <h1 className="font-bold text-5xl bg-white dark:bg-black  mt-4 xl:text-7xl px-6 md:px-24">Legal Advice Online From Top Lawyers</h1>

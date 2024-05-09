@@ -1,7 +1,6 @@
 import axios, { AxiosInstance, AxiosRequestConfig } from 'axios';
 
 
-
 class AccessTokenManager {
   private readonly baseUrl: string;
   private user: any;
@@ -20,7 +19,6 @@ class AccessTokenManager {
     console.log('refreshing token...')
     const refreshToken = this.user.refresh;
     const response = await axios.post(`${this.baseUrl}/token/refresh/`, { refresh: refreshToken });
-    // Update the user's access token and expiration time here
     this.user.access = response.data.access;
   }
 
@@ -28,7 +26,7 @@ class AccessTokenManager {
     console.log('token checking...')
     const token = this.user.access;
     const decodedToken = JSON.parse(atob(token.split('.')[1]));
-    const exp = decodedToken.exp * 1000; // Convert seconds to milliseconds
+    const exp = decodedToken.exp * 1000; 
     return Date.now() >= exp;
   }
 
@@ -45,12 +43,10 @@ class AccessTokenManager {
           throw new Error('Access token is missing');
         }
 
-        // Check if access token is expired or about to expire (within 20 seconds)
         if (this.isAccessTokenExpired() || Date.now() + 20000 >= this.getExpirationTime()) {
           await this.refreshToken(); 
         }
 
-        // Set the Authorization header
         config.headers.Authorization = `Bearer ${this.user.access}`;
         console.log('axios is ok')
         return config;

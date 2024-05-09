@@ -1,4 +1,6 @@
+import { DiVim } from 'react-icons/di';
 import Table from '../../../components/table/Table';
+import AdminHome from '../home/AdminHome';
 
 const buttonDetail={ key: '', label: '' } 
 
@@ -52,8 +54,10 @@ const data = [
 function NotificationComponent() {
   return (
     <>
-    <div className='w-full flex justify-center max-sm:text-2xl text-4xl font-bold p-12 h-auto'>Notifications</div>
+    <AdminHome ind={5} component={<div>
+      <div className='w-full flex justify-center max-sm:text-2xl text-4xl font-bold p-12 h-auto'>Notifications</div>
     <Table columns={headers} data={data} itemsPerPage={15} buttonDetail={buttonDetail} />
+    </div>}/>
     </>
   )
 }

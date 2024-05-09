@@ -1,141 +1,223 @@
-import React, { useEffect } from 'react'
-import { FaEdit } from "react-icons/fa";
-import Table from '../../../components/table/Table';
-import axios from 'axios';
-import { BASE_URL } from '../../../constants';
+import React, { useEffect } from "react";
+import Table from "../../../components/table/Table";
+import { BASE_URL } from "../../../constants";
+import { getAxiosInstance } from "../../../services/axiosInstance/AxiosInstance";
+import { useSelector } from "react-redux";
+import Swal from "sweetalert2";
+import Breadcrumb from "../../../components/breadcrump/BreadCrump";
+import { debounce } from "lodash";
+import AdminHome from "../home/AdminHome";
 
-const buttonDetail={ key: '', label: '' } 
 
+const buttonDetail = { key: "Add Lawyers", label: "/add-lawyer" };
 
 const headers = [
-  { key: 'image', label: 'Image' },
-  { key: 'name', label: 'Name' },
-  { key: 'phone', label: 'Phone Number' },
-  { key: 'email', label: 'Username/Email' },
-  { key: 'status', label: 'Online/Offline' },
-  { key: 'department', label: 'Department' },
-  { key: 'certificates', label: 'Certificates' },
-  { key: 'blocked', label: 'Status' },
+  { key: "image", label: "Image" },
+  { key: "name", label: "Name" },
+  { key: "phone", label: "Phone Number" },
+  { key: "email", label: "Username/Email" },
+  { key: "department", label: "Department" },
+  { key: "certificates", label: "Certificates" },
+  { key: "edit", label: "Edit" },
+  { key: "status", label: "Block/Unblock" },
 ];
 
-
-
 function LawyersComponent() {
+  const { user } = useSelector((state: any) => state.login);
   const [lawyers, setLawyers] = React.useState<any>([]);
+  const [search, setSearch] = React.useState<string>("");
+  const [isVerified, setIsVerified] = React.useState<string | boolean>("all");
+  const [previousPage, setPrevious] = React.useState<string | null>(null);
+  const [nextPage, setNext] = React.useState<string | null>(null);
+  const [pageNum, setPageNum] = React.useState<Number>(1);
+  const [total_page, setTotal] = React.useState<Number>(1);
 
-  useEffect(()=>{
-    async function fetchData(role: string){
-      const response =await axios.get(`${BASE_URL}adminside/user-data/?role=${role}`)
-      setLawyers(response.data)
-      console.log(response.data)
+
+  useEffect(() => {
+    async function fetchData(role: string) {
+      try {
+        const axiosInstance = await getAxiosInstance(user);
+        const response = await axiosInstance.get(
+          `${BASE_URL}adminside/user-data/?role=${role}&search=${search}&isVerified=${isVerified}`
+        );
+        setLawyers(response.data.results);
+        setPrevious(response.data.previous);
+        setNext(response.data.next);
+        setTotal(response.data.count);
+      } catch (error) {
+        console.log(error);
+      }
     }
-    fetchData('lawyer')
-  },[])
+    const debouncedFetchData = debounce(fetchData, 1000);
 
-  const data = lawyers.map((lawyer: any) => ({
-    // image: <img className='w-12 h-12 rounded-md bg-cover' src='' alt='Lawyer' />,
-    name: lawyer.full_name, // Assuming full_name is the property for the lawyer's name
-    phone: lawyer.phone_number,
-    email: lawyer.email,
-    status: lawyer.is_verified ? (
-      <div className='px-2 py-1 text-xs bg-green-300 text-black inline-block rounded-md'>Online</div>
+    debouncedFetchData("lawyer");
+
+    return () => {
+      debouncedFetchData.cancel();
+    };
+  }, [search, isVerified]);
+
+
+  const callingNext = async () => {
+    if (nextPage) {
+      try {
+        const axiosInstance = await getAxiosInstance(user);
+        const response = await axiosInstance.get(
+          `${nextPage}?role=${"lawyer"}&search=${search}&isVerified=${isVerified}`
+        );
+        setLawyers(response.data.results);
+        setPrevious(response.data.previous);
+        setNext(response.data.next);
+        setTotal(response.data.count);
+        console.log(response);
+      } catch (error) {
+        console.error("Error fetching data:", error);
+      }
+      setPageNum((pageNum) => pageNum + 1);
+    }
+  };
+  const callingPrevious = async () => {
+    if (previousPage) {
+      try {
+        const axiosInstance = await getAxiosInstance(user);
+        const response = await axiosInstance.get(
+          `${previousPage}?role=${"lawyer"}&search=${search}&isVerified=${isVerified}`
+        );
+        setLawyers(response.data.results);
+        setPrevious(response.data.previous);
+        setNext(response.data.next);
+        setTotal(response.data.count);
+        console.log(response);
+      } catch (error) {
+        console.error("Error fetching data:", error);
+      }
+      setPageNum((pageNum) => pageNum - 1);
+    }
+  };
+
+
+  const manageLawyer = async (id: number) => {
+    try {
+      const axiosInstance = await getAxiosInstance(user);
+      Swal.fire({
+        title: "Are you sure?",
+        icon: "warning",
+        showCancelButton: true,
+        confirmButtonColor: "#3085d6",
+        cancelButtonColor: "#d33",
+        confirmButtonText: "Yes, Change it!",
+      }).then(async (result) => {
+        const response = await axiosInstance.patch(
+          `${BASE_URL}adminside/user-data/`,
+          { id: id, role: "lawyer" }
+        );
+        if (result.isConfirmed) {
+          if (response.status == 200) {
+            Swal.fire({
+              title: "Changed Successfully!",
+              icon: "success",
+            });
+          }
+          setLawyers(response.data);
+        }
+      });
+    } catch (error) {
+      console.error("Error updating user:", error);
+    }
+  };
+
+  var data = lawyers.map((lawyer_data: any) => ({
+    name: lawyer_data.full_name,
+    phone: lawyer_data.phone_number,
+    email: lawyer_data.email,
+    department: "Family",
+    certificates: "Bachelor of Law",
+    status: lawyer_data.is_verified ? (
+      <div
+        className="px-2 py-1 text-xs bg-red-300 text-black cursor-pointer inline-block rounded-md"
+        onClick={() => manageLawyer(lawyer_data.id)}
+      >
+        Block
+      </div>
     ) : (
-      <div className='px-2 py-1 text-xs bg-red-300 text-black inline-block rounded-md'>Offline</div>
+      <div
+        className="px-2 py-1 text-xs bg-green-300 text-black cursor-pointer inline-block rounded-md"
+        onClick={() => manageLawyer(lawyer_data.id)}
+      >
+        Unblock
+      </div>
     ),
-    department: 'Family', // Example department
-    certificates: 'Bachelor of Law', // Example certificates
-    blocked: lawyer.is_blocked ? (
-      <div className='px-2 py-1 text-xs bg-red-300 text-black inline-block rounded-md'>Blocked</div>
-    ) : null,
+    edit: lawyer_data.is_verified ? (
+      <div className="px-2 py-1 text-xs font-bold text-black cursor-pointer inline-block rounded-md">
+        Active
+      </div>
+    ) : (
+      <div className="px-2 py-1 text-xs font-bold text-black cursor-pointer inline-block rounded-md">
+        InActive
+      </div>
+    ),
   }));
+  const breadcrumbItems = [
+    { label: "Admin", link: "/admin" },
+    { label: "Lawyers List" },
+  ];
 
   return (
     <>
-    <div className='w-full flex justify-center max-sm:text-2xl text-4xl font-bold p-12 h-auto'>Lawyers List</div>
-    <Table columns={headers} data={data} itemsPerPage={15} buttonDetail={buttonDetail} />
-    {/* <div className="overflow-hidden bg-white shadow-md m-1 rounded-lg">
-      <div className="px-6 py-4 shadow-md bg-slate-50">
-        <div className="flex max-sm:flex-col justify-end items-center mb-4">
-          <div className="flex space-x-4 ">
-            
-            <button className="flex items-center bg-slate-800 text-xs font-bold max-sm:mt-3 hover:bg-slate-700 text-white px-3 py-2 rounded-md">
-              Add lawyer
-            </button>
+      <AdminHome ind={1} component={<div className="">
+        <div className="p-6 font-semibold">
+          <Breadcrumb items={breadcrumbItems} />
+        </div>
+        <div className="w-full flex justify-center max-sm:text-2xl text-5xl font-bold h-auto">
+          Lawyers List
+        </div>
+        <p className="w-full flex justify-center  text-xs font-medium pb-9 h-auto mt-1">
+          Lawyers Data is listed in here
+        </p>
+        <div className="px-7 max-sm:px-2 py-1">
+          <div className="text-xs flex items-center font-bold rounded-md space-x-1">
+            <div
+              className={`${
+                isVerified == "all" && "shadow bg-slate-200 "
+              } px-2 py-1 rounded-md border border-opacity-30 sm:px-3 sm:py-2 cursor-pointer`}
+              onClick={() => setIsVerified("all")}
+            >
+              all
+            </div>
+            <div
+              className={`${
+                isVerified == false && "shadow bg-slate-200 "
+              } px-2 py-1 rounded-md border border-opacity-30 sm:px-3 sm:py-2 cursor-pointer `}
+              onClick={() => setIsVerified(false)}
+            >
+              blocked
+            </div>
+            <div
+              className={`${
+                isVerified == true && "shadow bg-slate-200 "
+              } px-2 py-1 rounded-md border border-opacity-30 sm:px-3 sm:py-2 cursor-pointer`}
+              onClick={() => setIsVerified(true)}
+            >
+              unblocked
+            </div>
           </div>
         </div>
-        <div className="flex max-sm:flex-col justify-end items-center mb-4">
-          <div className="w-full text-xs md:w-[50%]">
-            <input
-              type="text"
-              placeholder="Search"
-              className="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline focus:outline-slate-400"
-            />
-          </div>
-         
-        </div>
-        <div className="overflow-x-auto rounded-t-md">
-          <table className="w-full table-auto border-collapse border border-gray-300 ">
-            <thead className="bg-slate-300">
-              <tr>
-                {TABLE_HEAD.map((head) => (
-                  <th key={head} className="px-4 py-2 text-left text-xs font-semibold text-gray-700">
-                    {head}
-                  </th>
-                ))}
-              </tr>
-            </thead>
-            <tbody>
-              {TABLE_ROWS.map(({ img, name, email, status, department, certificates,phonenumber,blocked }) => (
-                <tr key={name} className="border-t text-sm font-semibold border-gray-300">
-                  <td className="px-4 py-2">
-                    <div className="flex items-center space-x-2">
-                      <img src={img} alt={name} className="w-8 h-8 rounded-full" />
-                      <div>
-                        <p className="text-xs font-semibold text-gray-800">{name}</p>
-                        <p className="text-xs text-gray-600">{phonenumber}</p>
-                      </div>
-                    </div>
-                  </td>
-                  <td className="px-4 py-2">
-                    <p className="text-xs font-semibold text-gray-800">{email}</p>
-                  </td>
-                  <td className="px-4 py-2">
-                    <span className={`px-2 py-1 text-xs rounded ${status ? 'bg-green-500 text-white' : 'bg-blue-gray-200 text-gray-700'}`}>
-                      {status ? 'Online' : 'Offline'}
-                    </span>
-                  </td>
-                  <td className="px-4 py-2">
-                    <button className="">
-                      <FaEdit  size={21}/>
-                    </button>
-                  </td>
-                  <td className="px-4 py-2">
-                    <p className="text-xs font-semibold text-gray-800">{department}</p>
-                  </td>
-                  <td className="px-4 py-2">
-                    <p className="text-xs font-semibold text-gray-800">{certificates}</p>
-                  </td>
-                  <td className="px-4 py-2">
-                    <button className={`px-2 py-1 text-xs rounded ${blocked ? 'bg-green-500 text-white' : 'bg-red-800 text-white'}`}>
-                      {blocked ? 'Unblock' : 'Block'}
-                    </button>
-                  </td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
-        </div>
-      </div>
-      <div className="bg-slate-300 px-6 py-4 flex justify-between items-center border-t border-gray-300">
-        <p className="text-xs font-semibold text-gray-600">Page 1 of 10</p>
-        <div className="flex space-x-4">
-          <button className="text-xs font-medium text-blue-800 hover:text-blue-700">Previous</button>
-          <button className="text-xs font-medium text-blue-800 hover:text-blue-700">Next</button>
-        </div>
-      </div>
-    </div> */}
+
+      <Table
+        columns={headers}
+        data={data}
+        itemsPerPage={15}
+        buttonDetail={buttonDetail}
+        search={search}
+        setSearch={setSearch}
+        nextButton={callingNext}
+        previousButton={callingPrevious}
+        pageNum={pageNum}
+        total={Math.ceil(total_page/5)}
+      />
+      </div>}/>
     </>
-  )
+  );
 }
 
-export default LawyersComponent
+export default LawyersComponent;

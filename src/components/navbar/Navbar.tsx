@@ -6,15 +6,15 @@ import { Link } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { logout } from "../../redux/slice/LoginActions";
 
-interface NavbarProps {
-  title: string;
-  items: string[];
-}
 
-const Navbar: React.FC<NavbarProps> = ({ title, items }) => {
+const Navbar: React.FC= ({ }) => {
+
   const [isFixed, setIsFixed] = useState(false);
   const { isAuthenticated, user } = useSelector((state: any) => state.login);
   const dispatch = useDispatch();
+  const items = ['Home', 'About', 'Services', 'Contact'];
+  const title ='My Website'
+
   useEffect(() => {
     const handleScroll = () => {
       const isNavbarFixed = window.scrollY > 10;
