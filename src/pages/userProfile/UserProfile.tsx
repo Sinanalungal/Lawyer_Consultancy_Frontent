@@ -10,6 +10,8 @@ interface UserProfileProps {
 
 const UserProfile: React.FC<UserProfileProps> = ({ component, index }) => {
   const navigate = useNavigate();
+ 
+
   return (
     <>
       <Navbar />

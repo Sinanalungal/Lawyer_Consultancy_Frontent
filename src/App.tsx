@@ -23,7 +23,7 @@ function App() {
 
   return (
     <>
-      {isOpen && (<Modal isOpen={isOpen} onClose={() => setIsOpen(false)}>
+      {isOpen && (<Modal isOpen={isOpen} onClose={() => {}}>
         <ExtraDataAccess />
       </Modal>)}
       <Router>

@@ -11,8 +11,8 @@ import BlogCard from "./BlogCard";
 const Blog: React.FC = () => {
   return (
     <>
-    <Navbar/>
-   <div className="w-full h-full  p-4">
+    <Navbar />
+   <div className="w-full h-full mx-auto 2xl:container p-4">
         <div className="w-full h-96 max-sm:h-[600px] bg-white flex   max-sm:flex-col-reverse justify-between">
             <div className="w-[50%] border border-r-2 border-r-white rounded-3xl flex-col max-sm:w-full flex justify-center items-center h-full bg-slate-800">
                 <p className="text-4xl max-sm:text-2xl p-4 font-bold text-white">Take a Sippp And Dive In</p>
@@ -33,7 +33,7 @@ const Blog: React.FC = () => {
             <p  className="text-2xl text-slate-800 font-bold">Blogs</p>
             <p  className="underline font-medium text-xs flex space-x-0 justify-center items-center">View all <MdKeyboardArrowRight size={13}/></p>
         </div>
-        <div className="w-full  sm:px-4 px-1 mt-2  grid md:grid-cols-3 g 2xl:grid-cols-4  grid-cols-2 max-[450px]:grid-cols-1 gap-4 sm:text-sm font-semibold  items-start rounded-lg">
+        <div className="w-full  sm:px-4 px-1 mt-2   grid md:grid-cols-3 g 2xl:grid-cols-4  grid-cols-2 max-[450px]:grid-cols-1 gap-4 sm:text-sm font-semibold  items-start rounded-lg">
             <BlogCard/>
             <BlogCard/>
             <BlogCard/>

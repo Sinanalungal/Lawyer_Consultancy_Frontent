@@ -37,16 +37,17 @@ const Navbar: React.FC= ({ }) => {
 
   return (
     <>
-      <Sidebar
+      <div className="flex justify-center">
+        <Sidebar
         isOpen={isSidebarOpen}
         onClose={handleCloseSidebar}
         items={sidebarItems}
       />
 
       <nav
-        className={`fixed navbar dark:bg-black z-30 dark:text-white w-full flex md:text-base font-bold text-xs items-center px-6 md:px-24 justify-between h-20 ${
+        className={`fixed 2xl:container  navbar dark:bg-black z-30 dark:text-white w-full flex md:text-base font-bold text-xs items-center  px-6 md:px-24 justify-between h-20 ${
           isFixed
-            ? "fixed top-0 w-full bg-black dark:bg-white text-white dark:text-black shadow-lg dark:shadow-gray-300 dark:shadow-sm z-40 transition-all duration-300 ease-in-out"
+            ? "fixed top-0 w-full bg-white dark:bg-white text-dark dark:text-black shadow-lg dark:shadow-gray-300 dark:shadow-sm z-40 transition-all duration-300 ease-in-out"
             : "bg-white"
         }`}
       >
@@ -68,7 +69,7 @@ const Navbar: React.FC= ({ }) => {
             <IoMenu
               className={`${
                 isFixed
-                  ? "dark:text-black text-white"
+                  ? "dark:text-black text-black"
                   : "text-dark dark:text-white"
               }`}
               size={33}
@@ -77,7 +78,7 @@ const Navbar: React.FC= ({ }) => {
         </button>
         <div
           className={`navbar-brand ml-4 ${
-            isFixed ? "dark:text-black text-white" : "dark:text-white text-dark"
+            isFixed ? "dark:text-black text-dark" : "dark:text-white text-dark"
           }`}
         >
           {title}
@@ -98,7 +99,7 @@ const Navbar: React.FC= ({ }) => {
             onClick={() => dispatch(logout())}
             className={` font-bold border-2 text-xs  px-5 py-2 rounded-3xl ${
               isFixed
-                ? "dark:text-black text-white dark:border-black border-white"
+                ? "dark:text-black text-dark dark:border-black border-black"
                 : "dark:text-white  text-dark dark:border-white border-black"
             }`}
           >
@@ -110,7 +111,7 @@ const Navbar: React.FC= ({ }) => {
               type="button"
               className={` font-bold border-2 text-xs  px-5 py-2 rounded-3xl ${
                 isFixed
-                  ? "dark:text-black text-white dark:border-black border-white"
+                  ? "dark:text-black text-dark dark:border-black border-black"
                   : "dark:text-white text-dark dark:border-white border-black"
               }`}
             >
@@ -120,6 +121,7 @@ const Navbar: React.FC= ({ }) => {
         )}
       </nav>
       <div className="h-20 w-full"></div>
+      </div>
     </>
   );
 };

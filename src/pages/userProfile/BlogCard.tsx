@@ -5,8 +5,10 @@ import { CiBookmarkPlus } from "react-icons/ci";
 const BlogCard: React.FC = () => {
   return (
     <>
-     <div className="border shadow-md rounded-xl p-1 h-[300px]">
-        <div className="w-full h-[50%] bg-slate-300 rounded-xl"></div>
+    <div className="border shadow-md rounded-xl p-1 3xl:h-[600px] h-[300px]">
+        <div className="w-full h-[50%] 3xl:h-[70%] rounded-xl">
+            <img src="/login.jpg" className="w-full h-full object-cover" alt="" />
+        </div>
         <div className=" flex  flex-col justify-between py-2 px-1 w-full h-[49%] rounded-xl ">
             <div className="justify-between p-1 h-fit rounded-xl border flex w-full">
                 <p className="text-xs font-medium">25 january 2023</p>
