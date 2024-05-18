@@ -12,13 +12,13 @@ interface TableColumn {
 interface TableProps {
   columns: TableColumn[];
   data: any[]; // You can specify a more specific type if needed
-  itemsPerPage?: number;
+  itemsPerPage?: Number;
   buttonDetail?: TableColumn;
   search: string; // Type for the search term
   setSearch: React.Dispatch<React.SetStateAction<string>>; // Type for the setSearch function
   nextButton: () => void; // Function for handling next button click
   previousButton: () => void; // Function for handling previous button click
-  pageNum: number; // Current page number
+  pageNum: Number; // Current page number
   total:Number;
 }
 
@@ -89,7 +89,7 @@ const Table: React.FC<TableProps> = ({ columns, data, total, previousButton , ne
             <thead className="bg-white ">
               <tr>
                 {columns.map((column) => (
-                  <th key={column.key} className="px-4  py-3 text-left text-sm font-bold text-gray-700">
+                  <th key={column.key} className="px-4  py-3 text-left text-sm font-bold w-[200px] truncate text-gray-700">
                     {column.label}
                   </th>
                 ))}

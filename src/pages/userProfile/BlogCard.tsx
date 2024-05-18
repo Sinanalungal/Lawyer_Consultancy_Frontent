@@ -1,34 +1,107 @@
 import React from "react";
 import { FaShareAlt } from "react-icons/fa";
 import { CiBookmarkPlus } from "react-icons/ci";
+import {  useNavigate } from "react-router-dom";
+import { MdBookmarkAdded } from "react-icons/md";
 
-const BlogCard: React.FC = () => {
+
+interface BlogCardProps {
+    title: string;
+    description: string;
+    image: string;
+    content: string;
+    user: string;
+    date: string;
+    id: number;
+    is_liked: boolean;
+    likes_count: number;
+    is_saved: boolean;
+  }
+  
+const BlogCard: React.FC<BlogCardProps> = ({
+  title,
+  description,
+  image,
+  content,
+  user,
+  date,
+  id,
+  is_liked,
+  likes_count,
+  is_saved
+}) => {
+  const navigate = useNavigate();
+  const dateObj = new Date(date);
+  const formattedDate = dateObj.toLocaleDateString("en-US", {
+    day: "numeric",
+    year: "numeric",
+    month: "long",
+
+  });
+  console.log({ title, description, image, content, user, date, id ,is_liked , likes_count,is_saved });
+
   return (
     <>
-    <div className="border shadow-md rounded-xl p-1 3xl:h-[600px] h-[300px]">
+      <div className="border shadow-md rounded-xl p-1 3xl:h-[600px] h-[300px]">
         <div className="w-full h-[50%] 3xl:h-[70%] rounded-xl">
-            <img src="/login.jpg" className="w-full h-full object-cover" alt="" />
+          <img src={image} className="w-full h-full rounded-xl object-cover" alt="" />
         </div>
         <div className=" flex  flex-col justify-between py-2 px-1 w-full h-[49%] rounded-xl ">
-            <div className="justify-between p-1 h-fit rounded-xl border flex w-full">
-                <p className="text-xs font-medium">25 january 2023</p>
-                <p className="text-slate-800 flex space-x-2"><FaShareAlt/><CiBookmarkPlus /></p>
+          <div className="justify-between p-1 h-fit rounded-xl border flex w-full">
+            <p className="text-xs font-medium">{formattedDate}</p>
+            <p className="text-slate-800 flex space-x-2">
+              <FaShareAlt />
+              {is_saved?<MdBookmarkAdded/>:<CiBookmarkPlus />}
+            </p>
+          </div>
+          <div className="w-full  h-full flex flex-col justify-between mt-1 rounded-xl">
+            <p className="truncate text-lg  px-1 max-[400px]:text-md  font-bold">
+              {title}
+            </p>
+            <div
+              className="sm:h-[37px] px-1 text-gray-800 max-sm:truncate text-[9px] overflow-hidden "
+              style={{ lineHeight: "12px" }}
+            >
+              {" "}
+              {description}
             </div>
-            <div className="w-full  h-full  mt-1 rounded-xl">
-                <p className="truncate text-lg  px-1 max-[400px]:text-md  font-bold">Lorem ipsum dolor sit amet consectetur, adipisicing elit. Facere dolores commodi in ipsam sapiente. Vero molestiae quas mollitia molestias! Nam repellat cumque dolorum numquam molestiae at facilis quis ad magni?</p>
-                <div className="sm:h-[37px] px-1 text-gray-800 max-sm:truncate text-[9px] overflow-hidden " style={{ lineHeight: '12px' }}>  Lorem ipsum dolor sit amet consectetur adipisicing elit. Eveniet, facere laboriosam? Animi expedita natus obcaecati quaerat distinctio mollitia accusamus, exercitationem odio ab aspernatur quo maxime quam perferendis voluptas laboriosam? Dignissimos.</div>
-                <div className="flex justify-between   p-1">
-                    <div className="w-[50%] max-[400px]:hidden space-x-1 flex  items-center">
-                        <div className="w-[20px] h-[20px] rounded-full mt-1 bg-red-300"></div>
-                        <p className="truncate text-xs">yaseen...... </p>
-                    </div>
-                    <div className="float-right flex text-xs rounded-sm px-2 py-1 bg-slate-900 text-white  items-center">
-                        Read..
-                    </div>
-                </div>
+            <div className="flex justify-between   p-1">
+              <div className="w-[50%] max-[400px]:hidden space-x-1 flex  items-center">
+                {user ? (
+                  <>
+                    <div className="min-w-[20px] min-h-[20px] rounded-full mt-1 bg-red-300"></div>
+                    <p className="truncate text-xs">{user}</p>
+                  </>
+                ) : (
+                  ""
+                )}
+              </div>
+              <div
+                onClick={() =>
+                  navigate("../blogpage", {
+                    state: {
+                      title: title,
+                      description: description,
+                      image: image,
+                      mainContent: content,
+                      bloguser: user,
+                      blogId: id,
+                      blogDate: formattedDate,
+                      is_liked: is_liked,
+                      likes_count: likes_count,
+                      is_saved:is_saved
+                    },
+                  })
+                }
+                className="cursor-pointer float-right flex text-xs rounded-sm px-2 py-1 bg-slate-900 text-white items-center"
+              >
+                Read..
+              </div>
+
             </div>
+          </div>
         </div>
-    </div>
+      </div>
     </>
   );
 };

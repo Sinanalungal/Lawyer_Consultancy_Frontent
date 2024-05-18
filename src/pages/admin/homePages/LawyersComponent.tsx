@@ -9,7 +9,7 @@ import { debounce } from "lodash";
 import AdminHome from "../home/AdminHome";
 
 
-const buttonDetail = { key: "Add Lawyers", label: "/add-lawyer" };
+const buttonDetail = { key: "Add Lawyers", label: "../add-lawyer" };
 
 const headers = [
   { key: "image", label: "Image" },
@@ -206,7 +206,7 @@ function LawyersComponent() {
       <Table
         columns={headers}
         data={data}
-        itemsPerPage={15}
+        // itemsPerPage={15}
         buttonDetail={buttonDetail}
         search={search}
         setSearch={setSearch}

@@ -352,6 +352,7 @@ const Login = () => {
                         {formik.errors.password}
                       </div>
                     ) : <div className="h-[12px]"></div>}
+                    <div className="text-xs text-slate-700 w-full flex justify-end"><Link to={'/forgotpassword'}><p>forget password ?</p></Link></div>
                     <div className="h-[12px]"></div>
                       <button type="submit"
                           className="w-full px-4 py-2 mt-1 mb-4 text-white font-medium bg-indigo-600 hover:bg-indigo-500 active:bg-indigo-600 rounded-lg duration-150"

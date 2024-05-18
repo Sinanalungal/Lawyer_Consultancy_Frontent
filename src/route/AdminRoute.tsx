@@ -8,6 +8,9 @@ import UsersComponent from '../pages/admin/homePages/UsersComponent';
 import SubscriptionPlans from '../pages/admin/homePages/SubscriptionPlans';
 import BlogsComponent from '../pages/admin/homePages/BlogsComponent';
 import NotificationComponent from '../pages/admin/homePages/NotificationComponent';
+import Blog from '../pages/userProfile/Blog';
+import BlogPage from '../pages/userProfile/BlogPage';
+import BlogsView from '../pages/admin/homePages/BlogsView';
 
 
 function AdminRoute() {
@@ -18,9 +21,11 @@ function AdminRoute() {
         <Route path="" element={<DashboardComponent/>} />
         <Route path="lawyers-list" element={<LawyersComponent/>} />
         <Route path="users-list" element={<UsersComponent/>} />
-        <Route path="addlawyer" element={<AddLawyer/>} />
+        <Route path="add-lawyer" element={<AddLawyer/>} />
         <Route path="subscriptions" element={<SubscriptionPlans/>} />
         <Route path="blogs" element={<BlogsComponent/>} />
+        <Route path="blog/" element={<BlogsView/>} />
+        <Route path="blogpage/" element={<BlogPage/>} />
         <Route path="notification" element={<NotificationComponent/>} />
         </Route>
       </Routes>

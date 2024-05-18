@@ -9,13 +9,15 @@ import ShowToast from './components/toastComponent/ShowToast.tsx';
 // import { ThemeProvider } from "@material-tailwind/react";
 
 ReactDOM.createRoot(document.getElementById('root')!).render(
-  <React.StrictMode>
+  // <React.StrictMode>
+  <>
   <ShowToast/>
   <Provider store={store}>
       <PersistGate loading={null} persistor={persistor}>
           <App />
       </PersistGate>
   </Provider>
-</React.StrictMode>,
+  </>
+// </React.StrictMode>,
 )
 

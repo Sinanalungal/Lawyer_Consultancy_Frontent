@@ -1,4 +1,4 @@
-import React, { useState, useRef, useMemo } from "react";
+import React, { useState, useRef, useMemo, useEffect } from "react";
 import { FaPlus } from "react-icons/fa";
 import UserProfile from "./UserProfile";
 import BlogCard from "./BlogCard";
@@ -9,78 +9,146 @@ import { useFormik } from "formik";
 import * as Yup from "yup";
 import "./BlogContent.css";
 import Cropper from "react-easy-crop";
-import { FaRegSquare } from "react-icons/fa";
-
-// const ASPECT_RATIO = 1;
-// const MIN_DIMENSION = 200;
+import { toast } from "react-toastify";
+import axios from "axios";
+import { BASE_URL } from "../../constants";
+import { useSelector } from "react-redux";
+import { getAxiosInstance } from "../../services/axiosInstance/AxiosInstance";
 
 const BlogContent: React.FC = () => {
+  const { value } = useSelector((state: any) => state.login);
   const [modal, setModal] = useState(false);
-  // const [title, setTitle] = useState("");
-  // const [description, setDescription] = useState("");
   const [image, setImage] = useState<any>("");
   const [cropModal, setCropModal] = useState(false);
   const [crop, setCrop] = useState({ x: 0, y: 0 });
   const [zoom, setZoom] = useState(1);
-  const [croppedArea, setCroppedArea] = useState(null);
+  const [croppedArea, setCroppedArea] = useState<any>(null);
   const [aspectRatio, setAspectRatio] = useState(4 / 3);
   const [croppedImageUrl, setCroppedImageUrl] = useState<string>("");
-  // const [error, setError] = useState("");
   const [content, setContent] = useState("");
   const [secondModal, setSecondModal] = useState(false);
+  const { user } = useSelector((state: any) => state.login);
+  // const [newBlogAdded, setNewBlogAdded] = useState<boolean>(false);
+  const [blogs, setBlogs] = useState<any[]>([]);
   const editor = useRef(null);
-  // const inputRef = useRef();
 
   const validationSchema = Yup.object({
     title: Yup.string()
+      .min(10, "Title must be at least 10 characters")
       .max(100, "Title must be 100 characters or less")
       .matches(
-        /^[^\s]+(\s+[^\s]+)*$/,
+        /^[^\s]+(\s[^\s]+)*$/,
         "Title should not have more than one consecutive space"
       )
       .required("Title is required"),
     description: Yup.string()
+      .min(10, "Description must be at least 10 characters")
       .max(200, "Description must be 200 characters or less")
       .matches(
-        /^[^\s]+(\s+[^\s]+)*$/,
+        /^[^\s]+(\s[^\s]+)*$/,
         "Description should not have more than one consecutive space"
       )
       .required("Description is required"),
-    // content: Yup.string()
-    //   .required('Content is required'),
-    // image: Yup.mixed()
-    //   .required('Image is required'),
   });
-
-  const handleTitleChange = (e) => {
-    const formattedValue = capitalizeWords(e.target.value);
-    formik.handleChange(e); // Formik's handleChange for form state management
-    formik.setFieldValue("title", formattedValue); // Update Formik's form state
-  };
-
-  const handleDescriptionChange = (e) => {
-    const formattedValue = capitalizeWords(e.target.value);
-    formik.handleChange(e); // Formik's handleChange for form state management
-    formik.setFieldValue("description", formattedValue); // Update Formik's form state
-  };
 
   const formik = useFormik({
     initialValues: {
       title: "",
       description: "",
-      // content: '',
-      // image: null,
     },
     validationSchema,
-    onSubmit: (values) => {
-      // Handle form submission here
-      console.log("Form values:", values);
-      console.log(content, croppedImageUrl);
+    onSubmit: async (values) => {
+      const preprocessedValues: any = {};
+      Object.keys(values).forEach((key) => {
+        preprocessedValues[key] = values[key].replace(/\s+/g, " ").trim();
+      });
+
+      const blob = await dataURItoBlob(croppedImageUrl);
+      const formData = new FormData();
+      formData.append("title", preprocessedValues.title);
+      formData.append("description", preprocessedValues.description);
+      formData.append("content", content);
+      formData.append("image", blob, "image.png");
+      formData.append("user", value);
+
+      if (content.length > 50 && croppedImageUrl.length > 0) {
+        try {
+          const axiosInstance = await getAxiosInstance(user);
+          const response = await axiosInstance.post(
+            BASE_URL + "blogsession/blogs/",
+            formData,
+            {
+              headers: {
+                Accept: "application/json",
+                "Content-Type": "multipart/form-data",
+              },
+            }
+          );
+
+          if (response.status === 201) {
+            toast.success("Blog added successfully");
+            setSecondModal(false);
+            setCroppedImageUrl("");
+            setModal(false);
+            setContent("");
+            formik.resetForm();
+            console.log(response.data, "this is the response data");
+            // setNewBlogAdded(true);
+            setBlogs([...blogs, response.data]);
+          } else {
+            toast.error("Check Your Content");
+          }
+        } catch (error) {
+          console.log(error);
+        }
+      } else {
+        toast.error("Add a proper content/image");
+      }
     },
   });
+  const dataURItoBlob = (dataURI: string) => {
+    if (!dataURI) {
+      return null;
+    }
+
+    // Extract base64 data and mime type from dataURI
+    const [, base64Data] = dataURI.split(",");
+    const mimeString = dataURI.split(":")[1].split(";")[0];
+
+    // Convert base64 to raw binary data
+    const byteCharacters = atob(base64Data);
+    const byteArrays = [];
+
+    for (let offset = 0; offset < byteCharacters.length; offset += 512) {
+      const slice = byteCharacters.slice(offset, offset + 512);
+      const byteNumbers = new Array(slice.length);
+      for (let i = 0; i < slice.length; i++) {
+        byteNumbers[i] = slice.charCodeAt(i);
+      }
+      const byteArray = new Uint8Array(byteNumbers);
+      byteArrays.push(byteArray);
+    }
+
+    // Create blob with appropriate mime type
+    return new Blob(byteArrays, { type: mimeString });
+  };
+
+  const handleTitleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const formattedValue = capitalizeWords(e.target.value);
+    formik.handleChange(e);
+    formik.setFieldValue("title", formattedValue);
+  };
+
+  const handleDescriptionChange = (
+    e: React.ChangeEvent<HTMLTextAreaElement>
+  ) => {
+    const formattedValue = capitalizeWords(e.target.value);
+    formik.handleChange(e);
+    formik.setFieldValue("description", formattedValue);
+  };
 
   const config = useMemo(() => {
-    "Start typings...";
+    "Start typing...";
   });
 
   const capitalizeWords = (str: string) => {
@@ -91,7 +159,7 @@ const BlogContent: React.FC = () => {
       .join(" ");
   };
 
-  const handleOnChange = (e) => {
+  const handleOnChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (e.target.files && e.target.files.length > 0) {
       const reader = new FileReader();
       reader.readAsDataURL(e.target.files[0]);
@@ -103,7 +171,10 @@ const BlogContent: React.FC = () => {
     }
   };
 
-  const onCropComplete = (croppedAreaPercentage, croppedAreaPixels) => {
+  const onCropComplete = (
+    croppedAreaPercentage: any,
+    croppedAreaPixels: any
+  ) => {
     setCroppedArea(croppedAreaPixels);
   };
 
@@ -111,29 +182,35 @@ const BlogContent: React.FC = () => {
     setAspectRatio(value);
   };
 
-  const onCropDone = (imgCroppedArea) => {
-    const canvasElement = document.createElement("canvas");
-    canvasElement.width = imgCroppedArea.width;
-    canvasElement.height = imgCroppedArea.height;
-    const context = canvasElement.getContext("2d");
+  const onCropDone = (croppedArea: any) => {
+    if (!image || !croppedArea) {
+      toast.error("Please crop the image first.");
+      return;
+    }
 
-    let imageObj = new Image();
+    const canvas = document.createElement("canvas");
+    const imageObj = new Image();
     imageObj.src = image;
-    imageObj.onload = function () {
-      context.drawImage(
-        imageObj,
-        imgCroppedArea.x,
-        imgCroppedArea.y,
-        imgCroppedArea.width,
-        imgCroppedArea.height,
-        0,
-        0,
-        imgCroppedArea.width,
-        imgCroppedArea.height
-      );
 
-      const dataURL = canvasElement.toDataURL("image/jpeg");
-      setCroppedImageUrl(dataURL);
+    imageObj.onload = () => {
+      canvas.width = croppedArea.width;
+      canvas.height = croppedArea.height;
+      const ctx = canvas.getContext("2d");
+
+      ctx.drawImage(
+        imageObj,
+        croppedArea.x,
+        croppedArea.y,
+        croppedArea.width,
+        croppedArea.height,
+        0,
+        0,
+        croppedArea.width,
+        croppedArea.height
+      );
+      const croppedDataURL = canvas.toDataURL("image/jpeg");
+
+      setCroppedImageUrl(croppedDataURL);
       setCropModal(false);
     };
   };
@@ -143,35 +220,61 @@ const BlogContent: React.FC = () => {
     setCroppedImageUrl("");
   };
 
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const axiosInstance = await getAxiosInstance(user);
+        const response = await axiosInstance.get(
+          BASE_URL + "blogsession/blogs/"
+        );
+        setBlogs(response.data);
+        console.log(response.data);
+        // setNewBlogAdded(false);
+      } catch (err) {
+        console.log(err);
+      }
+    };
+    fetchData();
+  }, []);
+
   return (
     <>
-      <UserProfile
+      {/* <UserProfile
         index={2}
-        component={
-          <>
-            {/* <div className="w-full flex justify-center"><div className=" flex px-4  sm:w-[80%] space-x-1 items-center">
+        component={ */}
+      <>
+        {/* <div className="w-full flex justify-center"><div className=" flex px-4  sm:w-[80%] space-x-1 items-center">
                 <div className="px-3 py-1 text-xs border rounded-full bg-slate-50">Blogs</div>
                 <div className="px-3 py-1 text-xs border rounded-full bg-slate-50">SavedBlogs</div>
               </div></div> */}
-            <div className="w-full mx-auto p-4 flex  justify-end space-y-3 sm:text-sm font-semibold  sm:w-[80%]  rounded-lg">
-              <div
-                onClick={() => setModal(true)}
-                className="sm:px-5 px-3 py-2 space-x-1 cursor-pointer bg-slate-800 flex justify-center items-center text-xs text-white rounded-full"
-              >
-                <p>Add Blog</p> <FaPlus size={10} />
-              </div>
-            </div>
-            <div className="w-full mx-auto p-4 grid md:grid-cols-3 2xl:grid-cols-4 grid-cols-2 max-[450px]:grid-cols-1 gap-4 sm:text-sm font-semibold sm:w-[80%] items-start rounded-lg">
-              <BlogCard />
-              <BlogCard />
-              <BlogCard />
-              <BlogCard />
-              <BlogCard />
-              <BlogCard />
-            </div>
-          </>
-        }
-      />
+        <div className="w-full mx-auto p-4 flex  justify-end space-y-3 sm:text-sm font-semibold  sm:w-[80%]  rounded-lg">
+          <div
+            onClick={() => setModal(true)}
+            className="sm:px-5 px-3 py-2 space-x-1 cursor-pointer bg-slate-800 flex justify-center items-center text-xs text-white rounded-full"
+          >
+            <p>Add Blog</p> <FaPlus size={10} />
+          </div>
+        </div>
+        <div className="w-full mx-auto p-4 grid md:grid-cols-3 2xl:grid-cols-4 grid-cols-2 max-[450px]:grid-cols-1 gap-4 sm:text-sm font-semibold sm:w-[80%] items-start rounded-lg">
+          {blogs.map((post, index) => (
+            <BlogCard
+              key={index}
+              title={post.title}
+              description={post.description}
+              image={post.image}
+              content={post.content}
+              user={post.user}
+              id={post.id}
+              date={post.created_at}
+              is_liked={post.is_liked}
+              likes_count={post.likes_count}
+              is_saved={post.is_saved}
+            />
+          ))}
+        </div>
+      </>
+      {/* }
+      /> */}
 
       <Modal isOpen={modal} onClose={() => setModal(false)}>
         <div className="w-full bg-white  rounded-md">
@@ -211,7 +314,9 @@ const BlogContent: React.FC = () => {
                   value={formik.values.title}
                 />
                 {formik.touched.title && formik.errors.title ? (
-                  <div className="error">{formik.errors.title}</div>
+                  <div className="error text-red-600 text-[10px] px-2">
+                    {formik.errors.title}
+                  </div>
                 ) : null}
 
                 {/* <input
@@ -243,6 +348,11 @@ const BlogContent: React.FC = () => {
                   onChange={handleDescriptionChange}
                   value={formik.values.description}
                 />
+                {formik.touched.description && formik.errors.description ? (
+                  <div className="error text-red-600 px-2 text-[10px]">
+                    {formik.errors.description}
+                  </div>
+                ) : null}
                 {/* <textarea
                 id="description"
                 name="description"

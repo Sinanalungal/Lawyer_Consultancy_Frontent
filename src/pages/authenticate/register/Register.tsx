@@ -495,7 +495,7 @@ const Register = () => {
                         {formik.errors.password}
                       </div>
                     ) : <div className="h-[12px]"></div>}
-                    <div>
+                      <div>
                           <label className="font-medium">
                               Confirm Password
                           </label>

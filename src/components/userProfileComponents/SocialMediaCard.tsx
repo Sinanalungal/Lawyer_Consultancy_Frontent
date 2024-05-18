@@ -2,16 +2,21 @@ import { useState } from "react";
 import { MdIosShare, MdModeEdit } from "react-icons/md";
 import Cropper from "react-easy-crop";
 import Modal from "../modal/Modal";
+import { useSelector } from "react-redux";
+import { getAxiosInstance } from "../../services/axiosInstance/AxiosInstance";
+import { BASE_URL } from "../../constants";
+import { toast } from "react-toastify";
 
-const SocialMediaCard: React.FC = () => {
-  const [image, setImage] = useState<any>("/login.jpg");
+const SocialMediaCard: React.FC = ({ userDetails, setUserDetails }) => {
+  // const [image, setImage] = useState<any>("/login.jpg");
   const [uploadModal, setUploadModal] = useState(false);
   const [ImageCrop, setImageCrop] = useState("");
   const [cropStart, setCropStart] = useState(false);
   const [cropingValue, setCropingValue] = useState({ x: 0, y: 0 });
   const [zoomingValue, setZoomingValue] = useState(1);
   const [croppedRegion, setCroppedRegion] = useState(null);
-  const [resultantCrop, setResultantCrop] = useState("");
+  // const [resultantCrop, setResultantCrop] = useState("");
+  const { value, user } = useSelector((state: any) => state.login);
 
   const handleChangeManage = (e) => {
     if (e.target.files && e.target.files.length > 0) {
@@ -26,9 +31,61 @@ const SocialMediaCard: React.FC = () => {
     }
   };
 
+  const profileUpdate = async (resultUrl) => {
+    try {
+      const axiosInstance = await getAxiosInstance(user);
+      const blob = await dataURItoBlob(resultUrl);
+      const formData = new FormData();
+      formData.append("profile", blob, "image.png");
+      console.log(blob);
+      const response = await axiosInstance.patch(
+        BASE_URL + `api/users/${value}/update/`,
+        formData
+      );
+      setCropStart(false);
+      setImageCrop("");
+      setCroppedRegion(null);
+      setUserDetails(response.data);
+      console.log(response.data);
+      // setUserDetails(response.data);
+      toast.success('image added successfully')
+      // setEditModal(false)
+      return response;
+    } catch (err) {
+      console.log(err);
+      // toast.error(err.response.data.message);
+    }
+  };
   const CropCompleted = (croppedAreaPercentage, croppedAreaPixels) => {
     setCroppedRegion(croppedAreaPixels);
   };
+  const dataURItoBlob = (dataURI: string) => {
+    if (!dataURI) {
+      return null;
+    }
+
+    // Extract base64 data and mime type from dataURI
+    const [, base64Data] = dataURI.split(",");
+    const mimeString = dataURI.split(":")[1].split(";")[0];
+
+    // Convert base64 to raw binary data
+    const byteCharacters = atob(base64Data);
+    const byteArrays = [];
+
+    for (let offset = 0; offset < byteCharacters.length; offset += 512) {
+      const slice = byteCharacters.slice(offset, offset + 512);
+      const byteNumbers = new Array(slice.length);
+      for (let i = 0; i < slice.length; i++) {
+        byteNumbers[i] = slice.charCodeAt(i);
+      }
+      const byteArray = new Uint8Array(byteNumbers);
+      byteArrays.push(byteArray);
+    }
+
+    // Create blob with appropriate mime type
+    return new Blob(byteArrays, { type: mimeString });
+  };
+
   const cropCancel = () => {
     setCropStart(false);
     setCroppedRegion(null);
@@ -55,11 +112,13 @@ const SocialMediaCard: React.FC = () => {
         value.height
       );
       const resultUrl = canvasEle.toDataURL("image/jpeg");
-      setResultantCrop(resultUrl);
-      setImage(resultUrl); // want to manage this
-      setCropStart(false);
-      setImageCrop("");
-      setCroppedRegion(null);
+
+      // setResultantCrop();
+      if (resultUrl != "") {
+        const response = profileUpdate(resultUrl);
+      } else {
+        toast.error("give a valid image");
+      }
     };
   };
 
@@ -68,7 +127,11 @@ const SocialMediaCard: React.FC = () => {
       <div className="w-full p-4 md:px-12  md:py-4 lg:py-16 flex max-md:flex-col sm:w-[80%] items-start bg-gray-100 rounded-3xl">
         <div className="my-auto">
           <div className="max-sm:w-[100px] my-auto max-sm:h-[100px] w-[150px] h-[150px] relative bg-black rounded-full overflow-hidden">
-            <img className="object-cover h-full w-full" src={image} alt="" />
+            <img
+              className="object-cover h-full w-full"
+              src={userDetails.profile}
+              alt=""
+            />
           </div>
           <div
             onClick={() => setUploadModal(true)}
@@ -80,7 +143,7 @@ const SocialMediaCard: React.FC = () => {
         <div className="flex-grow w-full sm:w-[80%] p-4 ">
           <div className="flex space-y-4 justify-between space-x-1 flex-wrap w-full max-sm:mx-auto items-end mb-2">
             <p className="text-3xl truncate max-sm:text-xl font-bold">
-              Jennifer_Lopez
+              {userDetails.full_name}
             </p>
             <div className="max-md:hidden  flex  space-x-1">
               <div className="px-5 py-2  bg-slate-800 flex justify-center items-center text-xs text-white rounded-full">
@@ -101,13 +164,13 @@ const SocialMediaCard: React.FC = () => {
               <p className="text-lg max-[400px]:text-sm font-bold">10</p>
             </div>
           </div>
-          <p className="text-xs md:text-sm">
+          {/* <p className="text-xs md:text-sm">
             Contrary to popular belief, Lorem Ipsum is not simply random text.
             It has roots in a piece of classical Latin literature from 45 BC,
             making it over 2000 years old. Richard McClintock, a Latin professor
             at Hampden-Sydney College in Virginia, looked up one of the more
             obscure
-          </p>
+          </p> */}
         </div>
         <div className="md:hidden p-2 flex space-x-1">
           <div className="px-5 py-2 bg-slate-800 flex justify-center items-center text-xs text-white rounded-full">
@@ -121,7 +184,7 @@ const SocialMediaCard: React.FC = () => {
       {uploadModal && !cropStart && (
         <Modal
           isOpen={uploadModal}
-          onClose={() => {}}
+          onClose={() => {setUploadModal(false)}}
           children={
             <div className="flex items-center justify-center w-full">
               <label

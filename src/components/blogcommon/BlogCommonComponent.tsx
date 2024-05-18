@@ -3,7 +3,7 @@ import Navbar from "../../components/navbar/Navbar";
 import { BiSolidLike } from "react-icons/bi";
 import { CiBookmarkPlus } from "react-icons/ci";
 import { AiOutlineLike } from "react-icons/ai";
-import { useLocation, useNavigate } from "react-router-dom";
+import { useLocation } from "react-router-dom";
 import { MdBookmarkAdded } from "react-icons/md";
 import { getAxiosInstance } from "../../services/axiosInstance/AxiosInstance";
 import { BASE_URL } from "../../constants";
@@ -11,14 +11,13 @@ import { useSelector } from "react-redux";
 import { useEffect, useState } from "react";
 import { toast } from "react-toastify";
 
-const BlogPage: React.FC = () => {
+const BlogCommonComponent: React.FC = ({component}) => {
   const [comment, setComment] = useState("");
   const [allComments, setAllComments] = useState<any[]>([]);
   // const [newCommentAdded, setNewCommentAdded] = useState<boolean>(false)
   const [liked,setLiked] = useState({liked: false,count:0})
   const [saved,setSaved] = useState({saved: false,count:0})
   const location = useLocation();
-  const navigate = useNavigate()
   const {
     title,
     description,
@@ -58,9 +57,6 @@ const BlogPage: React.FC = () => {
       console.log(err);
     }
   };
-
-  
-  
 
   const likeOrUnlike = async()=>{
     try {
@@ -121,8 +117,8 @@ const BlogPage: React.FC = () => {
   
   return (
     <>
-      <Navbar />
-      <div className="sm:p-10 p-4 2xl:w-full lg:px-52 2xl:container mx-auto">
+      {component}
+      <div className="sm:p-10 p-4 2xl:w-full 2xl:container mx-auto">
         <div className="w-full min-h-screen ">
           <p className="sm:text-5xl w-full break-words max-[400px]:text-2xl text-3xl font-semibold">
             {title}
@@ -146,7 +142,7 @@ const BlogPage: React.FC = () => {
               alt=""
             />
           </div>
-          <div className=" max-sm:px-2 p-7   xl:text-base sm:text-sm   text-xs">
+          <div className=" max-sm:px-2 p-7  xl:text-base sm:text-sm   text-xs">
             <blockquote className="text-xl max-[400px]:text-base italic font-semibold text-gray-900 dark:text-white">
               <svg
                 className="w-8 h-8 text-gray-400 dark:text-gray-600 mb-4"
@@ -162,7 +158,7 @@ const BlogPage: React.FC = () => {
           </div>
 
           <div
-            className="px-1  xl:text-base sm:text-sm text-xs"
+            className="px-1 xl:text-base sm:text-sm text-xs"
             dangerouslySetInnerHTML={{ __html: mainContent }}
           ></div>
           {/* <hr  className="mt-10 "/>
@@ -196,4 +192,4 @@ const BlogPage: React.FC = () => {
   );
 };
 
-export default BlogPage;
+export default BlogCommonComponent;

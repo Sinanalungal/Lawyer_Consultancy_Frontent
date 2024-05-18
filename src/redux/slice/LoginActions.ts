@@ -11,6 +11,7 @@ interface LoginState {
   user: Record<string, any> | null;
   role:string | null;
   dataRequired: boolean;
+  value:Number | null;
 }
 
 const initialState: LoginState = {
@@ -19,7 +20,8 @@ const initialState: LoginState = {
   error: null,
   user: null,
   role:null,
-  dataRequired: false
+  dataRequired: false,
+  value:null
 };
 
 //============================================================
@@ -70,12 +72,12 @@ export const GoogleLoginAsync = createAsyncThunk(
       const {access}=token;
       console.log(access,'this is the access token')
       const decodedToken = JSON.parse(atob(access.split('.')[1]));
-      const { full_name, phone_number, email, role, is_verified } = decodedToken;
-      console.log(full_name,phone_number,email,role,is_verified,'this is the decoded token')
+      const {id, full_name, phone_number, email, role, is_verified } = decodedToken;
+      console.log(full_name,phone_number,email,role,is_verified,id,'this is the decoded token')
 
       
 
-      return {'data':response.data.access_token,'role':role,'registering':response.data.registering};
+      return {'data':response.data.access_token,'role':role,'registering':response.data.registering,'id':id};
 
     } catch (error) {
       console.log(error);
@@ -96,13 +98,13 @@ export const loginAsync = createAsyncThunk(
        var token = response.data.access
 
        const decodedToken = JSON.parse(atob(token.split('.')[1]));
-        const { full_name, phone_number, email, role, is_verified,registering } = decodedToken;
-        // console.log(exp,'expiration time')
+        const { id ,full_name, phone_number, email, role, is_verified ,registering } = decodedToken;
+        console.log(id,'id')
         if (response.data.registering){
           toast.success('Login successful')
         }
 
-        return {'data':response.data,'role':role,'registering':registering};
+        return {'data':response.data,'role':role,'registering':registering ,id:id};
 
       } catch (error) {
         console.log(error);
@@ -169,6 +171,7 @@ const loginSlice = createSlice({
         state.user = action.payload.data;
         state.role = action.payload.role;
         state.dataRequired = action.payload.registering;
+        state.value =action.payload.id;
       })
       .addCase(loginAsync.rejected, (state, action) => {
         state.loader = false;
@@ -187,6 +190,7 @@ const loginSlice = createSlice({
         state.user = action.payload.data;
         state.role = action.payload.role;
         state.dataRequired = action.payload.registering;
+        state.value =action.payload.id;
       })
       .addCase(GoogleLoginAsync.rejected, (state, action) => {
         state.loader = false;
