@@ -1,11 +1,11 @@
 import React, { ChangeEvent } from 'react';
 
-const FileUpload: React.FC = () => {
-  const handleFileUpload = (e: ChangeEvent<HTMLInputElement>) => {
-    const file = e.target.files?.[0];
-    // Process the uploaded file here
-    console.log('Uploaded file:', file);
-  };
+const FileUpload: React.FC = ({handleChangeManage}) => {
+  // const handleFileUpload = (e: ChangeEvent<HTMLInputElement>) => {
+  //   const file = e.target.files?.[0];
+  //   // Process the uploaded file here
+  //   console.log('Uploaded file:', file);
+  // };
 
   return (
     <div className="flex items-center justify-center w-[70%] md:min-w-[400px]">
@@ -17,7 +17,7 @@ const FileUpload: React.FC = () => {
           <p className="mb-2 text-sm p-1 max-sm:text-xs text-gray-500 dark:text-gray-400"><span className="font-semibold">Click to upload</span> or drag and drop</p>
           <p className="text-xs p-1 text-gray-500 dark:text-gray-400">SVG, PNG, JPG or GIF (MAX. 800x400px)</p>
         </div>
-        <input id="dropzone-file" type="file" className="hidden" onChange={handleFileUpload} />
+        <input id="dropzone-file" type="file" className="hidden" onChange={handleChangeManage} />
       </label>
     </div>
   );

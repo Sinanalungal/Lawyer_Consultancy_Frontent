@@ -1,6 +1,6 @@
 import React from 'react';
 
-const FileUploadComponent: React.FC = () => {
+const FileUploadComponent: React.FC = ({handleChangeManage}) => {
   return (
     < >
       <div className="w-full  mx-auto">
@@ -9,6 +9,7 @@ const FileUploadComponent: React.FC = () => {
         <input
           id="file_input"
           type="file"
+          onChange={handleChangeManage}
           className="hidden"
         />
         <label
