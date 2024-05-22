@@ -1,4 +1,10 @@
 import axios, { AxiosInstance, AxiosRequestConfig } from 'axios';
+import { useEffect } from 'react';
+import { useDispatch } from 'react-redux';
+import { logout } from './LoginActions';
+import { toast } from 'react-toastify';
+
+
 
 
 class AccessTokenManager {
@@ -11,14 +17,26 @@ class AccessTokenManager {
   }
 
   private async getAccessToken(): Promise<string> {
+   try{
     console.log('getting token...')
     return this.user.access;
+   }catch{
+    console.log('log is working');
+    window.location.reload();
+    
+   }
   }
 
   private async refreshToken(): Promise<void> {
     console.log('refreshing token...')
     const refreshToken = this.user.refresh;
     const response = await axios.post(`${this.baseUrl}/token/refresh/`, { refresh: refreshToken });
+    console.log(response ,'refreshtoken response');
+    
+    console.log(response.data,'new token gets ');
+    const token = response.data
+    const tokens = { access: token.access, refresh: token.refresh };
+    localStorage.setItem('authTokens', JSON.stringify(tokens));
     this.user.access = response.data.access;
   }
 
@@ -44,7 +62,15 @@ class AccessTokenManager {
         }
 
         if (this.isAccessTokenExpired() || Date.now() + 20000 >= this.getExpirationTime()) {
-          await this.refreshToken(); 
+          try{
+            await this.refreshToken(); 
+          }
+          catch{
+            console.log('catch block is working');
+            localStorage.removeItem('authTokens');
+            window.location.reload();
+            toast.error('please login once again')
+          }
         }
 
         config.headers.Authorization = `Bearer ${this.user.access}`;

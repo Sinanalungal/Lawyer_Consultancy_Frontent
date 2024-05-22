@@ -1,19 +1,29 @@
-import React, { useEffect } from "react";
-import Navbar from "../../../components/navbar/Navbar";
-import "./Homepage.css";
-import Header from "../../../components/userHomeComponents/MainHeader";
-import Content from "../../../components/userHomeComponents/ServiceComponent";
-import Headers from "../../../components/navbar/Header";
-import Hero from "./MainHeader";
-import PLansFrontView from "../../../components/plans/PlansFrontView";
-import Footer from "../../../components/footer/Footer";
-import Stories from "../../../components/stories/Stories";
+
 import { useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
-const Homepage: React.FC = () => {
+import Navbar from "../../components/navbar/Navbar";
+import Hero from "../user/Home/MainHeader";
+import Content from "../../components/userHomeComponents/ServiceComponent";
+import PlansFrontView from "../../components/plans/PlansFrontView";
+import Stories from "../../components/stories/Stories";
+import Footer from "../../components/footer/Footer";
+import { useEffect } from "react";
+const LandingPage: React.FC = () => {
+  const { registered , role } = useSelector((state: any) => state.register);
   const { isAuthenticated } = useSelector((store: any) => store.login);
+  const navigate = useNavigate();
+  useEffect(() => {
+    if (registered) {
+      navigate("/register");
+    }
+    // if(isAuthenticated){
+    const authTokens = localStorage.getItem('authTokens');
 
-
+    if (isAuthenticated && authTokens){
+        navigate('/login')
+    }
+    // }
+  }, []);
   
   return (
     // <div className="homepage">
@@ -84,11 +94,12 @@ const Homepage: React.FC = () => {
         <Content />
         <div className=""></div>
       </div> */}
-      <Hero />
+      {!isAuthenticated && <Navbar/>}
+      <Hero/>
 
-      <Content />
+      <Content/>
       {/* <div className='border border-opacity-30'></div> */}
-      <PLansFrontView />
+      <PlansFrontView/>
       <div className="w-full p-6 2xl:container mx-auto  flex flex-col items-center  rounded-xl overflow-hidden">
         <div className="flex flex-col border-t border-b py-5 items-center space-y-2 justify-center">
           <p className="text-2xl font-medium">Success Stories</p>
@@ -129,8 +140,9 @@ const Homepage: React.FC = () => {
         </div>
       </div>
 
+      {!isAuthenticated && <Footer/>}
     </>
   );
 };
 
-export default Homepage;
+export default LandingPage;

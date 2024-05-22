@@ -1,4 +1,7 @@
-import React from "react";
+import React, { useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { Link } from "react-router-dom";
+import { logout } from "../../redux/slice/LoginActions";
 
 interface SidebarItem {
   title: string;
@@ -12,6 +15,9 @@ interface SidebarProps {
 }
 
 const Sidebar: React.FC<SidebarProps> = ({ isOpen, onClose, items }) => {
+  const [isFixed, setIsFixed] = useState(false);
+  const { isAuthenticated, user } = useSelector((state: any) => state.login);
+  const dispatch = useDispatch();
   const handleClick = () => {
     onClose();
   };
@@ -20,7 +26,7 @@ const Sidebar: React.FC<SidebarProps> = ({ isOpen, onClose, items }) => {
     <>
       <div
         id="drawer-navigation"
-        className={`fixed z-50  bg-gray-200 top-0 left-0 max-sm:w-full  min-w-64 h-screen p-4 max-sm:p-12 overflow-y-auto transition-transform ${
+        className={`fixed z-50  bg-gray-200 top-0 left-0 max-sm:w-full  min-w-52 h-screen p-4 max-sm:p-12 overflow-y-auto transition-transform ${
           isOpen ? "" : "-translate-x-full"
         } bg-white dark:bg-gray-800`}
         tabIndex={-1}
@@ -51,7 +57,7 @@ const Sidebar: React.FC<SidebarProps> = ({ isOpen, onClose, items }) => {
               clipRule="evenodd"
             ></path>
           </svg>
-          <span className="sr-only">Close menu</span>
+         
         </button>
         <div className="py-4 overflow-y-auto">
           <ul className="space-y-2 font-medium">
@@ -66,7 +72,59 @@ const Sidebar: React.FC<SidebarProps> = ({ isOpen, onClose, items }) => {
                 </a>
               </li>
             ))}
+            <li>
+  {isAuthenticated && user != null ? (
+    <a
+      href="#"
+      onClick={() =>{ dispatch(logout())
+        handleClick()
+      }}
+      className="flex items-center p-2 text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 group"
+    >
+      <span className="ms-3">Logout</span>
+    </a>
+  ) : (
+    <div className="space-x-1">
+      <Link to={"/login"}>
+        <a
+          href="#"
+          className="flex items-center p-2 text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 group"
+        >
+          <span className="ms-3">Login</span>
+        </a>
+      </Link>
+      {/* <Link to={"/register"}>
+        <a
+          href="#"
+          className="flex items-center p-2 text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 group"
+        >
+          <span className="ms-3">Register</span>
+        </a>
+      </Link> */}
+    </div>
+  )}
+</li>
+<li>
+  {isAuthenticated && user != null ? (
+    ''
+  ) : (
+    <div className="space-x-1">
+      
+       
+      <Link to={"/register"}>
+        <a
+          href="#"
+          className="flex items-center p-2 text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 group"
+        >
+          <span className="ms-3">Register</span>
+        </a>
+      </Link>
+    </div>
+  )}
+</li>
+
           </ul>
+          
         </div>
       </div>
     </>
@@ -74,3 +132,48 @@ const Sidebar: React.FC<SidebarProps> = ({ isOpen, onClose, items }) => {
 };
 
 export default Sidebar;
+
+
+// {isAuthenticated && user != null ? (
+//   <button
+//     type="button"
+//     onClick={() => dispatch(logout())}
+//     className={` font-bold border-2 text-xs  px-5 py-2 rounded-3xl ${
+//       isFixed
+//         ? "dark:text-black text-dark dark:border-black border-black"
+//         : "dark:text-white  text-dark dark:border-white border-black"
+//     }`}
+//   >
+//     Logout
+//   </button>
+// ) : <div className="space-x-1">
+
+//   <Link to={"/login"}>
+//     <button
+//       type="button"
+//       className={` font-bold border-2 text-xs  px-5 py-2 rounded-3xl ${
+//         isFixed
+//           ? "dark:text-black text-dark dark:border-black border-black"
+//           : "dark:text-white text-dark dark:border-white border-black"
+//       }`}
+//     >
+//       Login
+//     </button>
+//   </Link>
+
+
+//   <Link to={"/register"}>
+//     <button
+//       type="button"
+//       className={` font-bold border-2  text-xs  px-5 py-2 rounded-3xl ${
+//         isFixed
+//           ? "dark:text-white bg-black dark:bg-black  text-white"
+//           : "dark:text-white bg-black dark:border-white  text-white"
+//       }`}
+//     >
+//       Register
+//     </button>
+//   </Link>
+
+// </div>
+// }

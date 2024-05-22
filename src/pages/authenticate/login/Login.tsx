@@ -188,7 +188,9 @@ const Login = () => {
     if (registered) {
       navigate("/register");
     }
-    if (isAuthenticated && user!=null){
+    const authTokens = localStorage.getItem('authTokens');
+
+    if (isAuthenticated && authTokens){
       if( role=='user'){
         navigate("/user");
       }else if (role=='lawyer'){

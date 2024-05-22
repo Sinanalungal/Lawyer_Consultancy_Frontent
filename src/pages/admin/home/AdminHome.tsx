@@ -1,10 +1,10 @@
-import React, { ReactElement, useState, lazy, Suspense } from "react";
+import React, { ReactElement, useState, lazy, Suspense, useEffect } from "react";
 import { TiThMenu } from "react-icons/ti";
 import { IoClose, IoNotificationsCircleSharp } from "react-icons/io5";
 import { RiDashboard3Fill } from "react-icons/ri";
 import { GoLaw } from "react-icons/go";
 import { FaUsers, FaMoneyBill } from "react-icons/fa";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { CgLogOut } from "react-icons/cg";
 import { ImBlog } from "react-icons/im";
 import Dropdown from "../../../components/dropdown/DropDown";
@@ -17,7 +17,18 @@ function AdminHome({ component, ind }:{ component: ReactElement, ind: number }) 
   const [showDropdown, setShowDropdown] = useState(false);
   const dispatch = useDispatch();
   const navigate = useNavigate();
-
+  
+  const { isAuthenticated  } = useSelector((state: any) => state.login);
+  useEffect(()=>{
+    const authTokens = localStorage.getItem('authTokens');
+    console.log(authTokens);
+    
+    if(!isAuthenticated && !authTokens){
+      // window.location.href = '/login'
+      navigate('/login')
+    }
+    
+  },[isAuthenticated])
 
   interface Option {
     name: string;

@@ -205,7 +205,7 @@ const ProfileComponent: React.FC = ({ userDetails, setUserDetails }) => {
               <div>{userDetails.phone_number}</div>
             </div>
           </div>
-          <div className="w-full space-x-2 h-20 bg-gray-100 rounded-md flex items-center ">
+          <div  className="w-full space-x-2 h-20 bg-gray-100 rounded-md flex items-center ">
             <div>
               <svg
                 className="ml-2 max-[400px]:size-12"
@@ -329,7 +329,7 @@ const ProfileComponent: React.FC = ({ userDetails, setUserDetails }) => {
                           <div className="h-[12px]"></div>
                         )}
                       </div>
-                      <div>
+                      {/* <div>
                         <label className="font-medium">Password</label>
                         <input
                           type="password"
@@ -369,7 +369,7 @@ const ProfileComponent: React.FC = ({ userDetails, setUserDetails }) => {
                         </div>
                       ) : (
                         <div className="h-[12px]"></div>
-                      )}
+                      )} */}
                       <button
                         type="submit"
                         className="w-full px-4 py-2 mt-5 mb-4 text-white font-medium bg-slate-900 rounded-lg duration-150"

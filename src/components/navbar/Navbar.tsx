@@ -45,7 +45,7 @@ const Navbar: React.FC= ({ }) => {
       />
 
       <nav
-        className={`fixed 2xl:container  navbar dark:bg-black z-30 dark:text-white w-full flex md:text-base font-bold text-xs items-center  px-6 md:px-24 justify-between h-20 ${
+        className={`fixed 2xl:container  navbar dark:bg-black z-30 dark:text-white w-full flex md:text-base font-bold text-xs items-center  px-6 md:px-24 max-[400px]:justify-start  justify-between h-20 ${
           isFixed
             ? "fixed top-0 w-full bg-white dark:bg-white text-dark dark:text-black shadow-lg dark:shadow-gray-300 dark:shadow-sm z-40 transition-all duration-300 ease-in-out"
             : "bg-white"
@@ -83,7 +83,7 @@ const Navbar: React.FC= ({ }) => {
         >
           {title}
         </div>
-        <ul className="navbar-items max-sm:hidden flex mr-4 items-center">
+        {isAuthenticated && (<ul className="navbar-items max-sm:hidden flex mr-4 items-center">
           {items.map((item, index) => (
             <li
               key={index}
@@ -92,8 +92,8 @@ const Navbar: React.FC= ({ }) => {
               {item}
             </li>
           ))}
-        </ul>
-        {isAuthenticated && user != null ? (
+        </ul>)}
+       <div className="max-[400px]:hidden"> {isAuthenticated && user != null ? (
           <button
             type="button"
             onClick={() => dispatch(logout())}
@@ -105,7 +105,8 @@ const Navbar: React.FC= ({ }) => {
           >
             Logout
           </button>
-        ) : (
+        ) : <div className="space-x-1">
+        
           <Link to={"/login"}>
             <button
               type="button"
@@ -118,7 +119,23 @@ const Navbar: React.FC= ({ }) => {
               Login
             </button>
           </Link>
-        )}
+        
+        
+          <Link to={"/register"}>
+            <button
+              type="button"
+              className={` font-bold border-2  text-xs  px-5 py-2 rounded-3xl ${
+                isFixed
+                  ? "dark:text-white bg-black dark:bg-black  text-white"
+                  : "dark:text-white bg-black dark:border-white  text-white"
+              }`}
+            >
+              Register
+            </button>
+          </Link>
+        
+        </div>
+        }</div>
       </nav>
       <div className="h-20 w-full"></div>
       </div>

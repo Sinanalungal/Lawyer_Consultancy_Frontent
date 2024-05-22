@@ -12,6 +12,9 @@ import UserRoute from './route/UserRoute';
 import ForgotPasswordForm from './pages/authenticate/forgotpassword/ForgotPassword';
 import ResetPasswordPage from './pages/authenticate/forgotpassword/ResetPassword';
 import { GoogleOAuthProvider } from '@react-oauth/google';
+import UserLayer from './layer/UserLayer';
+import Homepage from './pages/user/Home/Homepage';
+import LandingPage from './pages/landingPage/LandingPage';
 
 function App() {
   const { dataRequired } = useSelector((state: any) => state.login);
@@ -29,14 +32,17 @@ function App() {
       <Router>
         <GoogleOAuthProvider clientId={process.env.CLIENT_ID}>
           <Routes>
+        
+            <Route path='/' element={<LandingPage />} />
             <Route path="/forgotpassword" element={<ForgotPasswordForm />} />
             <Route path="/reset-password/:token" element={<ResetPasswordPage />} />
             <Route path="/register" element={<Register />} />
-            <Route path="/" element={<Login />} />
+            <Route path="/login" element={<Login />} />
             <Route path="/otp" element={<OtpPage />} />
             <Route path="/admin/*" element={<AdminRoute />} />
             <Route path="/lawyer/*" element={<LawyerRoute />} />
             <Route path="/user/*" element={<UserRoute />} />
+          
           </Routes>
         </GoogleOAuthProvider>
       </Router>

@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import Breadcrumb from "../../../components/breadcrump/BreadCrump";
 import FileUpload from "../../../components/imageUpload/FileUpload";
@@ -8,6 +8,11 @@ import Modal from "../../../components/modal/Modal";
 import Cropper from "react-easy-crop";
 import { useFormik } from "formik";
 import * as Yup from "yup";
+import { getAxiosInstance } from "../../../services/axiosInstance/AxiosInstance";
+import { BASE_URL } from "../../../constants";
+import Select from 'react-select';
+import { toast } from "react-toastify";
+import { useNavigate } from "react-router-dom";
 
 function AddLawyer() {
   const [uploadModal, setUploadModal] = useState(false);
@@ -19,14 +24,36 @@ function AddLawyer() {
   const [resultantCrop, setResultantCrop] = useState("");
   const [resultantCropDocument, setResultantCropDocument] = useState("");
   const [cropType, setCropType] = useState("");
+  const [departments,setDepartments] = useState()
+  // const [selectedOption, setSelectedOption] = useState(null);
   const { user } = useSelector((state: any) => state.login);
+// console.log(selectedOption);
+
+const navigate = useNavigate()
+  useEffect(()=>{
+    const fetchingDepartment= async()=>{
+      try {
+        const axiosInstance = await getAxiosInstance();
+        const response = await axiosInstance.get(`${BASE_URL}adminside/add-department/`, {
+          headers: {
+            'Content-Type': 'multipart/form-data', 
+          },
+        });
+        console.log('Department data:', response.data);
+        setDepartments(response.data)
+      } catch (error) {
+          console.error('There was an error in fetching departments:', error.response.data);
+      }
+    }
+    fetchingDepartment()
+  },[])
 
   const formik = useFormik({
     initialValues: {
       fullName: "",
       email: "",
       phoneNumber: "",
-      department: "",
+      department: [],
       experience: "",
       description: "",
     },
@@ -34,17 +61,55 @@ function AddLawyer() {
       fullName: Yup.string().required("Full Name is required"),
       email: Yup.string().email("Invalid email address").required("Email is required"),
       phoneNumber: Yup.string().required("Phone Number is required"),
-      department: Yup.string().required("Department is required"),
+      department: Yup.array().min(1, "Department is required"),
       experience: Yup.number().required("Experience is required").min(0, "Experience must be at least 0"),
       description: Yup.string().required("Description is required"),
     }),
-    onSubmit: (values) => {
+    onSubmit: async (values) => {
       console.log(values);
-      // Handle form submission
+      if (resultantCrop && resultantCropDocument) {
+        const blobprofile = await dataURItoBlob(resultantCrop);
+        const blobdocument = await dataURItoBlob(resultantCropDocument);
+        console.log(resultantCropDocument);
+        console.log(blobdocument);
+        console.log(values.department, 'this');
+        
+        // Convert department array to JSON string
+        const departmentArray = values.department.map(obj => obj.label);
+        console.log(departmentArray);
+        const departmentJSON = JSON.stringify(departmentArray);
+        const formData = new FormData();
+        formData.append('full_name', values.fullName);
+        formData.append('email', values.email);
+        formData.append('phone_number', values.phoneNumber);
+        formData.append('departments', departmentArray); // Send as JSON string
+        formData.append('experience', values.experience);
+        formData.append('description', values.description);
+        formData.append('profile', blobprofile, 'image.png');
+        formData.append('document', blobdocument, 'image.png');
+    
+        const axiosInstance = await getAxiosInstance();
+    
+        try {
+          const response = await axiosInstance.post(`${BASE_URL}adminside/add-lawyer/`, formData, {
+          });
+          console.log('Lawyer added successfully:', response.data);
+          toast.success('lawyer added successfully')
+          navigate('../lawyers-list')
+        } catch (error) {
+          console.error('There was an error adding the lawyer:', error.response.data);
+        }
+      }
     },
+    
   });
-
-  const handleChangeManage = (e) => {
+  const options = departments?.map((data, index) => ({
+    value: data.department_name,
+    label: data.department_name
+  })) ?? [];
+  
+  
+  const handleChangeManage = (e:any) => {
     if (e.target.files && e.target.files.length > 0) {
       const reader = new FileReader();
       reader.readAsDataURL(e.target.files[0]);
@@ -170,7 +235,7 @@ function AddLawyer() {
               </div>
             </div>
               <div className="flex flex-col pt-5 justify-center   space-y-1 ">
-                <div className="flex "><p className="text-xs md:w-[20%]">Full Name</p>
+                <div className="flex max-md:flex-col space-y-1"><p className="text-xs md:w-[20%]">Full Name</p>
                 <input
                   type="text"
                   className="w-full h-10 px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-slate-500"
@@ -181,7 +246,7 @@ function AddLawyer() {
                 ) : null}
               </div>
               <div className="flex flex-col pt-1 justify-center   space-y-1 ">
-                <div className="flex">
+                <div className="flex max-md:flex-col space-y-1">
                 <p className="text-xs md:w-[20%]">Email Address</p>
                 <input
                   type="email"
@@ -194,7 +259,7 @@ function AddLawyer() {
                 ) : null}
               </div>
               <div className="flex flex-col pt-1 justify-center   space-y-1">
-                <div className="flex">
+                <div className="flex max-md:flex-col space-y-1">
                 <p className="text-xs md:w-[20%]">Phone Number</p>
                 <input
                   type="text"
@@ -219,14 +284,24 @@ function AddLawyer() {
                   )}
                 </div>
               </div>
-              <div className="flex flex-col pt-1 justify-center   space-y-1">
-                <div className="flex">
+              <div className="flex flex-col md:pt-1 pb-2 justify-center   space-y-1">
+                <div className="flex max-md:flex-col space-y-1">
                 <p className="text-xs md:w-[20%]">Department</p>
-                <input
+                <Select
+                    id="department"
+                    name="department"
+                    options={options}
+                    isMulti
+                    onChange={(selected) => formik.setFieldValue('department', selected)}
+                    onBlur={formik.handleBlur}
+                    value={formik.values.department}
+                    className="block w-full  rounded-md text-xs mt-1"
+                  />
+                {/* <input
                   type="text"
                   className="w-full h-10 px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-slate-500"
                   {...formik.getFieldProps("department")}
-                />
+                /> */}
                 </div>
                 {formik.touched.department && formik.errors.department ? (
                   <div className="text-red-600 w-full flex justify-end text-xs">{formik.errors.department}</div>
@@ -250,7 +325,7 @@ function AddLawyer() {
                 )}
               </div>
               <div className="flex flex-col pt-1 justify-center   space-y-1">
-                <div className="flex">
+                <div className="flex max-md:flex-col space-y-1">
                 <p className="text-xs md:w-[20%]">Experience</p>
                 <input
                   type="number"
@@ -263,7 +338,7 @@ function AddLawyer() {
                 ) : null}
               </div>
               <div className="flex flex-col pt-1 justify-center   space-y-1">
-                <div className="flex">
+                <div className="flex max-md:flex-col space-y-1">
                 <p className="text-xs md:w-[20%]">Description</p>
                 <textarea
                   className="w-full h-10 px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-slate-500"

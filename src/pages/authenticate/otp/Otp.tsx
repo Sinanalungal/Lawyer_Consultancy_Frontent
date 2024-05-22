@@ -168,13 +168,27 @@ const OtpPage = () => {
   const { user, loading, error, timer } = useSelector(
     (state: any) => state.register
   );
+  const { isAuthenticated,role } = useSelector((state: any) => state.login);
+
   const [seconds, setSeconds] = useState(0);
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
   useEffect(() => {
     if (user == null) {
-      navigate("/");
+      navigate("/login");
+    }
+
+    const authTokens = localStorage.getItem('authTokens');
+
+    if (isAuthenticated && authTokens){
+      if( role=='user'){
+        navigate("/user");
+      }else if (role=='lawyer'){
+        navigate("/lawyer");
+      }else {
+        navigate("/admin");
+      }
     }
   }, [user]);
 

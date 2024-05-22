@@ -33,7 +33,7 @@ const SocialMediaCard: React.FC = ({ userDetails, setUserDetails }) => {
 
   const profileUpdate = async (resultUrl) => {
     try {
-      const axiosInstance = await getAxiosInstance(user);
+      const axiosInstance = await getAxiosInstance();
       const blob = await dataURItoBlob(resultUrl);
       const formData = new FormData();
       formData.append("profile", blob, "image.png");

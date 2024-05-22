@@ -1,9 +1,15 @@
 import { Navigate,Outlet } from "react-router-dom";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
+import { logout } from "../../redux/slice/LoginActions";
 
 const AdminPrivateRoute = () => {
+    const dispatch = useDispatch()
     const { isAuthenticated ,role } = useSelector((state: any) => state.login);
-    return (isAuthenticated && role =='admin') ?<Outlet/> :  <Navigate to="/" replace />
+    const authTokens = localStorage.getItem('authTokens');
+    if (!authTokens){
+        dispatch(logout())
+    }
+    return (isAuthenticated && role =='admin'&&authTokens) ?<Outlet/> :  <Navigate to="/" replace />
 }
 
 export default AdminPrivateRoute

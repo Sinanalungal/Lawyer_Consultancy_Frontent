@@ -261,6 +261,8 @@ import GoogleLoginButton from "../../../components/googleLoginButton/GoogleLogin
 
 const Register = () => {
   const { loading, registered } = useSelector((state: any) => state.register);
+  const { isAuthenticated,role } = useSelector((state: any) => state.login);
+
 
   const dispatch = useDispatch();
   const navigate = useNavigate();
@@ -268,6 +270,17 @@ const Register = () => {
   useEffect(() => {
     if (registered) {
       navigate("/otp");
+    }
+    const authTokens = localStorage.getItem('authTokens');
+
+    if (isAuthenticated && authTokens){
+      if( role=='user'){
+        navigate("/user");
+      }else if (role=='lawyer'){
+        navigate("/lawyer");
+      }else {
+        navigate("/admin");
+      }
     }
   }, [registered]);
   const formik = useFormik({

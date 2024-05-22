@@ -8,6 +8,7 @@ function GoogleLoginButton() {
   const handleSuccess = async (response: any) => {
     console.log(response, "thi is respponse");
     const res = await dispatch(GoogleLoginAsync(response.code));
+    console.log(res, "response payload");
     console.log(res.payload.registering, "res");
     // if(res.payload.registering == true){
     //   navigate

@@ -60,60 +60,120 @@ const initialState: LoginState = {
 
 export const GoogleLoginAsync = createAsyncThunk(
   'login/GoogleLoginAsync',
-  async (code:string, { rejectWithValue }) => {
+  async (code: string, { rejectWithValue }) => {
     try {
-      console.log(code,'code here')
-      // Assuming BASE_URL is defined elsewhere in your code
-      const response = await axios.post(`${BASE_URL}api/login-with-google/`, {code:code}); 
-      console.log(response.data,'this is the data')
-      // toast.success('Login successful')
-      // const token = { access } =response.data;
+      const response = await axios.post(`${BASE_URL}api/login-with-google/`, { code });
       var token = response.data.access_token
+      console.log(token);
+      
+
+      // Store tokens in local storage as a JSON object
+      const tokens = { access: token.access, refresh: token.refresh };
+      localStorage.setItem('authTokens', JSON.stringify(tokens));
+      console.log(tokens);
+      
+
       const {access}=token;
-      console.log(access,'this is the access token')
       const decodedToken = JSON.parse(atob(access.split('.')[1]));
-      const {id, full_name, phone_number, email, role, is_verified } = decodedToken;
-      console.log(full_name,phone_number,email,role,is_verified,id,'this is the decoded token')
+      const { id, role, registering } = decodedToken;
+
+      // console.log({ data: access_token,'role':role,'registering':registering,'id':id });
+      
+      return { data: token,'role':role,'registering':registering,'id':id };
+
+    } catch (error) {
+      console.log(error); 
+      toast.error('Something went wrong');
+      return rejectWithValue({ message: 'Login failed' });
+    }
+  }
+);
+// export const GoogleLoginAsync = createAsyncThunk(
+//   'login/GoogleLoginAsync',
+//   async (code:string, { rejectWithValue }) => {
+//     try {
+//       console.log(code,'code here')
+//       // Assuming BASE_URL is defined elsewhere in your code
+//       const response = await axios.post(`${BASE_URL}api/login-with-google/`, {code:code}); 
+//       console.log(response.data,'this is the data')
+//       // toast.success('Login successful')
+//       // const token = { access } =response.data;
+//       var token = response.data.access_token
+//       const {access}=token;
+//       console.log(access,'this is the access token')
+//       const decodedToken = JSON.parse(atob(access.split('.')[1]));
+//       const {id, full_name, phone_number, email, role, is_verified } = decodedToken;
+//       console.log(full_name,phone_number,email,role,is_verified,id,'this is the decoded token')
 
       
 
-      return {'data':response.data.access_token,'role':role,'registering':response.data.registering,'id':id};
+//       return {'data':response.data.access_token,'role':role,'registering':response.data.registering,'id':id};
 
+//     } catch (error) {
+//       console.log(error);
+//       toast.error(error.response.data.detail)
+//       return rejectWithValue({ message: 'Login failed' }); 
+//     }
+//   }
+// );
+
+
+export const loginAsync = createAsyncThunk(
+  'login/loginAsync',
+  async (loginData: { username: string, password: string }, { rejectWithValue }) => {
+    try {
+      const response = await axios.post(`${BASE_URL}token/userdata/`, loginData);
+      // const { access, refresh } = response.data;
+      // console.log(response);
+      
+      var token = response.data
+      console.log(token.access);
+      
+      // Store tokens in local storage as a JSON object
+      const tokens = { access: token.access, refresh: token.refresh };
+      localStorage.setItem('authTokens', JSON.stringify(tokens));
+
+      const {access} = token
+      const decodedToken = JSON.parse(atob(access.split('.')[1]));
+      const { id, role, registering } = decodedToken;
+      console.log('worked')
+      return { data: token, 'role':role,'registering':registering,'id':id};
     } catch (error) {
       console.log(error);
-      toast.error(error.response.data.detail)
-      return rejectWithValue({ message: 'Login failed' }); 
+      
+      toast.error('something went wrong');
+      return rejectWithValue({ message: 'Login failed' });
     }
   }
 );
 
-export const loginAsync = createAsyncThunk(
-    'login/loginAsync',
-    async (loginData: { username: string, password: string }, { rejectWithValue }) => {
-      try {
-        const response = await axios.post(`${BASE_URL}token/userdata/`, loginData); 
-        console.log(response.data)
-        toast.success('Login successful')
-        // const token = { access } =response.data;
-       var token = response.data.access
+// export const loginAsync = createAsyncThunk(
+//     'login/loginAsync',
+//     async (loginData: { username: string, password: string }, { rejectWithValue }) => {
+//       try {
+//         const response = await axios.post(`${BASE_URL}token/userdata/`, loginData); 
+//         console.log(response.data)
+//         toast.success('Login successful')
+//         // const token = { access } =response.data;
+//        var token = response.data.access
 
-       const decodedToken = JSON.parse(atob(token.split('.')[1]));
-        const { id ,full_name, phone_number, email, role, is_verified ,registering } = decodedToken;
-        console.log(id,'id')
-        if (response.data.registering){
-          toast.success('Login successful')
-        }
+//        const decodedToken = JSON.parse(atob(token.split('.')[1]));
+//         const { id ,full_name, phone_number, email, role, is_verified ,registering } = decodedToken;
+//         console.log(id,'id')
+//         if (response.data.registering){
+//           toast.success('Login successful')
+//         }
 
-        return {'data':response.data,'role':role,'registering':registering ,id:id};
+//         return {'data':response.data,'role':role,'registering':registering ,id:id};
 
-      } catch (error) {
-        console.log(error);
-        // toast.error(error.message)
-        toast.error(error.response.data.detail)
-        return rejectWithValue({ message: 'Login failed' }); 
-      }
-    }
-);
+//       } catch (error) {
+//         console.log(error);
+//         // toast.error(error.message)
+//         toast.error(error.response.data.detail)
+//         return rejectWithValue({ message: 'Login failed' }); 
+//       }
+//     }
+// );
 
 
 // ------------------------------------------------------
@@ -154,6 +214,9 @@ const loginSlice = createSlice({
         state.error = null;
         state.user = null;
         state.role = null;
+        state.value = null;
+        localStorage.removeItem('authTokens');
+
       },
       modaloff(state) {
         state.dataRequired = false;

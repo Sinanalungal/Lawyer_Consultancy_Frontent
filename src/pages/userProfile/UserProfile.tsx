@@ -37,7 +37,7 @@ const UserProfile: React.FC<UserProfileProps> = () => {
 
   return (
     <>
-      <Navbar />
+      {/* <Navbar /> */}
       <div className="h-full max-[400px]:p-2 w-full p-6 mt-6 flex items-center flex-col justify-center">
         <SocialMediaCard
           userDetails={userDetails}

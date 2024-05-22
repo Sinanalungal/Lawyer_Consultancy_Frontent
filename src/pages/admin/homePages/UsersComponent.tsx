@@ -21,7 +21,7 @@ const headers = [
 ];
 
 function UsersComponent() {
-  const { user } = useSelector((state: any) => state.login);
+  // const { user } = useSelector((state: any) => state.login);
 
   const [users, setUsers] = React.useState<any>([]);
   const [search, setSearch] = React.useState<string>("");
@@ -34,7 +34,7 @@ function UsersComponent() {
   useEffect(() => {
     async function fetchData(role: string) {
       try {
-        const axiosInstance = await getAxiosInstance(user);
+        const axiosInstance = await getAxiosInstance();
         const response = await axiosInstance.get(
           `${BASE_URL}adminside/user-data/?role=${role}&search=${search}&isVerified=${isVerified}`
         );
