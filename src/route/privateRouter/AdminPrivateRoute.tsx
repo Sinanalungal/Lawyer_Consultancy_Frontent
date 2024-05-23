@@ -6,10 +6,10 @@ const AdminPrivateRoute = () => {
     const dispatch = useDispatch()
     const { isAuthenticated ,role } = useSelector((state: any) => state.login);
     const authTokens = localStorage.getItem('authTokens');
-    if (!authTokens){
+    if (!authTokens || !isAuthenticated){
         dispatch(logout())
     }
-    return (isAuthenticated && role =='admin'&&authTokens) ?<Outlet/> :  <Navigate to="/" replace />
+    return (isAuthenticated || role =='admin'&&authTokens) ?<Outlet/> :  <Navigate to="/" replace />
 }
 
 export default AdminPrivateRoute

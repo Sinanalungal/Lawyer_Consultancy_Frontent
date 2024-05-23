@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { MdPassword, MdDriveFileRenameOutline } from "react-icons/md";
 import UserProfile from "./UserProfile";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { IoCloseSharp } from "react-icons/io5";
 import { getAxiosInstance } from "../../services/axiosInstance/AxiosInstance";
 import { BASE_URL } from "../../constants";
@@ -9,6 +9,7 @@ import Modal from "../../components/modal/Modal";
 import { Formik, useFormik } from "formik";
 import * as Yup from "yup";
 import { toast } from "react-toastify";
+import { logout } from "../../redux/slice/LoginActions";
 
 const ProfileComponent: React.FC = ({ userDetails, setUserDetails }) => {
   console.log(userDetails);
@@ -16,8 +17,66 @@ const ProfileComponent: React.FC = ({ userDetails, setUserDetails }) => {
   console.log(userDetails, "form the user profile component");
   const { value, user } = useSelector((state: any) => state.login);
   const [editModal, setEditModal] = useState(false);
-  // const [inputOpen,setInputOpen]=useState({full_name:false,email:false,phone_number:false,password:false})
+  const [passwordModal, setPasswordModal] = useState(false);
 
+  const dispatch = useDispatch()
+  // const [inputOpen,setInputOpen]=useState({full_name:false,email:false,phone_number:false,password:false})
+  const passwordFormik = useFormik({
+    initialValues: {
+      recent_password: '',
+      password: '',
+      confirm_password: ''
+    },
+    validationSchema: Yup.object({
+      recent_password: Yup.string()
+        .min(8, "current password must be at least 8 characters")
+        .matches(
+          /^(?=.*[A-Za-z])(?=.*\d)(?=.*[$@$!%*#?&])[A-Za-z\d$@$!%*#?&]{8,}$/,
+          "current password must contain at least one letter, one number, and one special character"
+        )
+        .required('Current password is required'),
+      password: Yup.string()
+        .min(8, "Password must be at least 8 characters")
+        .matches(
+          /^(?=.*[A-Za-z])(?=.*\d)(?=.*[$@$!%*#?&])[A-Za-z\d$@$!%*#?&]{8,}$/,
+          "Password must contain at least one letter, one number, and one special character"
+        )
+        .required('Password is required'),
+      confirm_password: Yup.string()
+        .oneOf([Yup.ref('password'), null], 'Passwords must match')
+        .required('Confirm password is required')
+    }),
+    onSubmit: async (values) => {
+      // Handle form submission
+      console.log('Form data', values);
+      if (values.password == values.confirm_password) {
+        if (values.password == "") {
+          delete values.password;
+        }
+        try {
+          const axiosInstance = await getAxiosInstance();
+          const response = await axiosInstance.post(
+            BASE_URL + `api/update_password/`,
+            {...values,"user_id":value}
+          );
+
+          console.log(response.data);
+          toast.success("Password updated successfully");
+          toast.info('please login once again')
+          setPasswordModal(false);
+          setTimeout(() => {
+            dispatch(logout());
+          }, 1000);
+          // setUserDetails(response.data);
+        } catch (err) {
+          console.log(err);
+          toast.error(err.response.data.message);
+        }
+      } else {
+        toast.error("Passwords do not match");
+      }
+    }
+  });
   const formik = useFormik({
     initialValues: {
       full_name: userDetails.full_name || "",
@@ -59,28 +118,28 @@ const ProfileComponent: React.FC = ({ userDetails, setUserDetails }) => {
         value.confirm_password,
         "pass and cnfpassword"
       );
-      if (values.password == values.confirm_password) {
-        if (values.password == "") {
-          delete values.password;
-        }
-        try {
-          const axiosInstance = await getAxiosInstance(user);
-          const response = await axiosInstance.patch(
-            BASE_URL + `api/users/${value}/update/`,
-            values
-          );
+      // if (values.password == values.confirm_password) {
+        // if (values.password == "") {
+        //   delete values.password;
+        // }
+      try {
+        const axiosInstance = await getAxiosInstance();
+        const response = await axiosInstance.patch(
+          BASE_URL + `api/users/${value}/update/`,
+          values
+        );
 
-          console.log(response.data);
-          toast.success("data updated successfully");
-          setEditModal(false);
-          setUserDetails(response.data);
-        } catch (err) {
-          console.log(err);
-          toast.error(err.response.data.message);
-        }
-      } else {
-        toast.error("Passwords do not match");
+        console.log(response.data);
+        toast.success("data updated successfully");
+        setEditModal(false);
+        setUserDetails(response.data);
+      } catch (err) {
+        console.log(err);
+        toast.error(err.response.data.message);
       }
+      // } else {
+      //   toast.error("Passwords do not match");
+      // }
     },
   });
 
@@ -205,7 +264,10 @@ const ProfileComponent: React.FC = ({ userDetails, setUserDetails }) => {
               <div>{userDetails.phone_number}</div>
             </div>
           </div>
-          <div  className="w-full space-x-2 h-20 bg-gray-100 rounded-md flex items-center ">
+          <div
+            onClick={() => setPasswordModal(true)}
+            className="w-full space-x-2 h-20 bg-gray-100 rounded-md flex items-center "
+          >
             <div>
               <svg
                 className="ml-2 max-[400px]:size-12"
@@ -374,7 +436,7 @@ const ProfileComponent: React.FC = ({ userDetails, setUserDetails }) => {
                         type="submit"
                         className="w-full px-4 py-2 mt-5 mb-4 text-white font-medium bg-slate-900 rounded-lg duration-150"
                       >
-                        Register
+                        Save Details
                       </button>
                     </form>
                   </div>
@@ -382,6 +444,88 @@ const ProfileComponent: React.FC = ({ userDetails, setUserDetails }) => {
               </>
             }
           />
+        )}
+        {passwordModal && (
+          <Modal
+          isOpen={passwordModal}
+          onClose={() => setPasswordModal(false)}
+          children={
+            <>
+              <div className="flex justify-between rounded-t-md items-center p-5 bg-slate-800 text-white font-bold text-lg">
+                <p>Change Password</p>
+                <p
+                  className="cursor-pointer"
+                  onClick={() => {
+                    setPasswordModal(false);
+                    passwordFormik.resetForm();
+                  }}
+                >
+                  <IoCloseSharp size={25} />
+                </p>
+              </div>
+              <form onSubmit={passwordFormik.handleSubmit} className="bg-white rounded-b-md py-5 px-3">
+                <div>
+                  <label className="text-sm font-semibold">Current Password</label>
+                  <input
+                    type="password"
+                    id="recent_password"
+                    name="recent_password"
+                    className="w-full mt-2 px-3 py-2 mb-1 text-gray-500 bg-transparent outline-none border focus:border-gray-300 shadow-sm rounded-lg"
+                    onChange={passwordFormik.handleChange}
+                    onBlur={passwordFormik.handleBlur}
+                    value={passwordFormik.values.recent_password}
+                  />
+                  {passwordFormik.touched.recent_password && passwordFormik.errors.recent_password ? (
+                    <div className="text-red-500 p-[2px] text-[11px]">
+                      {passwordFormik.errors.recent_password}
+                    </div>
+                  ) : (
+                    <div className="h-[12px]"></div>
+                  )}
+                </div>
+                <div>
+                  <label className="text-sm font-semibold">Password</label>
+                  <input
+                    type="password"
+                    id="password"
+                    name="password"
+                    className="w-full mt-2 px-3 py-2 mb-1 text-gray-500 bg-transparent outline-none border focus:border-gray-300 shadow-sm rounded-lg"
+                    onChange={passwordFormik.handleChange}
+                    onBlur={passwordFormik.handleBlur}
+                    value={passwordFormik.values.password}
+                  />
+                  {passwordFormik.touched.password && passwordFormik.errors.password ? (
+                    <div className="text-red-500 p-[2px] text-[11px]">
+                      {passwordFormik.errors.password}
+                    </div>
+                  ) : (
+                    <div className="h-[12px]"></div>
+                  )}
+                </div>
+                <div>
+                  <label className="text-sm font-semibold">Confirm Password</label>
+                  <input
+                    type="password"
+                    id="confirm_password"
+                    name="confirm_password"
+                    className="w-full mt-2 px-3 py-2 mb-1 text-gray-500 bg-transparent outline-none border focus:border-gray-300 shadow-sm rounded-lg"
+                    onChange={passwordFormik.handleChange}
+                    onBlur={passwordFormik.handleBlur}
+                    value={passwordFormik.values.confirm_password}
+                  />
+                  {passwordFormik.touched.confirm_password && passwordFormik.errors.confirm_password ? (
+                    <div className="text-red-500 p-[2px] text-[11px]">
+                      {passwordFormik.errors.confirm_password}
+                    </div>
+                  ) : (
+                    <div className="h-[12px]"></div>
+                  )}
+                </div>
+                <button type="submit" className="mt-4 w-full bg-slate-900 font-semibold text-white py-2 rounded-lg">Submit</button>
+              </form>
+            </>
+          }
+        />
         )}
       </>
       {/* } */}

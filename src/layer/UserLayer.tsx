@@ -1,20 +1,25 @@
 import { Outlet, useNavigate } from 'react-router-dom';
 import Navbar from '../components/navbar/Navbar';
 import Footer from '../components/footer/Footer';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { useEffect } from 'react';
+import { logout } from '../redux/slice/LoginActions';
+import { toast } from 'react-toastify';
 
 function UserLayer() {
-  // const { isAuthenticated ,role } = useSelector((state: any) => state.login);
-  // const navigate = useNavigate()
-  // useEffect(()=>{
-  //   const authTokens = localStorage.getItem('authTokens');
-  //   if(!isAuthenticated && !authTokens){
-  //     // window.location.href = '/login'
-  //     navigate('/login')
-  //   }
+  const { isAuthenticated ,role } = useSelector((state: any) => state.login);
+  const navigate = useNavigate()
+  const dispatch = useDispatch()
+  useEffect(()=>{
+    const authTokens = localStorage.getItem('authTokens');
+    if(!isAuthenticated || !authTokens){
+      // window.location.href = '/login'
+      dispatch(logout())
+      // toast.error('Session Time Out')
+      navigate('/login')
+    }
     
-  // },[isAuthenticated])
+  },[isAuthenticated])
 
   return (
     <>
