@@ -1,10 +1,11 @@
 import React from 'react';
+import LawyerHome from '../home/LawyerHome';
 
 
 
 function DashboardComponentLawyer() {
   return (
-    <>DashboardComponent</>
+    <LawyerHome ind={0} component={<>Dashboard</>}/>
   );
 }
 

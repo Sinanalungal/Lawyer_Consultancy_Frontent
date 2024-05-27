@@ -73,7 +73,7 @@ const BlogContent: React.FC = () => {
 
       if (content.length > 50 && croppedImageUrl.length > 0) {
         try {
-          const axiosInstance = await getAxiosInstance(user);
+          const axiosInstance = await getAxiosInstance();
           const response = await axiosInstance.post(
             BASE_URL + "blogsession/blogs/",
             formData,
@@ -255,6 +255,10 @@ const BlogContent: React.FC = () => {
             <p>Add Blog</p> <FaPlus size={10} />
           </div>
         </div>
+        {/* <div className=" text-xs flex justify-start space-x-2 p-4 border-black sm:w-[80%] mx-auto">
+          <p className="p-2 bg-slate-100 font-medium rounded-md" >all blogs</p>
+          <p className="p-2 bg-slate-100  font-medium rounded-md">saved blogs</p>
+        </div> */}
         <div className="w-full mx-auto p-4 grid md:grid-cols-3 2xl:grid-cols-4 grid-cols-2 max-[450px]:grid-cols-1 gap-4 sm:text-sm font-semibold sm:w-[80%] items-start rounded-lg">
           {blogs.map((post, index) => (
             <BlogCard

@@ -12,6 +12,8 @@ function UserLayer() {
   const dispatch = useDispatch()
   useEffect(()=>{
     const authTokens = localStorage.getItem('authTokens');
+    console.log(authTokens);
+    
     if(!isAuthenticated || !authTokens){
       // window.location.href = '/login'
       dispatch(logout())

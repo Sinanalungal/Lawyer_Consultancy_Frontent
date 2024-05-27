@@ -6,6 +6,9 @@ import Table from '../../../components/table/Table';
 import AdminHome from '../home/AdminHome';
 import Breadcrumb from '../../../components/breadcrump/BreadCrump';
 import { useNavigate } from 'react-router-dom';
+import { TiTickOutline } from "react-icons/ti";
+import { TiTick } from "react-icons/ti";
+
 
 const buttonDetail = { key: '', label: '' };
 
@@ -16,6 +19,7 @@ const headers = [
   { key: 'time', label: 'Time' },
   { key: 'writer', label: 'Writer' },
   { key: 'Read', label: 'Read' },
+  { key: 'Checked', label: '' },
   { key: 'verify', label: 'Verify' },
 ];
 
@@ -27,14 +31,16 @@ function BlogsComponent() {
   const [nextPage, setNext] = useState<string | null>(null);
   const [pageNum, setPageNum] = useState<number>(1);
   const [totalPages, setTotalPages] = useState<number>(1);
+  const [checked,setChecked]=useState<any>('all')
 
   const fetchData = async (page = 1) => {
     try {
-      const axiosInstance = await getAxiosInstance(user);
+      const axiosInstance = await getAxiosInstance();
       const response = await axiosInstance.get(
-        `${BASE_URL}adminside/blogs/?search=${search}&ordering=-created_at&page=${page}&page_size=5`
+        `${BASE_URL}adminside/blogs/?search=${search}&ordering=-created_at&page=${page}&page_size=5&checked=${checked}`
       );
       setBlogs(response.data.results);
+      console.log(response.data.results);
       setPrevious(response.data.previous);
       setNext(response.data.next);
       setTotalPages(Math.ceil(response.data.count / 5));
@@ -42,10 +48,48 @@ function BlogsComponent() {
       console.log(err);
     }
   };
+
+  const verifyFunction=async (blog_id:Number)=>{
+    try {
+      const axiosInstance = await getAxiosInstance();
+      const response = await axiosInstance.post(
+        `${BASE_URL}blogsession/validate-blog/`,{
+          "blog":blog_id
+        }
+      );
+      const updatedBlog = response.data;
+
+      setBlogs(prevBlogs => 
+        prevBlogs.map(blog =>(blog.id === updatedBlog.id ? updatedBlog : blog))
+      );
+
+    } catch (err) {
+      console.log(err);
+    }
+  }
+  const checkFunction= async(blog_id:Number)=>{
+    try {
+      const axiosInstance = await getAxiosInstance();
+      const response = await axiosInstance.post(
+        `${BASE_URL}blogsession/checking-blog/`,{
+          "blog":blog_id
+        }
+      );
+      const updatedBlog = response.data;
+
+      setBlogs(prevBlogs => 
+        prevBlogs.map(blog =>(blog.id === updatedBlog.id ? updatedBlog : blog))
+      );
+
+    } catch (err) {
+      console.log(err);
+    }
+  } 
+
   const navigate = useNavigate();
   useEffect(() => {
     fetchData(pageNum);
-  }, [search, pageNum]);
+  }, [search, pageNum,checked]);
 
   const handleReadClick = (blog:any) => {
     navigate("../blogpage", {
@@ -90,9 +134,12 @@ function BlogsComponent() {
         </time>
       </div>
     ),
-    writer: blog.user, // Assuming the `user` field on the blog is a user object
+    writer: blog.user,
     Read: <div className="px-2 py-1 text-xs bg-slate-900 text-white inline-block rounded-md" onClick={() => handleReadClick(blog)}>Read</div>,
-    verify: <div className="px-2 py-1 text-xs bg-red-300 text-black inline-block rounded-md">Reject</div>,
+    // Checked: <div className="px-2 py-1  text-xs bg-slate-300 text-black inline-block rounded-md"><TiTickOutline /></div>,
+    Checked: !(blog.checked)?(<div onClick={()=>checkFunction(blog.id)} className="px-2 py-1  text-xs bg-slate-300 text-black inline-block rounded-md"><TiTickOutline /></div>):(<div onClick={()=>checkFunction(blog.id)} className="px-2 py-1  text-xs bg-slate-950 text-white inline-block rounded-md"><TiTick /></div>),
+    verify: (blog.valid)?(<div onClick={()=>verifyFunction(blog.id)} className="px-2 py-1 text-xs bg-red-300 text-black inline-block rounded-md">Reject</div>):(<div onClick={()=>verifyFunction(blog.id)} className="px-2 py-1 text-xs bg-green-300 text-black inline-block rounded-md">Accept</div>),
+
   }));
 
   const breadcrumbItems = [
@@ -122,6 +169,35 @@ function BlogsComponent() {
               <Breadcrumb items={breadcrumbItems} />
             </div>
             <div className="w-full flex justify-center max-sm:text-2xl text-4xl font-bold p-12 h-auto">Blogs</div>
+            <div className="px-7 max-sm:px-2 py-1">
+          <div className="text-xs flex items-center font-bold rounded-md space-x-1">
+            <div
+              className={`${
+                (checked=='all')  && "shadow bg-slate-200 "
+              } px-2 py-1 rounded-md border border-opacity-30 sm:px-3 sm:py-2 cursor-pointer`}
+              onClick={() => setChecked('all')}
+            >
+              All Blogs
+            </div>
+            <div
+              className={`${
+               ( checked  == true )&& "shadow bg-slate-200 "
+              } px-2 py-1 rounded-md border border-opacity-30 sm:px-3 sm:py-2 cursor-pointer `}
+              onClick={() => setChecked(true)}
+            >
+              Validated
+            </div>
+            <div
+              className={`${
+                !checked  && "shadow bg-slate-200 "
+              } px-2 py-1 rounded-md border border-opacity-30 sm:px-3 sm:py-2 cursor-pointer `}
+              onClick={() => setChecked(false)}
+            >
+              Not Validated
+            </div>
+            
+          </div>
+        </div>
             <Table
               columns={headers}
               data={data}

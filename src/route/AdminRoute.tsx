@@ -11,6 +11,7 @@ import NotificationComponent from '../pages/admin/homePages/NotificationComponen
 import Blog from '../pages/userProfile/Blog';
 import BlogPage from '../pages/userProfile/BlogPage';
 import BlogsView from '../pages/admin/homePages/BlogsView';
+import AddSubscription from '../pages/admin/homePages/AddSubscription';
 
 
 function AdminRoute() {
@@ -22,6 +23,7 @@ function AdminRoute() {
         <Route path="lawyers-list" element={<LawyersComponent/>} />
         <Route path="users-list" element={<UsersComponent/>} />
         <Route path="add-lawyer" element={<AddLawyer/>} />
+        <Route path="add-subscriptions" element={<AddSubscription/>} />
         <Route path="subscriptions" element={<SubscriptionPlans/>} />
         <Route path="blogs" element={<BlogsComponent/>} />
         <Route path="blog/" element={<BlogsView/>} />

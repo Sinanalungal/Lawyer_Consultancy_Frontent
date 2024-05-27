@@ -7,6 +7,7 @@ import Blog from '../pages/userProfile/Blog';
 import BlogPage from '../pages/userProfile/BlogPage';
 import UserProfile from '../pages/userProfile/UserProfile';
 import UserLayer from '../layer/UserLayer';
+import SavedBlogs from '../pages/userProfile/SavedBlogs';
 
 function UserRoute() {
   return (
@@ -18,10 +19,7 @@ function UserRoute() {
         <Route path="blogpage" element={<BlogPage />} />
         {/* Include other routes as needed */}
         {/* Add private routes if necessary */}
-        <Route path="*" element={<UserPrivateRoute />}>
-          {/* Put the private routes inside here if required */}
-          {/* Example: <Route path="profile" element={<ProfileComponent />} /> */}
-        </Route>
+        <Route path="saved-blogs" element={<SavedBlogs />} />
       </Route>
     </Routes>
   );

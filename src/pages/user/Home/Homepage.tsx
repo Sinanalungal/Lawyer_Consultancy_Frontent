@@ -8,12 +8,27 @@ import Hero from "./MainHeader";
 import PLansFrontView from "../../../components/plans/PlansFrontView";
 import Footer from "../../../components/footer/Footer";
 import Stories from "../../../components/stories/Stories";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
+import { logout } from "../../../redux/slice/LoginActions";
 const Homepage: React.FC = () => {
   const { isAuthenticated } = useSelector((store: any) => store.login);
+  // const dispatch = useDispatch()
+  // const navigate = useNavigate()
 
 
+  // useEffect(()=>{
+  //   const authTokens = localStorage.getItem('authTokens');
+  //   console.log(authTokens);
+    
+  //   if(!isAuthenticated || !authTokens){
+  //     // window.location.href = '/login'
+  //     dispatch(logout())
+  //     // toast.error('Session Time Out')
+  //     navigate('/login')
+  //   }
+    
+  // },[])
   
   return (
     // <div className="homepage">

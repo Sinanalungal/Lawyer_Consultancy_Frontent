@@ -12,7 +12,7 @@ import AdminHome from "../home/AdminHome";
 const buttonDetail = { key: "", label: "" };
 
 const headers = [
-  { key: "image", label: "Image" },
+  { key: "profile", label: "Profile" },
   { key: "name", label: "Name" },
   { key: "phone", label: "Phone Number" },
   { key: "email", label: "Username/Email" },
@@ -42,7 +42,7 @@ function UsersComponent() {
         setPrevious(response.data.previous);
         setNext(response.data.next);
         setTotal(response.data.count);
-        console.log(response);
+        console.log(response.data.results);
       } catch (error) {
         console.error("Error fetching data:", error);
       }
@@ -60,7 +60,7 @@ function UsersComponent() {
   const callingNext = async () => {
     if (nextPage) {
       try {
-        const axiosInstance = await getAxiosInstance(user);
+        const axiosInstance = await getAxiosInstance();
         const response = await axiosInstance.get(
           `${nextPage}?role=${"user"}&search=${search}&isVerified=${isVerified}`
         );
@@ -78,7 +78,7 @@ function UsersComponent() {
   const callingPrevious = async () => {
     if (previousPage) {
       try {
-        const axiosInstance = await getAxiosInstance(user);
+        const axiosInstance = await getAxiosInstance();
         const response = await axiosInstance.get(
           `${previousPage}?role=${"user"}&search=${search}&isVerified=${isVerified}`
         );
@@ -96,7 +96,7 @@ function UsersComponent() {
 
   const manageUser = async (id: number) => {
     try {
-      const axiosInstance = await getAxiosInstance(user);
+      const axiosInstance = await getAxiosInstance();
       Swal.fire({
         title: "Are you sure?",
         icon: "warning",
@@ -124,8 +124,10 @@ function UsersComponent() {
       console.error("Error updating user:", error);
     }
   };
-
+  
+  
   var data = users.map((user_data: any) => ({
+    profile: <img className="w-12 h-12 rounded-md bg-cover" src={`${BASE_URL}${user_data.profile}`}/>,
     name: user_data.full_name,
     phone: user_data.phone_number,
     email: user_data.email,

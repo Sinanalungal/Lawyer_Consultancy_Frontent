@@ -11,7 +11,7 @@ interface TableColumn {
 
 interface TableProps {
   columns: TableColumn[];
-  data: any[]; // You can specify a more specific type if needed
+  data: any[]; 
   itemsPerPage?: Number;
   buttonDetail?: TableColumn;
   search: string; // Type for the search term

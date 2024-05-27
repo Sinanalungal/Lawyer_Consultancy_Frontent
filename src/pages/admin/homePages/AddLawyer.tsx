@@ -42,7 +42,8 @@ const navigate = useNavigate()
         console.log('Department data:', response.data);
         setDepartments(response.data)
       } catch (error) {
-          console.error('There was an error in fetching departments:', error.response.data);
+        console.log('--------------'); 
+        console.error('There was an error in fetching departments:', error.response.data);
       }
     }
     fetchingDepartment()
@@ -97,6 +98,17 @@ const navigate = useNavigate()
           toast.success('lawyer added successfully')
           navigate('../lawyers-list')
         } catch (error) {
+          if (error.response && error.response.data) {
+            if (error.response.data.email || error.response.data.phone_number) {
+              if(error.response.data.email){
+                toast.error(error.response.data.email[0])
+              }else{
+                toast.error(error.response.data.phone_number[0])
+              }
+            } else {
+              toast.error('An error occurred while fetching departments. Please try again later.');
+            }
+          }
           console.error('There was an error adding the lawyer:', error.response.data);
         }
       }

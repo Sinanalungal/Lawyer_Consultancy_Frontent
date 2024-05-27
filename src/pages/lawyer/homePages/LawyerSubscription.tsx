@@ -68,12 +68,12 @@ const data = [
 ];
 
 
-function ScheduledSession() {
+function LawyerSubscriptions() {
   return (
-    <LawyerHome ind={1} component={<>
+    <LawyerHome ind={2} component={<>
       <Table columns={headers} data={data} itemsPerPage={15} buttonDetail={buttonDetail} />
       </>}/>
   )
 }
 
-export default ScheduledSession
+export default LawyerSubscriptions

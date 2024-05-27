@@ -12,7 +12,7 @@ import AdminHome from "../home/AdminHome";
 const buttonDetail = { key: "Add Lawyers", label: "../add-lawyer" };
 
 const headers = [
-  { key: "image", label: "Image" },
+  { key: "profile", label: "Profile" },
   { key: "name", label: "Name" },
   { key: "phone", label: "Phone Number" },
   { key: "email", label: "Username/Email" },
@@ -36,7 +36,7 @@ function LawyersComponent() {
   useEffect(() => {
     async function fetchData(role: string) {
       try {
-        const axiosInstance = await getAxiosInstance(user);
+        const axiosInstance = await getAxiosInstance();
         const response = await axiosInstance.get(
           `${BASE_URL}adminside/user-data/?role=${role}&search=${search}&isVerified=${isVerified}`
         );
@@ -61,7 +61,7 @@ function LawyersComponent() {
   const callingNext = async () => {
     if (nextPage) {
       try {
-        const axiosInstance = await getAxiosInstance(user);
+        const axiosInstance = await getAxiosInstance();
         const response = await axiosInstance.get(
           `${nextPage}?role=${"lawyer"}&search=${search}&isVerified=${isVerified}`
         );
@@ -98,7 +98,7 @@ function LawyersComponent() {
 
   const manageLawyer = async (id: number) => {
     try {
-      const axiosInstance = await getAxiosInstance(user);
+      const axiosInstance = await getAxiosInstance();
       Swal.fire({
         title: "Are you sure?",
         icon: "warning",
@@ -127,6 +127,7 @@ function LawyersComponent() {
   };
 
   var data = lawyers.map((lawyer_data: any) => ({
+    profile: <img className="w-12 h-12 rounded-md bg-cover" src={`${BASE_URL}${lawyer_data.profile}`}/>,
     name: lawyer_data.full_name,
     phone: lawyer_data.phone_number,
     email: lawyer_data.email,

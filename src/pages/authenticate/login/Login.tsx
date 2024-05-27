@@ -177,7 +177,7 @@ const Login = () => {
     password: Yup.string()
       .required("Password is required")
       .matches(
-        /^(?=.*[A-Za-z])(?=.*\d)(?=.*[@$!%*#?&])[A-Za-z\d@$!%*#?&]{8,}$/,
+        /^(?=.*[A-Za-z])(?=.*\d)(?=.*[@$!%*#?&~`^(){}[\]:;<>.,])[A-Za-z\d@$!%*#?&~`^(){}[\]:;<>.,]{8,}$/,
         "Password must contain at least 8 characters, one letter, one number, and one special character"
       ),
   });

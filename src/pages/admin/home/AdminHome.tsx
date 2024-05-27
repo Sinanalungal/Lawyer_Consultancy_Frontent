@@ -175,7 +175,7 @@ function AdminHome({ component, ind }:{ component: ReactElement, ind: number }) 
             open ? "sm:ml-64" : "sm:ml-28"
           } transition-all ease-in-out duration-300 w-full min-h-screen flex flex-col  bg-white `}
         >
-          <div className="w-full fixed z-40 h-[80px] flex items-center bg-slate-800 shadow-sm text-white justify-between px-4">
+          <div className="w-full  fixed z-40 h-[80px] flex items-center bg-slate-800 shadow-sm text-white justify-between px-4">
             <TiThMenu
               className="cursor-pointer"
               onClick={handleSidebarToggle}
@@ -187,7 +187,7 @@ function AdminHome({ component, ind }:{ component: ReactElement, ind: number }) 
               } flex items-center rounded-xl relative`}
               onClick={() => setShowDropdown(!showDropdown)}
             >
-              <div className="w-11 h-11 bg-black mr-3 cursor-pointer rounded-full"></div>
+              <div className="w-11 h-11 bg-white text-black flex justify-center items-center font-semibold mr-3 cursor-pointer rounded-full">A</div>
               {/* Dropdown */}
               {showDropdown && (
                 <Dropdown onClose={() => setShowDropdown(false)} />

@@ -64,7 +64,7 @@ const BlogPage: React.FC = () => {
 
   const likeOrUnlike = async()=>{
     try {
-      const axiosInstance = await getAxiosInstance(user);
+      const axiosInstance = await getAxiosInstance();
       const response = await axiosInstance.post(
         BASE_URL + "blogsession/likes/",
         { user: value, blog: blogId }
@@ -78,7 +78,7 @@ const BlogPage: React.FC = () => {
   }
   const SavedOrUnsaved = async()=>{
     try {
-      const axiosInstance = await getAxiosInstance(user);
+      const axiosInstance = await getAxiosInstance();
       const response = await axiosInstance.post(
         BASE_URL + "blogsession/saved/",
         { user: value, blog: blogId }
@@ -93,7 +93,7 @@ const BlogPage: React.FC = () => {
   useEffect(() => {
     const fetchComments = async () => {
       try {
-        const axiosInstance = await getAxiosInstance(user);
+        const axiosInstance = await getAxiosInstance();
         const response = await axiosInstance.get(
           BASE_URL + `blogsession/comments/?blog_id=${blogId}`,
         );
@@ -121,7 +121,7 @@ const BlogPage: React.FC = () => {
   
   return (
     <>
-      <Navbar />
+      {/* <Navbar /> */}
       <div className="sm:p-10 p-4 2xl:w-full lg:px-52 2xl:container mx-auto">
         <div className="w-full min-h-screen ">
           <p className="sm:text-5xl w-full break-words max-[400px]:text-2xl text-3xl font-semibold">

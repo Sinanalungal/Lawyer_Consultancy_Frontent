@@ -1,5 +1,5 @@
 
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import Navbar from "../../components/navbar/Navbar";
 import Hero from "../user/Home/MainHeader";
@@ -8,19 +8,32 @@ import PlansFrontView from "../../components/plans/PlansFrontView";
 import Stories from "../../components/stories/Stories";
 import Footer from "../../components/footer/Footer";
 import { useEffect } from "react";
+import { logout } from "../../redux/slice/LoginActions";
 const LandingPage: React.FC = () => {
   const { registered , role } = useSelector((state: any) => state.register);
   const { isAuthenticated } = useSelector((store: any) => store.login);
   const navigate = useNavigate();
+  const dispatch = useDispatch()
   useEffect(() => {
     if (registered) {
       navigate("/register");
     }
     // if(isAuthenticated){
     const authTokens = localStorage.getItem('authTokens');
-
+    console.log(authTokens);
+    
     if (isAuthenticated && authTokens){
-        navigate('/login')
+      if( role=='user'){
+        navigate("/user");
+      }else if (role=='lawyer'){
+        navigate("/lawyer");
+      }else {
+        navigate("/admin");
+      }
+    }
+
+    if (!isAuthenticated || !authTokens){
+        dispatch(logout())
     }
     // }
   }, []);

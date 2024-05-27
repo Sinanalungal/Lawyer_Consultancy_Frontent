@@ -38,7 +38,7 @@ const Blog: React.FC = ({admin=false}) => {
       }, []);
   return (
     <>
-    {admin?'':<Navbar />}
+    {/* {admin?'':<Navbar />} */}
    <div className="w-full h-full mx-auto 2xl:container p-4">
         {(!admin)&&(<div className="w-full h-96 max-sm:h-[600px] bg-white flex   max-sm:flex-col-reverse justify-between">
             <div className="w-[50%] border border-r-2 border-r-white rounded-3xl flex-col max-sm:w-full flex justify-center items-center h-full bg-slate-800">
