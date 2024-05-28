@@ -10,6 +10,7 @@ import { ImBlog } from "react-icons/im";
 import Dropdown from "../../../components/dropdown/DropDown";
 import { logout } from "../../../redux/slice/LoginActions";
 import { Route, useNavigate } from "react-router-dom";
+import { FiLogOut } from 'react-icons/fi';
 
 
 function AdminHome({ component, ind }:{ component: ReactElement, ind: number }) {
@@ -68,6 +69,11 @@ function AdminHome({ component, ind }:{ component: ReactElement, ind: number }) 
       route: "notification",
     },
   ];
+
+  const handleLogout = () => {
+    dispatch(logout());
+    setShowDropdown(false)
+  };
 
   const handleSidebarToggle = () => {
     setOpen(!open);
@@ -190,7 +196,17 @@ function AdminHome({ component, ind }:{ component: ReactElement, ind: number }) 
               <div className="w-11 h-11 bg-white text-black flex justify-center items-center font-semibold mr-3 cursor-pointer rounded-full">A</div>
               {/* Dropdown */}
               {showDropdown && (
-                <Dropdown onClose={() => setShowDropdown(false)} />
+                <Dropdown component={
+                  <>
+                    <button
+                    onClick={handleLogout}
+                    className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 w-full text-left"
+                    >
+                    <FiLogOut className="inline-block mr-2" size={20} />
+                    Logout
+                  </button>
+                 </>
+                }/>
               )}
             </div>
           </div>

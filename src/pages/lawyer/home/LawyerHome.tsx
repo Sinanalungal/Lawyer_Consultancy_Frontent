@@ -10,7 +10,10 @@ import { CgLogOut } from "react-icons/cg";
 import { ImBlog } from "react-icons/im";
 import Dropdown from "../../../components/dropdown/DropDown";
 import { logout } from "../../../redux/slice/LoginActions";
+import { FiLogOut } from 'react-icons/fi';
 import { Route, useNavigate } from "react-router-dom";
+import { FaUserCircle } from "react-icons/fa";
+
 
 
 function LawyerHome({ component, ind }:{ component: ReactElement, ind: number }) {
@@ -53,8 +56,18 @@ function LawyerHome({ component, ind }:{ component: ReactElement, ind: number })
       icon: <FaMoneyBill size={30} />,
       route: "subscriptions",
     },
+    {
+      name: "Profile",
+      icon: <FaUserCircle size={30} />,
+      route: "profile",
+    },
   
   ];
+
+  const handleLogout = () => {
+    dispatch(logout());
+    setShowDropdown(false)
+  };
 
   const handleSidebarToggle = () => {
     setOpen(!open);
@@ -175,9 +188,22 @@ function LawyerHome({ component, ind }:{ component: ReactElement, ind: number })
               onClick={() => setShowDropdown(!showDropdown)}
             >
               <div className="w-11 h-11 bg-white text-black flex justify-center items-center font-semibold mr-3 cursor-pointer rounded-full">L</div>
-              {/* Dropdown */}
               {showDropdown && (
-                <Dropdown onClose={() => setShowDropdown(false)} />
+                <Dropdown component={
+                  <>
+                  {/* <div className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 w-full text-left">
+                    <FaUserCircle  className="inline-block mr-2" size={20} />Lawyer Profile
+                  </div> */}
+                    <button
+                    onClick={handleLogout}
+                    className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 w-full text-left"
+                    >
+                    <FiLogOut className="inline-block mr-2" size={20} />
+                    Logout
+                  </button>
+                  
+                 </>
+                }/>
               )}
             </div>
           </div>

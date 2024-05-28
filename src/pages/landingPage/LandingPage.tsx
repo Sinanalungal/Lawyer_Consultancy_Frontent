@@ -10,10 +10,32 @@ import Footer from "../../components/footer/Footer";
 import { useEffect } from "react";
 import { logout } from "../../redux/slice/LoginActions";
 const LandingPage: React.FC = () => {
-  const { registered , role } = useSelector((state: any) => state.register);
+  const { registered } = useSelector((state: any) => state.register);
   const { isAuthenticated } = useSelector((store: any) => store.login);
   const navigate = useNavigate();
   const dispatch = useDispatch()
+
+  const RoleGetting =(authTokens:any)=>{
+    if (authTokens) {
+      const tokens = JSON.parse(authTokens);
+      const { access } = tokens;
+  
+      const tokenParts = access.split('.');
+      if (tokenParts.length !== 3) {
+          console.error('Invalid token format');
+      } else {
+          const encodedPayload = tokenParts[1];
+          const decodedPayload = atob(encodedPayload);
+          const payload = JSON.parse(decodedPayload);
+          const { role } = payload;    
+          console.log('Role:', role);
+          return role;
+      }
+    } else {
+        console.error('No authTokens found in localStorage');
+        return null;
+    }
+  }
   useEffect(() => {
     if (registered) {
       navigate("/register");
@@ -23,11 +45,14 @@ const LandingPage: React.FC = () => {
     console.log(authTokens);
     
     if (isAuthenticated && authTokens){
-      if( role=='user'){
+      const role_of_user = RoleGetting(authTokens)
+      console.log(role_of_user);
+      
+      if( role_of_user=='user'){
         navigate("/user");
-      }else if (role=='lawyer'){
+      }else if (role_of_user =='lawyer'){
         navigate("/lawyer");
-      }else {
+      }else if (role_of_user =='admin'){
         navigate("/admin");
       }
     }

@@ -8,12 +8,12 @@ import { getAxiosInstance } from "../../services/axiosInstance/AxiosInstance";
 import { useSelector } from "react-redux";
 import { BASE_URL } from "../../constants";
 
-interface UserProfileProps {
-  component: ReactNode;
-  index: number;
-}
-
-const UserProfile: React.FC<UserProfileProps> = () => {
+// interface UserProfileProps {
+//   component: ReactNode;
+//   index: number;
+// }
+{/* <UserProfileProps></UserProfileProps> */}
+const UserProfile: React.FC = () => {
   const [userDetails, setUserDetails] = useState({});
   // const navigate = useNavigate();
   const [index, setIndex] = useState(1);
@@ -101,7 +101,7 @@ const UserProfile: React.FC<UserProfileProps> = () => {
     </div>
     </div>
       {/* <Navbar /> */}
-      <div className="h-full max-[400px]:p-2 w-full p-6  flex items-center flex-col justify-center">
+      <div className=" max-[400px]:p-2 w-full p-6  flex items-center flex-col ">
         <SocialMediaCard
           userDetails={userDetails}
           setUserDetails={setUserDetails}
