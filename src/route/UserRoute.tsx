@@ -8,6 +8,8 @@ import BlogPage from '../pages/userProfile/BlogPage';
 import UserProfile from '../pages/userProfile/UserProfile';
 import UserLayer from '../layer/UserLayer';
 import SavedBlogs from '../pages/userProfile/SavedBlogs';
+import LawyerList from '../pages/userProfile/LawyerList';
+import SubscriptionPage from '../pages/userProfile/SubscriptionPage';
 
 function UserRoute() {
   return (
@@ -20,6 +22,9 @@ function UserRoute() {
         {/* Include other routes as needed */}
         {/* Add private routes if necessary */}
         <Route path="saved-blogs" element={<SavedBlogs />} />
+        <Route path="lawyer-list" element={<LawyerList />} />
+        <Route path="Subscription/:lawyerId" element={<SubscriptionPage />} />
+        <Route path="Subscription/" element={<SubscriptionPage />} />
       </Route>
     </Routes>
   );

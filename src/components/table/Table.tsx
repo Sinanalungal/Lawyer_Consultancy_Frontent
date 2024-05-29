@@ -58,7 +58,7 @@ const Table: React.FC<TableProps> = ({ columns, data, total, previousButton , ne
         <div className="mb-4 flex  bg-gray-300 p-3 rounded-md items-end flex-col ">
             {buttonDetail && buttonDetail.key!='' && <Link to={`${buttonDetail?.label}`}><button className='px-3 py-2 text-white mb-3 rounded-md  bg-slate-800 text-xs'>{buttonDetail?.key}
             </button></Link>}
-          <div className='flex max-[400px]:flex-col max-[400px]:items-end justify-between w-full'>
+          <div className='flex max-[400px]:flex-col max-[400px]:items-end justify-end w-full'>
             <input
               type="text"
               placeholder="Search..."
@@ -67,12 +67,12 @@ const Table: React.FC<TableProps> = ({ columns, data, total, previousButton , ne
               onChange={(e) => setSearch(e.target.value)}
             />
             <div className='flex ml-1'>
-              <button
+              {/* <button
                 type="button"
                 className="flex bg-white max-[400px]:mt-1 items-center mr-1  text-xs px-4 py-2 border border-gray-300 rounded-md focus:outline focus:outline-slate-400"
                 
               ><GoFilter className='mr-1'/>
-              Filters</button>
+              Filters</button> */}
               {/* <input
                 type="text"
                 placeholder="Search..."
