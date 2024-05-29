@@ -12,7 +12,7 @@ const Homepage: React.FC = () => {
   useEffect(() => {
     async function fetchLawyerData() {
       try {
-        const axiosInstance =await getAxiosInstance();
+        const axiosInstance = await getAxiosInstance();
         const response = await axiosInstance.get(`${BASE_URL}api/lawyer-list/`);
         setLawyers(response.data);
         console.log(response.data);
@@ -22,18 +22,17 @@ const Homepage: React.FC = () => {
     }
     fetchLawyerData();
   }, []);
-  const teamMembers =
-    lawyers?.map((member) => ({
-      name: member.full_name,
-      experience: `${member.experience} years experience`,
-      description: member.description,
-      imgUrl: `${BASE_URL}${member.profile}`,
-      button: (
-        <div className="bg-slate-900 cursor-pointer inline-block p-2 rounded-md text-white">
-          Take a session
-        </div>
-      ),
-    })) ;
+  const teamMembers = lawyers?.map((member) => ({
+    name: member.full_name,
+    experience: `${member.experience} years experience`,
+    description: member.description,
+    imgUrl: `${BASE_URL}${member.profile}`,
+    button: (
+      <div className="bg-slate-900 cursor-pointer inline-block p-2 rounded-md text-white">
+        Take a session
+      </div>
+    ),
+  }));
 
   return (
     // <div className="homepage">
@@ -146,7 +145,6 @@ const Homepage: React.FC = () => {
           </div>
 
           <div className="p-4 lg:p-12 rounded-2xl overflow-hidden bg-pink-50">
-            
             <h2 className="mt-4 text-3xl max-[400px]:text-xl font-semibold max-lg:text-2xl text-slate-800">
               Consultations
             </h2>
@@ -167,8 +165,6 @@ const Homepage: React.FC = () => {
           </div>
 
           <div className="p-4 lg:p-12 rounded-2xl overflow-hidden bg-green-50">
-            
-
             <h2 className="mt-4 text-3xl max-[400px]:text-xl font-semibold max-lg:text-2xl text-slate-800">
               Legal Updates
             </h2>
@@ -189,8 +185,6 @@ const Homepage: React.FC = () => {
           </div>
 
           <div className="p-4 lg:p-12 rounded-2xl overflow-hidden bg-purple-50">
-            
-
             <h2 className="mt-4 text-3xl max-[400px]:text-xl font-semibold max-lg:text-2xl text-slate-800">
               Mediation Services
             </h2>
@@ -246,7 +240,6 @@ const Homepage: React.FC = () => {
                 }
               />
             </Marquee>
-
           </div>
         </div>
       </div>

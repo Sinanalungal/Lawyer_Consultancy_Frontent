@@ -1,9 +1,10 @@
 import React from 'react';
 import { toast } from 'react-toastify';
+import { BASE_URL } from '../../constants';
 
 interface Comment {
   id: number;
-  author: string;
+  author: any;
   avatar: string;
   date: string;
   content: string;
@@ -59,9 +60,9 @@ const DiscussionSection: React.FC<DiscussionSectionProps> = ({ comments,addComme
           <article key={comment.id} className="p-6 max-sm:px-1 text-base bg-white rounded-lg dark:bg-gray-900">
             <footer className="flex justify-between items-center mb-2">
               <div className="flex items-center">
-                <p className="inline-flex truncate  items-center max-sm:text-xs mr-3 text-[14px] text-gray-900 dark:text-white font-semibold">
-                  <img className="mr-2  w-5  h-5  rounded-full" src={comment.avatar} alt={comment.author} />
-                  {comment.author}
+              <img className="mr-2 w-5 h-5 rounded-full" src={`${BASE_URL}${comment.author?.profile}`} alt={comment.author?.full_name} />
+                <p className="inline-flex truncate items-center max-sm:text-xs mr-3 text-[14px] text-gray-900 dark:text-white font-semibold">
+                  {comment.author?.full_name}
                 </p>
                 <p className="text-xs max-sm:hidden max-sm:text-xs flex text-gray-600 dark:text-gray-400"><p>{(new Date(comment.date)).toLocaleDateString("en-US", {
               day: "numeric",
@@ -96,12 +97,12 @@ const DiscussionSection: React.FC<DiscussionSectionProps> = ({ comments,addComme
             <p className="text-gray-500 text-sm max-sm:text-[11px] dark:text-gray-400">{comment.content}</p>
             {/* Reply Button */}
             <div className="flex items-center max-[400px]:justify-between mt-4 space-x-4">
-              <button
+              {/* <button
                 type="button"
                 className="flex items-center text-xs max-sm:text-[11px] text-gray-500 hover:underline dark:text-gray-400 font-medium"
               >
                 Reply
-              </button>
+              </button> */}
               <p className="text-sm flex max-sm:text-[10px] sm:hidden text-gray-600 dark:text-gray-400"><p>{(new Date(comment.date)).toLocaleDateString("en-US", {
               day: "numeric",
               year: "numeric",

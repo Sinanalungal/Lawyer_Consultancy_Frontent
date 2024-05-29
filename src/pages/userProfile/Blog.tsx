@@ -13,7 +13,6 @@ import { useParams } from "react-router-dom";
 
 
 const Blog: React.FC = ({admin=false}) => {
-    const { user } = useSelector((state: any) => state.login);
     const [allBlogs,setAllBlogs] = useState([])
 //     const { admin } = useParams(); // Accessing the parameter 'blogId'
 // console.log(admin);
@@ -23,7 +22,7 @@ const Blog: React.FC = ({admin=false}) => {
 
         const fetchData = async () => {
           try {
-            const axiosInstance = await getAxiosInstance(user);
+            const axiosInstance = await getAxiosInstance();
             const response = await axiosInstance.get(
               BASE_URL + "blogsession/blogs/?all=True"
             );
@@ -68,12 +67,15 @@ const Blog: React.FC = ({admin=false}) => {
                   description={post.description}
                   image={post.image}
                   content={post.content}
-                  user={post.user}
+                  user={post.user.full_name}
+                  profile={post.user.profile}
                   id={post.id}
                   date={post.created_at}
                   is_liked={post.is_liked}
                   likes_count={post.likes_count}
                   is_saved={post.is_saved}
+                  checked={post.checked}
+                  valid={post.valid}
                 />
           ))}
         </div>

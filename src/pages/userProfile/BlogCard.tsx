@@ -2,7 +2,11 @@ import React from "react";
 import { FaShareAlt } from "react-icons/fa";
 import { CiBookmarkPlus } from "react-icons/ci";
 import {  useNavigate } from "react-router-dom";
+import { MdOutlinePendingActions } from "react-icons/md";
 import { MdBookmarkAdded } from "react-icons/md";
+import { TbNotesOff } from "react-icons/tb";
+import { BASE_URL } from "../../constants";
+
 
 
 interface BlogCardProps {
@@ -16,6 +20,9 @@ interface BlogCardProps {
     is_liked: boolean;
     likes_count: number;
     is_saved: boolean;
+    valid:boolean;
+    checked: boolean;
+    profile: string;
   }
   
 const BlogCard: React.FC<BlogCardProps> = ({
@@ -28,7 +35,10 @@ const BlogCard: React.FC<BlogCardProps> = ({
   id,
   is_liked,
   likes_count,
-  is_saved
+  is_saved,
+  valid,
+  checked,
+  profile
 }) => {
   const navigate = useNavigate();
   const dateObj = new Date(date);
@@ -38,12 +48,13 @@ const BlogCard: React.FC<BlogCardProps> = ({
     month: "long",
 
   });
-  console.log({ title, description, image, content, user, date, id ,is_liked , likes_count,is_saved });
+  console.log({ title, description, image, content, user, date, id ,is_liked , likes_count,is_saved,valid ,checked,profile});
 
   return (
     <>
       <div className="border shadow-md rounded-xl p-1 3xl:h-[600px] h-[300px]">
-        <div className="w-full h-[50%] 3xl:h-[70%] rounded-xl">
+        <div className="w-full relative h-[50%] 3xl:h-[70%] rounded-xl">
+          <div className="absolute right-0 bg-white">{(!checked)&&<MdOutlinePendingActions className="m-1 text-yellow-600" size={17}/>}{checked&&(!valid)&&<TbNotesOff size={17} className="m-1 text-red-900"/>}</div>
           <img src={image} className="w-full h-full rounded-xl object-cover" alt="" />
         </div>
         <div className=" flex  flex-col justify-between py-2 px-1 w-full h-[49%] rounded-xl ">
@@ -69,7 +80,9 @@ const BlogCard: React.FC<BlogCardProps> = ({
               <div className="w-[50%] max-[400px]:hidden space-x-1 flex  items-center">
                 {user ? (
                   <>
-                    <div className="min-w-[20px] min-h-[20px] rounded-full mt-1 bg-red-300"></div>
+                      <img src={`${BASE_URL}${profile}`} className="object-cover w-[20px] h-[20px] rounded-full mt-1 bg-red-300" alt="" />
+                    {/* <div className="min-w-[20px] min-h-[20px] rounded-full mt-1 bg-red-300">
+                    </div> */}
                     <p className="truncate text-xs">{user}</p>
                   </>
                 ) : (
@@ -89,7 +102,8 @@ const BlogCard: React.FC<BlogCardProps> = ({
                       blogDate: formattedDate,
                       is_liked: is_liked,
                       likes_count: likes_count,
-                      is_saved:is_saved
+                      is_saved:is_saved ,
+                      profile : profile 
                     },
                   })
                 }

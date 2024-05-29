@@ -33,6 +33,8 @@ const UserProfile: React.FC = () => {
       }
     };
     useDataCall();
+    window.scrollTo(0, 0);
+
   }, []);
   const [dropdownVisible, setDropdownVisible] = useState(false);
 

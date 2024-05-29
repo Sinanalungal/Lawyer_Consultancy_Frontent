@@ -17,7 +17,7 @@ import axios from "axios";
 const LandingPage: React.FC = () => {
   const { registered } = useSelector((state: any) => state.register);
   const { isAuthenticated } = useSelector((store: any) => store.login);
-  const [lawyers,setLawyers]=useState([])
+  const [lawyers, setLawyers] = useState([]);
   const navigate = useNavigate();
   const dispatch = useDispatch();
 
@@ -66,31 +66,30 @@ const LandingPage: React.FC = () => {
     if (!isAuthenticated || !authTokens) {
       dispatch(logout());
     }
-    
+
     async function fetchLawyerData() {
       try {
-        const response = await axios.get(
-          `${BASE_URL}api/lawyer-list/`
-        );
+        const response = await axios.get(`${BASE_URL}api/lawyer-list/`);
         setLawyers(response.data);
         console.log(response.data);
-        
       } catch (error) {
         console.log(error);
       }
     }
-    fetchLawyerData()
+    fetchLawyerData();
   }, []);
 
-  const teamMembers = lawyers?.map((member) =>({
+  const teamMembers = lawyers?.map((member) => ({
     name: member.full_name,
-    experience:`${member.experience} years experience`,
+    experience: `${member.experience} years experience`,
     description: member.description,
     imgUrl: `${BASE_URL}${member.profile}`,
-    button:<div className="bg-slate-900 cursor-pointer inline-block p-2 rounded-md text-white">Take a session</div>
-    
+    button: (
+      <div className="bg-slate-900 cursor-pointer inline-block p-2 rounded-md text-white">
+        Take a session
+      </div>
+    ),
   }));
-  
 
   return (
     // <div className="homepage">
@@ -163,15 +162,14 @@ const LandingPage: React.FC = () => {
       </div> */}
       {!isAuthenticated && <Navbar />}
       <Hero />
-      
-      <TeamSection teamMembers={teamMembers}/>
-       
+
+      <TeamSection teamMembers={teamMembers} />
+
       {/* <Content/> */}
       <div className="max-w-xl  max-sm:mb-0 mb-10 mt-10 max-md:p-4 p-2 mx-auto sm:text-center lg:max-w-2xl md:mb-12">
         <div></div>
         <h2 className="max-w-lg mb-6  font-sans text-3xl font-bold leading-none tracking-tight text-gray-900 sm:text-5xl md:mx-auto">
           <span className="relative inline-block">
-          
             <span className="relative">Our</span>
           </span>{" "}
           Range of Services
@@ -182,12 +180,10 @@ const LandingPage: React.FC = () => {
           resolve legal issues with confidence.
         </p>
       </div>
-      
+
       <div className="container mx-auto p-4 lg:px-40 py-12 bg-white">
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-8">
           <div className="p-4 lg:p-12 rounded-2xl overflow-hidden bg-blue-50">
-     
-
             <h2 className="mt-4 text-3xl font-semibold max-[400px]:text-xl max-lg:text-2xl text-slate-800">
               Legal Advice
             </h2>

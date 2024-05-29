@@ -44,6 +44,8 @@ function SavedBlogs() {
             is_liked={post.is_liked}
             likes_count={post.likes_count}
             is_saved={post.is_saved}
+            checked={post.checked}
+            valid={post.valid}
           />
         ))}
         </div>

@@ -30,7 +30,8 @@ const BlogPage: React.FC = () => {
     // commentsCount,
     is_liked,
     likes_count,
-    is_saved
+    is_saved,
+    profile
   } = location.state;
   const { value, user } = useSelector((state: any) => state.login);
   useEffect(()=>{
@@ -128,7 +129,7 @@ const BlogPage: React.FC = () => {
             {title}
           </p>
           <div className="w-full space-x-3 flex items-center mt-3 py-3 sm:py-7 border-b ">
-            <div className="w-[50px] max-[400px]:min-w-[40px] max-[400px]:h-[40px] h-[50px] bg-black rounded-full"></div>
+            <img src={`${BASE_URL}${profile}`} className="w-[50px] max-[400px]:min-w-[40px] max-[400px]:h-[40px] h-[50px] bg-black rounded-full"/>
             <div className="flex h-full w-full  flex-col space-y-1">
               <p className="w-full truncate   break-words font-semibold text-sm max-[400px]:text-xs">
                 {bloguser}
