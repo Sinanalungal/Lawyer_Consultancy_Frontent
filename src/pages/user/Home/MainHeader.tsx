@@ -102,14 +102,14 @@ const Hero = () => {
         </div> */}
         <h1 className="mb-4 text-4xl max-[400px]:hidden font-black text-black dark:text-white">
         Legal Advice Online 
-          <span className="text-teal-600 dark:text-teal-500">&nbsp;From Top Lawyers</span>
+          <span className="text-black dark:text-black">&nbsp;From Top Lawyers</span>
         </h1>
         <h1 className="mb-4 text-4xl hidden max-[400px]:flex flex-col font-black text-black dark:text-white">
           <span>Legal Advice Online</span> 
-          <span className="text-teal-600 dark:text-teal-500">&nbsp;From Top Lawyers</span>
+          <span className="text-black dark:text-black">&nbsp;From Top Lawyers</span>
         </h1>
         <h2
-          className="xl:text-base sm:text-sm text-xs font-medium leading-relaxed text-gray-700 dark:text-gray-300"
+          className="xl:text-base sm:text-sm text-xs font-medium leading-relaxed text-gray-600 dark:text-gray-300"
         >
           Super fast and easy to use software to power your next idea or build
           your client’s web projects. Get it today and profit.
@@ -117,9 +117,10 @@ const Hero = () => {
         <div
           className="flex flex-col justify-center gap-2 pb-16 pt-10 sm:flex-row sm:items-center lg:justify-start"
         >
+          {/* teal-600 */}
           <a
             href="javascript:void(0)"
-            className="inline-flex items-center justify-center gap-2 rounded-lg border border-teal-700 bg-teal-700 px-7 py-3.5 font-semibold leading-6 text-white hover:border-teal-600 hover:bg-teal-600 hover:text-white focus:ring focus:ring-teal-400/50 active:border-teal-700 active:bg-teal-700 dark:focus:ring-teal-400/90"
+            className="inline-flex items-center justify-center gap-2 rounded-lg border border-black bg-black px-7 py-3.5 font-semibold leading-6 text-white hover:border-black hover:bg-black hover:text-white focus:ring focus:ring-teal-400/50 active:border-teal-700 active:bg-teal-700 dark:focus:ring-teal-400/90"
           >
            
             <span>Consult Lawyer</span>
@@ -136,22 +137,22 @@ const Hero = () => {
     <div className="lg:ml-16 lg:flex lg:w-1/2 lg:items-center lg:justify-center">
       <div className="relative mx-5 lg:w-96">
         <div
-          className="bg-tranparent absolute left-0 top-0 -ml-20 -mt-16 size-40 rounded-full border border-teal-200 dark:border-teal-900 lg:size-72"
+          className="bg-tranparent absolute left-0 top-0 -ml-20 -mt-16 size-40 rounded-full border border-black dark:border-black lg:size-72"
         ></div>
         <div
-          className="bg-tranparent absolute left-0 top-0 -ml-14 -mt-20 size-40 rounded-full border border-teal-100 dark:border-teal-950 lg:size-72"
+          className="bg-tranparent absolute left-0 top-0 -ml-14 -mt-20 size-40 rounded-full border border-slate-900 dark:border-black lg:size-72"
         ></div>
         <div
-          className="bg-tranparent absolute bottom-0 right-0 -mb-16 -mr-20 size-40 rounded-full border border-teal-200 dark:border-teal-900 lg:size-72"
+          className="bg-tranparent absolute bottom-0 right-0 -mb-16 -mr-20 size-40 rounded-full border border-black dark:border-black lg:size-72"
         ></div>
         <div
-          className="bg-tranparent absolute bottom-0 right-0 -mb-20 -mr-14 size-40 rounded-full border border-teal-100 dark:border-teal-950 lg:size-72"
+          className="bg-tranparent absolute bottom-0 right-0 -mb-20 -mr-14 size-40 rounded-full border border-slate-900 dark:border-black lg:size-72"
         ></div>
         <div
           className="absolute inset-0 -m-6 -rotate-2 rounded-xl bg-gray-200 dark:bg-gray-800"
         ></div>
         <div
-          className="absolute inset-0 -m-6 rotate-1 rounded-xl bg-teal-800/75 shadow-inner dark:bg-teal-900/75"
+          className="absolute inset-0 -m-6 rotate-1 rounded-xl bg-black/75 shadow-inner dark:bg-black/75"
         ></div>
         <img
           src={LawyerGif}

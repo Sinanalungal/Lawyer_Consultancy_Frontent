@@ -7,6 +7,7 @@ import BlogContent from "./BlogContent";
 import { getAxiosInstance } from "../../services/axiosInstance/AxiosInstance";
 import { useSelector } from "react-redux";
 import { BASE_URL } from "../../constants";
+import Loader from "../../components/loader/loader";
 
 // interface UserProfileProps {
 //   component: ReactNode;
@@ -17,19 +18,23 @@ const UserProfile: React.FC = () => {
   const [userDetails, setUserDetails] = useState({});
   // const navigate = useNavigate();
   const [index, setIndex] = useState(1);
-  const { value, user } = useSelector((state: any) => state.login);
+  const [loader,setLoader] = useState(false)
+  const { value } = useSelector((state: any) => state.login);
   const navigate = useNavigate()
   useEffect(() => {
+    setLoader(true)
     const useDataCall = async () => {
       try {
-        const axiosInstance = await getAxiosInstance(user);
+        const axiosInstance = await getAxiosInstance();
         const response = await axiosInstance.get(
           BASE_URL + `api/users/${value}/`
         );
         console.log(response.data);
         setUserDetails(response.data);
+        setLoader(false)
       } catch (err) {
         console.log(err);
+        setLoader(false)
       }
     };
     useDataCall();
@@ -47,6 +52,8 @@ const UserProfile: React.FC = () => {
 
   return (
     <>
+    {loader && <Loader width="w-full" height="min-h-screen" />}{" "}
+    {!loader && (<>
     <div className="w-full mx-auto p-4 flex text-xs justify-end sm:text-sm font-semibold items-end max-md:flex-col sm:w-[80%]  rounded-lg">
     <div className="relative inline-block text-left">
       
@@ -143,6 +150,7 @@ const UserProfile: React.FC = () => {
           <BlogContent />
         )}
       </div>
+    </>)}
     </>
   );
 };

@@ -107,6 +107,7 @@ const BlogPage: React.FC = () => {
       }
     };
     fetchComments()
+    window.scrollTo(0, 0);
   },[])
 
  

@@ -19,12 +19,11 @@ function UserRoute() {
         <Route path="userprofile" element={<UserProfile />} />
         <Route path="blog" element={<Blog />} />
         <Route path="blogpage" element={<BlogPage />} />
-        {/* Include other routes as needed */}
-        {/* Add private routes if necessary */}
+     
         <Route path="saved-blogs" element={<SavedBlogs />} />
         <Route path="lawyer-list" element={<LawyerList />} />
-        <Route path="Subscription/:lawyerId" element={<SubscriptionPage />} />
-        <Route path="Subscription/" element={<SubscriptionPage />} />
+        <Route path="subscription/:lawyerId" element={<SubscriptionPage />} />
+        {/* <Route path="Subscription/" element={<SubscriptionPage />} /> */}
       </Route>
     </Routes>
   );

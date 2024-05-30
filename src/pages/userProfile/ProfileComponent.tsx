@@ -237,25 +237,25 @@ const ProfileComponent: React.FC = ({ userDetails, setUserDetails }) => {
                 <path
                   d="M29.3525 17.5C33.0535 17.911 35.9775 20.831 36.3925 24.532"
                   stroke="#1A162E"
-                  stroke-width="1.5"
-                  stroke-linecap="round"
-                  stroke-linejoin="round"
+                  strokeWidth="1.5"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
                 />
                 <path
                   d="M29.3525 21.043C31.1235 21.387 32.5075 22.772 32.8525 24.543"
                   stroke="#1A162E"
-                  stroke-width="1.5"
-                  stroke-linecap="round"
-                  stroke-linejoin="round"
+                  strokeWidth="1.5"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
                 />
                 <path
-                  fill-rule="evenodd"
-                  clip-rule="evenodd"
+                  fillRule="evenodd"
+                  clipRule="evenodd"
                   d="M26.0315 27.4724C30.0205 31.4604 30.9254 26.8467 33.4653 29.3848C35.9138 31.8328 37.3222 32.3232 34.2188 35.4247C33.8302 35.737 31.3613 39.4943 22.6845 30.8197C14.0066 22.144 17.7616 19.6724 18.0739 19.2839C21.1838 16.1738 21.6668 17.5894 24.1154 20.0373C26.6541 22.5765 22.0425 23.4844 26.0315 27.4724Z"
                   stroke="#1A162E"
-                  stroke-width="1.5"
-                  stroke-linecap="round"
-                  stroke-linejoin="round"
+                  strokeWidth="1.5"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
                 />
               </svg>
             </div>
@@ -299,9 +299,9 @@ const ProfileComponent: React.FC = ({ userDetails, setUserDetails }) => {
           {/* <div className='w-full h-20 bg-gray-100 rounded-md flex items-center ' >
             <svg className='ml-2 max-[400px]:size-10' width="54" height="54" viewBox="0 0 54 54" fill="none" xmlns="http://www.w3.org/2000/svg">
             <rect width="54" height="54" rx="8" fill="white"/>
-            <path d="M29.3525 17.5C33.0535 17.911 35.9775 20.831 36.3925 24.532" stroke="#1A162E" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
-            <path d="M29.3525 21.043C31.1235 21.387 32.5075 22.772 32.8525 24.543" stroke="#1A162E" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
-            <path fill-rule="evenodd" clip-rule="evenodd" d="M26.0315 27.4724C30.0205 31.4604 30.9254 26.8467 33.4653 29.3848C35.9138 31.8328 37.3222 32.3232 34.2188 35.4247C33.8302 35.737 31.3613 39.4943 22.6845 30.8197C14.0066 22.144 17.7616 19.6724 18.0739 19.2839C21.1838 16.1738 21.6668 17.5894 24.1154 20.0373C26.6541 22.5765 22.0425 23.4844 26.0315 27.4724Z" stroke="#1A162E" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+            <path d="M29.3525 17.5C33.0535 17.911 35.9775 20.831 36.3925 24.532" stroke="#1A162E" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
+            <path d="M29.3525 21.043C31.1235 21.387 32.5075 22.772 32.8525 24.543" stroke="#1A162E" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
+            <path fillRule="evenodd" clipRule="evenodd" d="M26.0315 27.4724C30.0205 31.4604 30.9254 26.8467 33.4653 29.3848C35.9138 31.8328 37.3222 32.3232 34.2188 35.4247C33.8302 35.737 31.3613 39.4943 22.6845 30.8197C14.0066 22.144 17.7616 19.6724 18.0739 19.2839C21.1838 16.1738 21.6668 17.5894 24.1154 20.0373C26.6541 22.5765 22.0425 23.4844 26.0315 27.4724Z" stroke="#1A162E" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
             </svg>
           </div> */}
         </div>

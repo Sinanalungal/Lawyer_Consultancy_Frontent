@@ -5,8 +5,8 @@ const Footer: React.FC = () => {
   return (
     <>
       <div className="relative 2xl:container mx-auto mt-16  bg-[#1F2937]">
-        <svg
-          className="absolute top-0 w-full h-6 -mt-5 sm:-mt-10 sm:h-16 "
+        {/* <svg
+         className="absolute top-0 w-full h-6 -mt-5 sm:-mt-10 sm:h-16 "
           preserveAspectRatio="none"
           viewBox="0 0 1440 54"
         >
@@ -14,7 +14,7 @@ const Footer: React.FC = () => {
             fill="#1F2937"
             d="M0 22L120 16.7C240 11 480 1.00001 720 0.700012C960 1.00001 1200 11 1320 16.7L1440 22V54H1320C1200 54 960 54 720 54C480 54 240 54 120 54H0V22Z"
           />
-        </svg>
+        </svg>  */}
         <div className="px-4 pt-12 mx-auto sm:max-w-xl md:max-w-full lg:max-w-screen-xl md:px-24 lg:px-8">
           <div className="grid gap-16 row-gap-10 mb-8 lg:grid-cols-6">
             <div className="md:max-w-md lg:col-span-2">
@@ -42,7 +42,7 @@ const Footer: React.FC = () => {
             <div className="grid grid-cols-2 gap-5 row-gap-8 lg:col-span-4 md:grid-cols-4">
               <div>
                 <p className="font-bold tracking-wide text-white">Business</p>
-                <ul className="mt-2 font-medium text-sm space-y-2">
+                <ul className="mt-2 font-medium text-xs space-y-2">
                   <li>
                     <Link
                       to="/"
@@ -79,7 +79,7 @@ const Footer: React.FC = () => {
               </div>
               <div>
                 <p className="font-bold tracking-wide text-white">Business</p>
-                <ul className="mt-2 font-medium text-sm space-y-2">
+                <ul className="mt-2 font-medium text-xs space-y-2">
                   <li>
                     <Link
                       to="/"
@@ -116,7 +116,7 @@ const Footer: React.FC = () => {
               </div>
               <div>
                 <p className="font-bold tracking-wide text-white">Business</p>
-                <ul className="mt-2 font-medium text-sm space-y-2">
+                <ul className="mt-2 font-medium text-xs space-y-2">
                   <li>
                     <Link
                       to="/"
@@ -153,7 +153,7 @@ const Footer: React.FC = () => {
               </div>
               <div>
                 <p className="font-bold tracking-wide text-white">Business</p>
-                <ul className="mt-2 font-medium text-sm space-y-2">
+                <ul className="mt-2  font-medium text-xs space-y-2">
                   <li>
                     <Link
                       to="/"

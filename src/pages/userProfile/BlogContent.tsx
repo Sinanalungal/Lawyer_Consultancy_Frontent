@@ -10,10 +10,10 @@ import * as Yup from "yup";
 import "./BlogContent.css";
 import Cropper from "react-easy-crop";
 import { toast } from "react-toastify";
-import axios from "axios";
 import { BASE_URL } from "../../constants";
 import { useSelector } from "react-redux";
 import { getAxiosInstance } from "../../services/axiosInstance/AxiosInstance";
+import Loader from "../../components/loader/loader";
 
 const BlogContent: React.FC = () => {
   const { value } = useSelector((state: any) => state.login);
@@ -29,6 +29,7 @@ const BlogContent: React.FC = () => {
   const [secondModal, setSecondModal] = useState(false);
   const { user } = useSelector((state: any) => state.login);
   // const [newBlogAdded, setNewBlogAdded] = useState<boolean>(false);
+  const [loader,setLoader] = useState(false)
   const [blogs, setBlogs] = useState<any[]>([]);
   const editor = useRef(null);
 
@@ -222,6 +223,7 @@ const BlogContent: React.FC = () => {
 
   useEffect(() => {
     const fetchData = async () => {
+      setLoader(true)
       try {
         const axiosInstance = await getAxiosInstance(user);
         const response = await axiosInstance.get(
@@ -229,9 +231,11 @@ const BlogContent: React.FC = () => {
         );
         setBlogs(response.data);
         console.log(response.data);
+        setLoader(false)
         // setNewBlogAdded(false);
       } catch (err) {
         console.log(err);
+        setLoader(false)
       }
     };
     fetchData();
@@ -239,10 +243,9 @@ const BlogContent: React.FC = () => {
 
   return (
     <>
-      {/* <UserProfile
-        index={2}
-        component={ */}
-      <>
+    {loader && <Loader width="w-full" height="min-h-screen" />}{" "}
+
+    {!loader && (<div><>
         {/* <div className="w-full flex justify-center"><div className=" flex px-4  sm:w-[80%] space-x-1 items-center">
                 <div className="px-3 py-1 text-xs border rounded-full bg-slate-50">Blogs</div>
                 <div className="px-3 py-1 text-xs border rounded-full bg-slate-50">SavedBlogs</div>
@@ -267,13 +270,14 @@ const BlogContent: React.FC = () => {
               description={post.description}
               image={post.image}
               content={post.content}
-              user={post.user}
+              user={post.user.email}
+              profile={post.user.profile}
               id={post.id}
               date={post.created_at}
               is_liked={post.is_liked}
               likes_count={post.likes_count}
               is_saved={post.is_saved}
-              valid ={post.valid}
+              valid={post.valid}
               checked={post.checked}
             />
           ))}
@@ -689,7 +693,7 @@ const BlogContent: React.FC = () => {
             </div>
           </form>
         </div>
-      </Modal>
+      </Modal></div>)}
     </>
   );
 };
