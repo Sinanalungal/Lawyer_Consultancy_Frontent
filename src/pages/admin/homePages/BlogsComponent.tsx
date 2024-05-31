@@ -98,9 +98,10 @@ function BlogsComponent() {
         description: blog.description,
         image: blog.image,
         mainContent: blog.content,
-        bloguser: blog.user,
+        bloguser: blog.user.full_name,
+        profile:blog.user.profile,
         blogId: blog.id,
-        blogDate: blog.formattedDate,
+        blogDate: blog.created_at,
         is_liked: blog.is_liked,
         likes_count: blog.likes_count,
         is_saved: blog.is_saved
@@ -134,7 +135,7 @@ function BlogsComponent() {
         </time>
       </div>
     ),
-    writer: blog.user,
+    writer: blog.user.email,
     Read: <div className="px-2 py-1 text-xs bg-slate-900 text-white inline-block rounded-md" onClick={() => handleReadClick(blog)}>Read</div>,
     // Checked: <div className="px-2 py-1  text-xs bg-slate-300 text-black inline-block rounded-md"><TiTickOutline /></div>,
     Checked: !(blog.checked)?(<div onClick={()=>checkFunction(blog.id)} className="px-2 py-1  text-xs bg-slate-300 text-black inline-block rounded-md"><TiTickOutline /></div>):(<div onClick={()=>checkFunction(blog.id)} className="px-2 py-1  text-xs bg-slate-950 text-white inline-block rounded-md"><TiTick /></div>),
@@ -168,8 +169,12 @@ function BlogsComponent() {
             <div className="p-6 font-semibold">
               <Breadcrumb items={breadcrumbItems} />
             </div>
-            <div className="w-full flex justify-center max-sm:text-2xl text-4xl font-bold p-12 h-auto">Blogs</div>
-            <div className="px-7 max-sm:px-2 py-1">
+            <div className="w-full flex justify-center max-sm:text-2xl text-5xl font-bold h-auto">
+          Blogs
+        </div>
+        <p className="w-full flex justify-center  text-xs font-medium pb-9 h-auto mt-1">
+          Blogs is listed in here
+        </p>            <div className="px-7 max-sm:px-2 py-1">
           <div className="text-xs flex items-center font-bold rounded-md space-x-1">
             <div
               className={`${

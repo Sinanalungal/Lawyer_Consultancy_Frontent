@@ -43,7 +43,7 @@ console.log(subscriptions);
       {!loader && (<div className="p-1">
       <section className="relative overflow-hidden   rounded-xl from-[#46807E] ot max-w-[1500px]  mx-auto">
         <header className=" rounded-xl">
-          <div className="mx-auto max-w-screen-xl bg-slate-50 px-4 py-8  sm:px-12 lg:px-24">
+          <div className="mx-auto max-w-screen-xl bg-slate-50 rounded-t-2xl px-4 py-8  sm:px-12 lg:px-24">
             <div className="sm:flex  sm:items-center  pb-8 border-b-2 sm:justify-between">
               <div className="text-center mx-auto ">
                 <h1 className="text-2xl font-bold text-black sm:text-3xl">
@@ -58,18 +58,18 @@ console.log(subscriptions);
             </div>
           </div>
         </header>
-        <div className="relative  flex mb-10 bg-slate-50 flex-col items-center justify-center max-[400px]:px-1  px-8 py-12 mx-auto md:px-12 lg:px-16 xl:px-36 max-w-7xl lg:py-16">
+        <div className="relative  flex mb-10 bg-slate-50 rounded-b-2xl flex-col items-center justify-center max-[400px]:px-1  px-8 py-12 mx-auto md:px-12 lg:px-16 xl:px-36 max-w-7xl lg:py-16">
           <div className="grid  grid-cols-1 gap-6 lg lg:grid-cols-3 gap-y-12">
             
             {subscriptions.map((subscription,ind)=>(<div key={ind}>
               <div className="px-4 ">
-                <div className="flex items-center gap-3 text-black">
+                <div className="flex items-center justify-center gap-3 text-black">
                   {/* <div className="text-5xl">✺</div> */}
-                  <p className="font-mono text-lg font-medium">{subscription.plan.name}</p>
+                  <p className="font-semibold text-lg  ">{subscription.plan.name}</p>
                 </div>
-                <p className="mt-6 text-xs h-[100px] overflow-hidden   mb-2  font-light text-black">
+                {/* <p className="mt-6 text-xs h-[100px] overflow-hidden   mb-2  font-light text-black">
                   {subscription.plan.description}
-                </p>
+                </p> */}
               </div>
               <div className="p-8 mt-4 shadow-2xl lg:shadow-black rounded-xl bg-gray-900 backdrop-blur-xl border-white/5 ring-1 ring-white/10">
               <ul

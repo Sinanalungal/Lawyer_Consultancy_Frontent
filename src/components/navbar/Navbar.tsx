@@ -156,11 +156,12 @@ import {
   Transition,
 } from "@headlessui/react";
 import { Bars3Icon, BellIcon, XMarkIcon } from "@heroicons/react/24/outline";
+import { toast } from "react-toastify";
 
 const navigation = [
   { name: "Dashboard", href: "#", current: true },
   { name: "Team", href: "#", current: false },
-  { name: "Projects", href: "#", current: false },
+  { name: "Lawyers", href: "../../../../user/lawyer-list", current: false },
   { name: "Blogs", href: "../../../../user/blog", current: false },
 ];
 
@@ -250,7 +251,7 @@ export default function Navbar() {
                           <Link to={"/login"}>
                             <button
                               type="button"
-                              className={` font-bold border-2 text-xs  px-5 py-2 rounded-3xl ${"dark:text-white max-[400px]:px-3 text-white dark:border-white border-white"}`}
+                              className={` font-bold border-2 text-xs  px-5 py-2 rounded-3xl ${"dark:text-white max-[400px]:px-3 text-black dark:border-black border-black"}`}
                             >
                               <p className="max-[400px]:hidden">Login</p>
 
@@ -311,7 +312,9 @@ export default function Navbar() {
                         <MenuItem>
                           {({ focus }) => (
                             <div
-                              onClick={() => dispatch(logout())}
+                              onClick={() =>{ dispatch(logout());
+                                toast.success('User logged out')
+                              }}
                               className={classNames(
                                 focus ? "bg-gray-100" : "",
                                 "block px-4 py-2 text-sm text-gray-700"

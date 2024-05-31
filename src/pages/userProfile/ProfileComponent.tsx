@@ -10,14 +10,16 @@ import { Formik, useFormik } from "formik";
 import * as Yup from "yup";
 import { toast } from "react-toastify";
 import { logout } from "../../redux/slice/LoginActions";
+import Loader from "../../components/loader/loader";
 
 const ProfileComponent: React.FC = ({ userDetails, setUserDetails }) => {
   console.log(userDetails);
   // const [userDetails, setUserDetails] = useState({});
   console.log(userDetails, "form the user profile component");
-  const { value, user } = useSelector((state: any) => state.login);
+  const { value ,role } = useSelector((state: any) => state.login);
   const [editModal, setEditModal] = useState(false);
   const [passwordModal, setPasswordModal] = useState(false);
+  const [loader,setLoader]=useState(false)
 
   const dispatch = useDispatch()
   // const [inputOpen,setInputOpen]=useState({full_name:false,email:false,phone_number:false,password:false})
@@ -54,6 +56,7 @@ const ProfileComponent: React.FC = ({ userDetails, setUserDetails }) => {
           delete values.password;
         }
         try {
+          setLoader(true)
           const axiosInstance = await getAxiosInstance();
           const response = await axiosInstance.post(
             BASE_URL + `api/update_password/`,
@@ -61,16 +64,17 @@ const ProfileComponent: React.FC = ({ userDetails, setUserDetails }) => {
           );
 
           console.log(response.data);
-          toast.success("Password updated successfully");
-          toast.info('please login once again')
+          toast.info('Password updated successfully,please login once again..')
           setPasswordModal(false);
           setTimeout(() => {
             dispatch(logout());
           }, 1000);
+          setLoader(false)
           // setUserDetails(response.data);
         } catch (err) {
           console.log(err);
           toast.error(err.response.data.message);
+          setLoader(false)
         }
       } else {
         toast.error("Passwords do not match");
@@ -84,7 +88,7 @@ const ProfileComponent: React.FC = ({ userDetails, setUserDetails }) => {
       phone_number: userDetails.phone_number || "",
       password: "",
       confirm_password: "",
-      role: "user",
+      role: role,
     },
     enableReinitialize: true,
     validationSchema: Yup.object({
@@ -123,6 +127,7 @@ const ProfileComponent: React.FC = ({ userDetails, setUserDetails }) => {
         //   delete values.password;
         // }
       try {
+        setLoader(true)
         const axiosInstance = await getAxiosInstance();
         const response = await axiosInstance.patch(
           BASE_URL + `api/users/${value}/update/`,
@@ -133,9 +138,11 @@ const ProfileComponent: React.FC = ({ userDetails, setUserDetails }) => {
         toast.success("data updated successfully");
         setEditModal(false);
         setUserDetails(response.data);
+        setLoader(false)
       } catch (err) {
         console.log(err);
         toast.error(err.response.data.message);
+        setLoader(false)
       }
       // } else {
       //   toast.error("Passwords do not match");
@@ -311,7 +318,8 @@ const ProfileComponent: React.FC = ({ userDetails, setUserDetails }) => {
             onClose={() => setEditModal(false)}
             children={
               <>
-                <div className="bg-white rounded-md">
+                {loader && <Loader width="w-full rounded-md bg-white" height="min-h-screen" />}{" "}
+                {!loader && (<div className="bg-white rounded-md">
                   <div className="flex justify-between rounded-md items-center p-5 bg-slate-800  text-white font-bold text-lg">
                     <p>Edit Details</p>
                     <p
@@ -440,7 +448,7 @@ const ProfileComponent: React.FC = ({ userDetails, setUserDetails }) => {
                       </button>
                     </form>
                   </div>
-                </div>
+                </div>)}
               </>
             }
           />
@@ -451,7 +459,9 @@ const ProfileComponent: React.FC = ({ userDetails, setUserDetails }) => {
           onClose={() => setPasswordModal(false)}
           children={
             <>
-              <div className="flex justify-between rounded-t-md items-center p-5 bg-slate-800 text-white font-bold text-lg">
+            {loader && <Loader width="w-full bg-white rounded-md" height="min-h-screen" />}{" "}
+              {!loader &&(<>
+                <div className="flex justify-between rounded-t-md items-center p-5 bg-slate-800 text-white font-bold text-lg">
                 <p>Change Password</p>
                 <p
                   className="cursor-pointer"
@@ -523,6 +533,7 @@ const ProfileComponent: React.FC = ({ userDetails, setUserDetails }) => {
                 </div>
                 <button type="submit" className="mt-4 w-full bg-slate-900 font-semibold text-white py-2 rounded-lg">Submit</button>
               </form>
+              </>)}
             </>
           }
         />

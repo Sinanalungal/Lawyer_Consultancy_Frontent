@@ -13,6 +13,7 @@ import { BASE_URL } from "../../../constants";
 import Select from 'react-select';
 import { toast } from "react-toastify";
 import { useNavigate } from "react-router-dom";
+import Loader from "../../../components/loader/loader";
 
 function AddLawyer() {
   const [uploadModal, setUploadModal] = useState(false);
@@ -25,12 +26,14 @@ function AddLawyer() {
   const [resultantCropDocument, setResultantCropDocument] = useState("");
   const [cropType, setCropType] = useState("");
   const [departments,setDepartments] = useState()
+  const [loader,setLoader]= useState(true)
   // const [selectedOption, setSelectedOption] = useState(null);
   const { user } = useSelector((state: any) => state.login);
 // console.log(selectedOption);
 
 const navigate = useNavigate()
   useEffect(()=>{
+    setLoader(true)
     const fetchingDepartment= async()=>{
       try {
         const axiosInstance = await getAxiosInstance();
@@ -41,9 +44,11 @@ const navigate = useNavigate()
         });
         console.log('Department data:', response.data);
         setDepartments(response.data)
+        setLoader(false)
       } catch (error) {
         console.log('--------------'); 
         console.error('There was an error in fetching departments:', error.response.data);
+        setLoader(false)
       }
     }
     fetchingDepartment()
@@ -89,13 +94,15 @@ const navigate = useNavigate()
         formData.append('profile', blobprofile, 'image.png');
         formData.append('document', blobdocument, 'image.png');
     
-        const axiosInstance = await getAxiosInstance();
-    
+        
         try {
+          setLoader(true)
+          const axiosInstance = await getAxiosInstance();
           const response = await axiosInstance.post(`${BASE_URL}adminside/add-lawyer/`, formData, {
           });
           console.log('Lawyer added successfully:', response.data);
           toast.success('lawyer added successfully')
+          setLoader(false)
           navigate('../lawyers-list')
         } catch (error) {
           if (error.response && error.response.data) {
@@ -108,6 +115,7 @@ const navigate = useNavigate()
             } else {
               toast.error('An error occurred while fetching departments. Please try again later.');
             }
+            setLoader(false)
           }
           console.error('There was an error adding the lawyer:', error.response.data);
         }
@@ -227,7 +235,10 @@ const navigate = useNavigate()
       <AdminHome
         ind={1}
         component={
-          <div className="w-full p-6 flex flex-col min-h-screen">
+          <>
+          {loader && <Loader width="w-full" height="min-h-screen" />}{" "}
+
+          {!loader && (<div className="w-full p-6 flex flex-col min-h-screen">
             <div className="font-semibold py-2">
               <Breadcrumb items={breadcrumbItems} />
             </div>
@@ -370,7 +381,8 @@ const navigate = useNavigate()
                 </button>
               </div> */}
             </form>
-          </div>
+          </div>)}
+          </>
         }
       />
       {cropStart && (

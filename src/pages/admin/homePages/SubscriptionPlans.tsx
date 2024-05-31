@@ -104,9 +104,12 @@ function SubscriptionPlans() {
             <div className="p-6 font-semibold">
               <Breadcrumb items={breadcrumbItems} />
             </div>
-            <div className='w-full flex justify-center max-sm:text-2xl text-4xl font-bold p-12 h-auto'>
-              Subscriptions
-            </div>
+            <div className="w-full flex justify-center max-sm:text-2xl text-5xl font-bold h-auto">
+          Subscriptions
+        </div>
+        <p className="w-full flex justify-center  text-xs font-medium pb-9 h-auto mt-1">
+          Subscription Data is listed in here
+        </p>
             <Table
               columns={headers}
               data={data}

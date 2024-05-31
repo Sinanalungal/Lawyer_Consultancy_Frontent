@@ -127,7 +127,7 @@ function UsersComponent() {
   
   
   var data = users.map((user_data: any) => ({
-    profile: <img className="w-12 h-12 rounded-md bg-cover" src={`${BASE_URL}${user_data.profile}`}/>,
+    profile: user_data.profile?(<img className="w-12 h-12 rounded-md bg-cover" src={`${BASE_URL}${user_data.profile}`}/>):(<img className="w-12 h-12 rounded-md bg-cover" src='/profile-default.svg'/>),
     name: user_data.full_name,
     phone: user_data.phone_number,
     email: user_data.email,

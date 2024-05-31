@@ -7,6 +7,7 @@ import Swal from "sweetalert2";
 import Breadcrumb from "../../../components/breadcrump/BreadCrump";
 import { debounce } from "lodash";
 import AdminHome from "../home/AdminHome";
+import Loader from "../../../components/loader/loader";
 
 
 const buttonDetail = { key: "Add Lawyers", label: "../add-lawyer" };
@@ -31,6 +32,7 @@ function LawyersComponent() {
   const [nextPage, setNext] = React.useState<string | null>(null);
   const [pageNum, setPageNum] = React.useState<Number>(1);
   const [total_page, setTotal] = React.useState<Number>(1);
+  const [loader,setLoader] = React.useState<Boolean>(false);
 
 
   useEffect(() => {
@@ -60,6 +62,7 @@ function LawyersComponent() {
 
   const callingNext = async () => {
     if (nextPage) {
+      setLoader(true)
       try {
         const axiosInstance = await getAxiosInstance();
         const response = await axiosInstance.get(
@@ -70,14 +73,17 @@ function LawyersComponent() {
         setNext(response.data.next);
         setTotal(response.data.count);
         console.log(response);
+        setLoader(false)
       } catch (error) {
         console.error("Error fetching data:", error);
+        setLoader(false)
       }
       setPageNum((pageNum) => pageNum + 1);
     }
   };
   const callingPrevious = async () => {
     if (previousPage) {
+      setLoader(true)
       try {
         const axiosInstance = await getAxiosInstance(user);
         const response = await axiosInstance.get(
@@ -88,8 +94,10 @@ function LawyersComponent() {
         setNext(response.data.next);
         setTotal(response.data.count);
         console.log(response);
+        setLoader(false)
       } catch (error) {
         console.error("Error fetching data:", error);
+        setLoader(false)
       }
       setPageNum((pageNum) => pageNum - 1);
     }
@@ -127,7 +135,7 @@ function LawyersComponent() {
   };
 
   var data = lawyers.map((lawyer_data: any) => ({
-    profile: <img className="w-12 h-12 rounded-md bg-cover" src={`${BASE_URL}${lawyer_data.profile}`}/>,
+    profile: lawyer_data.profile?(<img className="w-12 h-12 rounded-md bg-cover" src={`${BASE_URL}${lawyer_data.profile}`}/>):(<img className="w-12 h-12 rounded-md bg-cover" src='/profile-default.svg'/>),
     name: lawyer_data.full_name,
     phone: lawyer_data.phone_number,
     email: lawyer_data.email,
@@ -165,7 +173,7 @@ function LawyersComponent() {
 
   return (
     <>
-      <AdminHome ind={1} component={<div className="">
+      <AdminHome ind={1} component={loader?(<Loader width="w-full" height="min-h-screen" />):(<div className="">
         <div className="p-6 font-semibold">
           <Breadcrumb items={breadcrumbItems} />
         </div>
@@ -216,7 +224,7 @@ function LawyersComponent() {
         pageNum={pageNum}
         total={Math.ceil(total_page/5)}
       />
-      </div>}/>
+      </div>)}/>
     </>
   );
 }
