@@ -4,6 +4,7 @@ import SocialMediaCard from "../../components/userProfileComponents/SocialMediaC
 import React, { ReactNode, useEffect, useState } from "react";
 import ProfileComponent from "./ProfileComponent";
 import BlogContent from "./BlogContent";
+import { FaCrown } from "react-icons/fa";
 import { getAxiosInstance } from "../../services/axiosInstance/AxiosInstance";
 import { useSelector } from "react-redux";
 import { BASE_URL } from "../../constants";
@@ -55,15 +56,17 @@ const UserProfile: React.FC = () => {
     {loader && <Loader width="w-full" height="min-h-screen" />}{" "}
     {!loader && (<>
     <div className="w-full mx-auto p-4 flex text-xs justify-end sm:text-sm font-semibold items-end max-md:flex-col sm:w-[80%]  rounded-lg">
-    <div className="relative inline-block text-left">
+    <div className="items-center space-x-1  flex text-left">
       
+      <Link to='../../../../../../user/user-subscriptions/'><FaCrown size={30}  className="bg-yellow-500 rounded-md p-2"/></Link>
       <button
         id="dropdownMenuIconHorizontalButton"
         onClick={() => toggleDropdown('dropdownDotsHorizontal')}
         type="button"
-        className="inline-flex items-center p-2 text-sm font-medium text-center text-gray-900 bg-white rounded-lg hover:bg-gray-100 focus:ring-4 focus:outline-none dark:text-white focus:ring-gray-50 dark:bg-gray-800 dark:hover:bg-gray-700 dark:focus:ring-gray-600"
+        className="inline-flex items-center p-2 text-sm font-medium  text-center text-gray-900 bg-white rounded-lg hover:bg-gray-100 focus:ring-4 focus:outline-none dark:text-white focus:ring-gray-50 dark:bg-gray-800 dark:hover:bg-gray-700 dark:focus:ring-gray-600"
       >
-        <svg
+
+        <svg 
           className="w-5 h-5"
           aria-hidden="true"
           xmlns="http://www.w3.org/2000/svg"

@@ -65,8 +65,8 @@ export const registerUserAsync = createAsyncThunk(
         if (userData.role != 'user'){
           toast.success('Successfully Registered!')
         }else{
-          toast.success('Proceed to otp verification')
-          toast.info('otp send into your phone number')
+          // toast.success('')
+          toast.info('Proceed to otp verification ,otp send into your phone number....')
         }
           
         

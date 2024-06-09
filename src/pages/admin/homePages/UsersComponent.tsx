@@ -1,6 +1,6 @@
 import React, { useEffect } from "react";
 import Table from "../../../components/table/Table";
-import { BASE_URL } from "../../../constants";
+import { BASE_URL, ImgBackendUrl } from "../../../constants";
 import { useSelector } from "react-redux";
 import { getAxiosInstance } from "../../../services/axiosInstance/AxiosInstance";
 // import AccessTokenManager from '../../../redux/slice/interceptor';
@@ -127,7 +127,7 @@ function UsersComponent() {
   
   
   var data = users.map((user_data: any) => ({
-    profile: user_data.profile?(<img className="w-12 h-12 rounded-md bg-cover" src={`${BASE_URL}${user_data.profile}`}/>):(<img className="w-12 h-12 rounded-md bg-cover" src='/profile-default.svg'/>),
+    profile: user_data.profile?(<img className="w-12 h-12 rounded-md bg-cover" src={`${ImgBackendUrl}${user_data.profile}`}/>):(<img className="w-12 h-12 rounded-md bg-cover" src='/profile-default.svg'/>),
     name: user_data.full_name,
     phone: user_data.phone_number,
     email: user_data.email,

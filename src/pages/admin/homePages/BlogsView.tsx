@@ -1,6 +1,6 @@
 import React from 'react';
 import AdminHome from '../home/AdminHome';
-import Blog from '../../userProfile/Blog';
+import Blog from '../../userProfile&Blog/Blog';
 
 
 

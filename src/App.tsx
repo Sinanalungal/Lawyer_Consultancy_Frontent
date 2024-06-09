@@ -15,6 +15,7 @@ import { GoogleOAuthProvider } from '@react-oauth/google';
 import UserLayer from './layer/UserLayer';
 import Homepage from './pages/user/Home/Homepage';
 import LandingPage from './pages/landingPage/LandingPage';
+import ChatComponent from './components/chat/Chat';
 
 function App() {
   const { dataRequired } = useSelector((state: any) => state.login);

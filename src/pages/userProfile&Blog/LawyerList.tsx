@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { getAxiosInstance } from "../../services/axiosInstance/AxiosInstance";
-import { BASE_URL } from "../../constants";
+import { BASE_URL, ImgBackendUrl } from "../../constants";
 import { Link } from "react-router-dom";
 import Loader from "../../components/loader/loader";
 
@@ -143,7 +143,7 @@ function LawyerList() {
                   >
                     <div className="flex flex-col space-y-4 md:space-y-0 md:space-x-6 md:flex-row">
                       <img
-                        src={`${BASE_URL}${lawyer.profile}`}
+                        src={`${ImgBackendUrl}${lawyer.profile}`}
                         alt=""
                         className="self-center flex-shrink-0 w-24 h-24 border rounded-full md:justify-self-start dark:bg-gray-500 dark:border-gray-300"
                       />

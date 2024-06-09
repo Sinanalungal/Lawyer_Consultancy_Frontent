@@ -10,7 +10,7 @@ import Loader from "../../../components/loader/loader";
 import Cookies from "js-cookie";
 import GoogleLoginButton from "../../../components/googleLoginButton/GoogleLoginButton";
 import axios from "axios";
-import { BASE_URL } from "../../../constants";
+import { BASE_URL, ImgBackendUrl } from "../../../constants";
 
 // interface RegisterProps {}
 
@@ -263,7 +263,7 @@ import { BASE_URL } from "../../../constants";
 
 const Register = () => {
   const { loading, registered } = useSelector((state: any) => state.register);
-  const { isAuthenticated,role ,loader } = useSelector((state: any) => state.login);
+  const { isAuthenticated,role  } = useSelector((state: any) => state.login);
   const [lawyers, setLawyers] = useState([]);
 
 
@@ -342,9 +342,9 @@ const Register = () => {
   });
   return (
       <>
-        {loader && <Loader width="w-full" height="min-h-screen" />}{" "}
+        {loading && <Loader width="w-full" height="min-h-screen" />}{" "}
 
-      {(!loader)&&(<main className="w-full min-h-screen  flex">
+      {(!loading)&&(<main className="w-full min-h-screen  flex">
           <div className="relative min-h-screen flex-1  hidden items-center justify-center py-3 bg-gray-900 lg:flex">
               <div className="relative z-10  bbg-gray-900 w-full max-w-md">
                   {/* <img src="https://floatui.com/logo-dark.svg" width={150} /> */}
@@ -354,7 +354,7 @@ const Register = () => {
                       You can register to the website by providing required credentials
                       </p>
                       <div className="flex items-center -space-x-2 overflow-hidden">
-                      {lawyers.map((lawyer_data)=>(<img src={`${BASE_URL}${lawyer_data.profile}`} className="w-10 h-10 rounded-full border-2 border-white" />))}
+                      {lawyers.map((lawyer_data)=>(<img src={`${ImgBackendUrl}${lawyer_data.profile}`} className="w-10 h-10 rounded-full border-2 border-white" />))}
                           <p className="text-xs text-gray-400 font-medium translate-x-5">
                                Experienced Lawyers..
                           </p>

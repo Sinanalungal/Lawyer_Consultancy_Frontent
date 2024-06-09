@@ -11,7 +11,7 @@ import { logout } from "../../redux/slice/LoginActions";
 import TeamSection from "../../components/team/Team";
 import Marquee from "react-fast-marquee";
 import { getAxiosInstance } from "../../services/axiosInstance/AxiosInstance";
-import { BASE_URL } from "../../constants";
+import { BASE_URL, ImgBackendUrl } from "../../constants";
 import axios from "axios";
 import "../../components/team/Team.css";
 
@@ -85,7 +85,7 @@ const LandingPage: React.FC = () => {
     name: member.full_name,
     experience: `${member.experience} years experience`,
     description: member.description,
-    imgUrl: `${BASE_URL}${member.profile}`,
+    imgUrl: `${ImgBackendUrl}${member.profile}`,
     button: (
       <div className="bg-slate-900 cursor-pointer inline-block p-2 rounded-md text-white">
         Take a session

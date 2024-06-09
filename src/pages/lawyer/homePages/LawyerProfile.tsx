@@ -1,6 +1,6 @@
 import React from 'react';
 import LawyerHome from '../home/LawyerHome';
-import UserProfile from '../../userProfile/UserProfile';
+import UserProfile from '../../userProfile&Blog/UserProfile';
 
 
 

@@ -6,7 +6,7 @@ import { AiOutlineLike } from "react-icons/ai";
 import { useLocation, useNavigate } from "react-router-dom";
 import { MdBookmarkAdded } from "react-icons/md";
 import { getAxiosInstance } from "../../services/axiosInstance/AxiosInstance";
-import { BASE_URL } from "../../constants";
+import { BASE_URL, ImgBackendUrl } from "../../constants";
 import { useSelector } from "react-redux";
 import { useEffect, useState } from "react";
 import { toast } from "react-toastify";
@@ -130,7 +130,7 @@ const BlogPage: React.FC = () => {
             {title}
           </p>
           <div className="w-full space-x-3 flex items-center mt-3 py-3 sm:py-7 border-b ">
-            <img src={`${BASE_URL}${profile}`} className="w-[50px] max-[400px]:min-w-[40px] max-[400px]:h-[40px] h-[50px] bg-black rounded-full"/>
+           {profile?( <img src={`${ImgBackendUrl}${profile}`} className="w-[50px] max-[400px]:min-w-[40px] max-[400px]:h-[40px] h-[50px] bg-black rounded-full"/>):( <img src='/profile-default.svg' className="w-[50px] max-[400px]:min-w-[40px] max-[400px]:h-[40px] h-[50px] bg-black rounded-full"/>)}
             <div className="flex h-full w-full  flex-col space-y-1">
               <p className="w-full truncate   break-words font-semibold text-sm max-[400px]:text-xs">
                 {bloguser}

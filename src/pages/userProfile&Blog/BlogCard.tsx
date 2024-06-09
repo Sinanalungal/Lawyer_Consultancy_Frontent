@@ -5,7 +5,7 @@ import {  useNavigate } from "react-router-dom";
 import { MdOutlinePendingActions } from "react-icons/md";
 import { MdBookmarkAdded } from "react-icons/md";
 import { TbNotesOff } from "react-icons/tb";
-import { BASE_URL } from "../../constants";
+import { BASE_URL, ImgBackendUrl } from "../../constants";
 
 
 
@@ -80,7 +80,7 @@ const BlogCard: React.FC<BlogCardProps> = ({
               <div className="w-[50%] max-[400px]:hidden space-x-1 flex  items-center">
                 {user ? (
                   <>
-                      <img src={`${BASE_URL}${profile}`} className="object-cover w-[20px] h-[20px] rounded-full mt-1 bg-red-300" alt="" />
+                      {profile?(<img src={`${ImgBackendUrl}${profile}`} className="object-cover w-[20px] h-[20px] rounded-full mt-1 bg-red-300" alt="" />):(<img src='/profile-default.svg' className="object-cover w-[20px] h-[20px] rounded-full mt-1 bg-red-300" alt="" />)}
                     {/* <div className="min-w-[20px] min-h-[20px] rounded-full mt-1 bg-red-300">
                     </div> */}
                     <p className="truncate text-xs">{user}</p>

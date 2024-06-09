@@ -1,6 +1,6 @@
 import React from 'react';
 import { toast } from 'react-toastify';
-import { BASE_URL } from '../../constants';
+import { BASE_URL, ImgBackendUrl } from '../../constants';
 
 interface Comment {
   id: number;
@@ -60,7 +60,7 @@ const DiscussionSection: React.FC<DiscussionSectionProps> = ({ comments,addComme
           <article key={comment.id} className="p-6 max-sm:px-1 text-base bg-white rounded-lg dark:bg-gray-900">
             <footer className="flex justify-between items-center mb-2">
               <div className="flex items-center">
-              <img className="mr-2 w-5 h-5 rounded-full" src={`${BASE_URL}${comment.author?.profile}`} alt={comment.author?.full_name} />
+              <img className="mr-2 w-5 h-5 rounded-full" src={`${ImgBackendUrl}${comment.author?.profile}`} alt={comment.author?.full_name} />
                 <p className="inline-flex truncate items-center max-sm:text-xs mr-3 text-[14px] text-gray-900 dark:text-white font-semibold">
                   {comment.author?.full_name}
                 </p>

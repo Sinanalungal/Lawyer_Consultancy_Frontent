@@ -1,6 +1,6 @@
 import React, { useEffect } from "react";
 import Table from "../../../components/table/Table";
-import { BASE_URL } from "../../../constants";
+import { BASE_URL, ImgBackendUrl } from "../../../constants";
 import { getAxiosInstance } from "../../../services/axiosInstance/AxiosInstance";
 import { useSelector } from "react-redux";
 import Swal from "sweetalert2";
@@ -135,7 +135,7 @@ function LawyersComponent() {
   };
 
   var data = lawyers.map((lawyer_data: any) => ({
-    profile: lawyer_data.profile?(<img className="w-12 h-12 rounded-md bg-cover" src={`${BASE_URL}${lawyer_data.profile}`}/>):(<img className="w-12 h-12 rounded-md bg-cover" src='/profile-default.svg'/>),
+    profile: lawyer_data.profile?(<img className="w-12 h-12 rounded-md bg-cover" src={`${ImgBackendUrl}${lawyer_data.profile}`}/>):(<img className="w-12 h-12 rounded-md bg-cover" src='/profile-default.svg'/>),
     name: lawyer_data.full_name,
     phone: lawyer_data.phone_number,
     email: lawyer_data.email,

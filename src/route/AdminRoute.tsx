@@ -8,8 +8,8 @@ import UsersComponent from '../pages/admin/homePages/UsersComponent';
 import SubscriptionPlans from '../pages/admin/homePages/SubscriptionPlans';
 import BlogsComponent from '../pages/admin/homePages/BlogsComponent';
 import NotificationComponent from '../pages/admin/homePages/NotificationComponent';
-import Blog from '../pages/userProfile/Blog';
-import BlogPage from '../pages/userProfile/BlogPage';
+import Blog from '../pages/userProfile&Blog/Blog';
+import BlogPage from '../pages/userProfile&Blog/BlogPage';
 import BlogsView from '../pages/admin/homePages/BlogsView';
 import AddSubscription from '../pages/admin/homePages/AddSubscription';
 

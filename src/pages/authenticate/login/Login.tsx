@@ -8,7 +8,7 @@ import { loginAsync } from "../../../redux/slice/LoginActions";
 import GoogleLoginButton from "../../../components/googleLoginButton/GoogleLoginButton";
 import Loader from "../../../components/loader/loader";
 import axios from "axios";
-import { BASE_URL } from "../../../constants";
+import { BASE_URL, ImgBackendUrl } from "../../../constants";
 
 // interface LoginProps {}
 
@@ -242,7 +242,7 @@ const Login = () => {
                         You can login to the website by providing required credentials..
                       </p>
                       <div className="flex items-center -space-x-2 overflow-hidden">
-                        {lawyers.map((lawyer_data)=>(<img src={`${BASE_URL}${lawyer_data.profile}`} className="w-10 h-10 rounded-full border-2 border-white" />))}
+                        {lawyers.map((lawyer_data)=>(<img src={`${ImgBackendUrl}${lawyer_data.profile}`} className="w-10 h-10 rounded-full border-2 border-white" />))}
                           <p className="text-xs text-gray-400 font-medium translate-x-5">
                                Experienced Lawyers..
                           </p>
