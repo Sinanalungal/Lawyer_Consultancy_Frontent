@@ -6,6 +6,7 @@ import LawyerSubscriptions from '../pages/lawyer/homePages/LawyerSubscription';
 import LawyerProfile from '../pages/lawyer/homePages/LawyerProfile';
 import LawyerSavedBlogs from '../pages/lawyer/homePages/LawyerSavedBlogs';
 import AddLawyerSubscription from '../pages/lawyer/homePages/AddLawyerSubscription';
+import LawyerChat from '../pages/lawyer/lawyerChat/LawyerChat';
 
 
 function LawyerRoute() {
@@ -19,6 +20,7 @@ function LawyerRoute() {
         <Route path="profile" element={<LawyerProfile/>} />
         <Route path="saved-blogs" element={<LawyerSavedBlogs/>} />
         <Route path="add-subscriptions" element={<AddLawyerSubscription/>} />
+        <Route path="chat/:Id" element={<LawyerChat />} />
         </Route>
       </Routes>
     </>

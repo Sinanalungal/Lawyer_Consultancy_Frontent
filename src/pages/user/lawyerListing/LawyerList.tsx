@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from "react";
-import { getAxiosInstance } from "../../services/axiosInstance/AxiosInstance";
-import { BASE_URL, ImgBackendUrl } from "../../constants";
-import { Link } from "react-router-dom";
-import Loader from "../../components/loader/loader";
+import { BASE_URL, ImgBackendUrl } from "../../../constants";
+import { Link, useNavigate } from "react-router-dom";
+import Loader from "../../../components/loader/loader";
+import { getAxiosInstance } from "../../../services/axiosInstance/AxiosInstance";
 
 function LawyerList() {
   const [departments, setDepartments] = useState([]);
@@ -11,8 +11,9 @@ function LawyerList() {
   const [searchQuery, setSearchQuery] = useState("");
   const [lawyers, setLawyers] = useState([]);
   const [loading, setLoading] = useState(true);
-
+  const navigate = useNavigate()
   useEffect(() => {
+    window.scrollTo(0, 0);
     async function fetchDepartmentData() {
       try {
         const axiosInstance = await getAxiosInstance();
@@ -23,7 +24,7 @@ function LawyerList() {
       }
     }
     fetchDepartmentData();
-    window.scrollTo(0, 0);
+    
   }, []);
 
   useEffect(() => {
@@ -178,7 +179,7 @@ function LawyerList() {
                             Take A Session
                           </p>
                         </Link>
-                        <p className="text-xs p-1 border border-slate-800 rounded-md text-center text-black">
+                        <p onClick={()=>navigate(`../chat/${lawyer.id}`)} className="text-xs p-1 border border-slate-800 rounded-md text-center text-black">
                           Chat
                         </p>
                       </div>

@@ -30,7 +30,7 @@ class AccessTokenManager {
   private async refreshToken(): Promise<void> {
     console.log('refreshing token...')
     const refreshToken = this.user.refresh;
-    const response = await axios.post(`${this.baseUrl}/token/refresh/`, { refresh: refreshToken });
+    const response = await axios.post(`${this.baseUrl}token/refresh/`, { refresh: refreshToken });
     console.log(response ,'refreshtoken response');
     
     console.log(response.data,'new token gets ');
