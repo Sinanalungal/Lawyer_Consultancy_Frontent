@@ -174,7 +174,7 @@ function LawyerList() {
                         </p>
                       </div>
                       <div className="flex flex-col justify-center space-y-1">
-                        <Link to={`../subscription/${lawyer.id}`}>
+                        <Link to={`../user-session/${lawyer.id}`}>
                           <p className="text-xs p-1 bg-slate-800 rounded-md text-center text-white">
                             Take A Session
                           </p>

@@ -1,55 +1,57 @@
 import React, { useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
-import { getAxiosInstance } from "../../services/axiosInstance/AxiosInstance";
-import { BASE_URL } from "../../constants";
-import Loader from "../../components/loader/loader";
+import { useNavigate, useParams } from "react-router-dom";
+import { BASE_URL } from "../../../constants";
+import Loader from "../../../components/loader/loader";
 import {loadStripe,Stripe} from '@stripe/stripe-js'
 import { useSelector } from "react-redux";
-import Modal from "../../components/modal/Modal";
+import Modal from "../../../components/modal/Modal";
+import { getAxiosInstance } from "../../../services/axiosInstance/AxiosInstance";
 
 
-function SubscriptionPage() {
-  const [lawyer, setLawyer] = useState<any>(null);
-  const [subscriptions, setSubscriptions] = useState([]);
-  const [loader, setLoader] = useState(true);
-  const [detailModal,setDetailModal] = useState({open:false,detail:''})
-  const { lawyerId } = useParams();
+function SubscriptionPage({lawyer,loader,detailModal,subscriptions}) {
+  // const [lawyer, setLawyer] = useState<any>(null);
+  // const [subscriptions, setSubscriptions] = useState([]);
+  // const [loader, setLoader] = useState(true);
+  // const [detailModal,setDetailModal] = useState({open:false,detail:''})
+  // const { lawyerId } = useParams();
   const {value}=useSelector((store)=>store.login)
+  // const navigate = useNavigate()
 
-  useEffect(() => {
-    setLoader(true);
-    console.log(lawyerId);
-    setLawyer(lawyerId);
-  }, []);
+  // useEffect(() => {
+  //   setLoader(true);
+  //   console.log(lawyerId);
+  //   setLawyer(lawyerId);
+  // }, []);
 
-  useEffect(() => {
-    setLoader(true);
-    if (lawyer) {
-      async function fetchDepartmentData() {
-        try {
-          const axiosInstance = await getAxiosInstance();
-          const response = await axiosInstance.post(
-            `${BASE_URL}subscriptions/lawyer_plans/${lawyer}`,{user_id:value}
-          );
+  // useEffect(() => {
+  //   setLoader(true);
+  //   if (lawyer) {
+  //     async function fetchDepartmentData() {
+  //       try {
+  //         const axiosInstance = await getAxiosInstance();
+  //         const response = await axiosInstance.post(
+  //           `${BASE_URL}subscriptions/lawyer_plans/${lawyer}`,{user_id:value}
+  //         );
           
-          setSubscriptions(response.data);
-          console.log(response.data);
-          console.log(lawyer,'this is the lawyer id');   
-          setLoader(false);
-        } catch (error) {
-          console.log(error);
-          if (error.response.status == 406){
-            setDetailModal({open:true,detail:error.response.data.detail})
+  //         setSubscriptions(response.data);
+  //         console.log(response.data);
+  //         console.log(lawyer,'this is the lawyer id');   
+  //         setLoader(false);
+  //       } catch (error) {
+  //         console.log(error);
+  //         if (error.response.status == 406){
+  //           navigate('user-session/')
+  //           setDetailModal({open:true,detail:error.response.data.detail})
             
-          }else if (error.response.status == 404 ){
-            setDetailModal({open:false,detail:error.response.data.detail})
-          }
-          setLoader(false);
-        }
-      }
-      fetchDepartmentData();
-    }
-  }, [lawyer]);
+  //         }else if (error.response.status == 404 ){
+  //           setDetailModal({open:false,detail:error.response.data.detail})
+  //         }
+  //         setLoader(false);
+  //       }
+  //     }
+  //     fetchDepartmentData();
+  //   }
+  // }, [lawyer]);
 
   const handleSubscribe = async (event, subscriptionId) => {
     event.preventDefault();
