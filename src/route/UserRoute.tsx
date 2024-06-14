@@ -13,6 +13,7 @@ import UserChat from '../pages/user/userChat/UserChat';
 import LawyerList from '../pages/user/lawyerListing/LawyerList';
 import SubscriptionPage from '../pages/user/subscription/SubscriptionPage';
 import UserSession from '../pages/user/userSession/UserSession';
+import UserSubscriptions from '../pages/userProfile&Blog/UserSubscriptions';
 
 function UserRoute() {
   return (
@@ -25,7 +26,7 @@ function UserRoute() {
      
         <Route path="saved-blogs" element={<SavedBlogs />} />
         <Route path="lawyer-list" element={<LawyerList />} />
-        {/* <Route path="subscription/:lawyerId" element={<SubscriptionPage />} /> */}
+        <Route path="user-subscriptions" element={<UserSubscriptions />} />
         <Route path="user-session/:lawyerId" element={<UserSession />} />
         <Route path="/chat/:lawyerId" element={<UserChat />} />
 

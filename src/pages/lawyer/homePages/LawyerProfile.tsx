@@ -6,7 +6,7 @@ import UserProfile from '../../userProfile&Blog/UserProfile';
 
 function LawyerProfile() {
   return (
-    <LawyerHome ind={3} component={<><UserProfile/></>}/>
+    <LawyerHome ind={4} component={<><UserProfile/></>}/>
   );
 }
 

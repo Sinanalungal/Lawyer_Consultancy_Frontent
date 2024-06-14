@@ -16,13 +16,6 @@ function UserChat() {
     const [sessionPage,setSessionPage] = useState(false)
     const navigate = useNavigate()
 
-
-    useEffect(() => {
-      setLoader(true);
-      console.log(lawyerId);
-      setLawyer(lawyerId);
-    }, []);
-
     useEffect(() => {
       setLoader(true);
       if (lawyer) {
@@ -53,6 +46,14 @@ function UserChat() {
         fetchDepartmentData();
       }
     }, [lawyer]);
+    
+    useEffect(() => {
+      setLoader(true);
+      console.log(lawyerId);
+      setLawyer(lawyerId);
+    }, []);
+
+   
     // const { Id } = useParams();
     useEffect(() => {
       window.scrollTo(0, 0);

@@ -6,6 +6,7 @@ import { getAxiosInstance } from "../../../services/axiosInstance/AxiosInstance"
 import { BASE_URL, ImgBackendUrl } from "../../../constants";
 import Marquee from "react-fast-marquee";
 import TeamSection from "../../../components/team/Team";
+import { Link } from "react-router-dom";
 
 const Homepage: React.FC = () => {
   const [lawyers, setLawyers] = useState([]);
@@ -28,81 +29,16 @@ const Homepage: React.FC = () => {
     description: member.description,
     imgUrl: `${ImgBackendUrl}${member.profile}`,
     button: (
-      <div className="bg-slate-900 cursor-pointer inline-block p-2 rounded-md text-white">
+      <Link to={`user-session/${member.id}`}><div className="bg-slate-900 cursor-pointer inline-block p-2 rounded-md text-white">
         Take a session
-      </div>
+      </div></Link>
     ),
   }));
 
   return (
-    // <div className="homepage">
-    //     <Navbar/>
-    //     <div className=" homepage_elements max-sm:hidden dark:bg-black items-center relative max-lg:h-[420px] h-[600px]" style={{ backgroundImage: `url("./homepageimg.png")`, backgroundSize: "contain", backgroundRepeat: 'no-repeat', backgroundPositionX: 'right', width: "100%" }}>
-    //         <div className="h-[80%] md:w-[60%] sm:w-[65%] dark:text-white flex flex-col justify-center">
-    //             <h1 className="font-bold text-5xl bg-white dark:bg-black  mt-4 xl:text-7xl px-6 md:px-24">Legal Advice Online From Top Lawyers</h1>
-    //             <button type="button" className="text-white  dark:text-black dark:bg-white bg-black md:text-base font-bold text-xs border-2 mx-6 md:mx-24 lg:mt-10 mt-5 border-black px-5 py-3 w-40 rounded-3xl">Consult Lawyer</button>
-    //         </div>
-    //         {/* <div className="absolute bottom-0 left-0 w-full h-16 bg-gradient-to-t from-white dark:from-black via-transparent to-transparent"></div> */}
-
-    //     </div>
-
-    //     {/* <div className="homepage_elements sm:hidden dark:bg-black items-center relative" style={{ width: "100%" }}>
-    //         <div className="h-[80%] w-[100%] flex flex-col justify-center py-6">
-    //             <h1 className="font-extrabold dark:bg-black dark:text-white text-4xl lg:text-5xl xl:text-7xl px-6 md:px-24">Legal Advice Online From Top Lawyers</h1>
-    //             <div className="w-full dark:bg-black relative" style={{ backgroundImage: `url("Homepage-mobile.png")`, backgroundSize: "cover", backgroundRepeat: 'no-repeat', backgroundPositionX: 'right', width: "100%", height: "600px" }}>
-    //                 <div className="absolute bottom-0 left-0 w-full h-20 bg-gradient-to-t from-white dark:from-black via-transparent to-transparent"></div>
-    //             </div>
-    //             <button type="button" className="text-white  dark:bg-white dark:text-black bg-black md:text-base  font-bold text-xs border-2 mx-6 md:mx-24 border-black px-5 py-3 w-40 rounded-3xl">Consult Lawyer</button>
-    //         </div>
-    //     </div> */}
-    //     <div className='sm:hidden'>
-    //     <Header/>
-    //     </div>
-    //     <Content/>
-    //     <div className=" "></div>
-    // </div>
-
-    // <div className="homepage">
-    //         <Navbar/>
-    //         <div className='w-full px-4  flex flex-col-reverse md:flex-row md:h-[600px]  items-center justify-center'>
-    //             <div className='w-full md:w-1/2 flex flex-col justify-center  max-md:py-10'>
-    //                 <h1 className="font-bold text-5xl xl:text-7xl bg-white dark:bg-black mt-4 px-6 md:px-24">Legal Advice Online From Top Lawyers</h1>
-    //                 <button type="button" className="text-white dark:text-black dark:bg-white bg-black md:text-base font-bold text-xs border-2 mx-6 md:mx-24 lg:mt-10 mt-5 border-black px-5 py-3 w-40 rounded-3xl">Consult Lawyer</button>
-    //             </div>
-    //             <div className='w-full md:w-1/2 h-full flex items-center'>
-    //                 <img src={LawyerGif} className='object-cover' alt="" />
-    //             </div>
-    //         </div>
-
-    //      <Content/>
-    //      <div className=" "></div>
-    // </div>
+   
     <>
-      {/* <Headers />
-      <div className="homepage  flex flex-col justify-center items-center">
-        <div className=" w-full px-4 flex flex-col-reverse md:flex-row md:h-[600px] items-center justify-center">
-          <div className="2xl:px-auto w-full  md:w-1/2 flex flex-col justify-center max-md:py-10">
-            <h1 className="font-bold text-5xl xl:text-7xl  bg-white dark:bg-black mt-4 px-6 md:px-24">
-              Legal Advice Online From Top Lawyers
-            </h1>
-            <button
-              type="button"
-              className="text-white dark:text-black dark:bg-white bg-black md:text-base font-bold text-xs border-2 mx-6 md:mx-24 lg:mt-10 mt-5 border-black px-5 py-3 w-40 rounded-3xl"
-            >
-              Consult Lawyer
-            </button>
-          </div>
-          <div className="w-full md:w-1/2 2xl:w-auto h-full flex items-center justify-center max-w-[500px] mx-auto"> {/* Added max-width and mx-auto */}
-      {/* <img
-              src={LawyerGif}
-              className="object-cover h-[500px] w-[100%] md:h-auto md:w-auto" // Set specific height and width for the image
-              alt="Lawyer Image"
-            /> */}
-      {/* </div>
-        </div>
-        <Content />
-        <div className=""></div>
-      </div> */}
+      
       <Hero />
 
       <TeamSection teamMembers={teamMembers} />

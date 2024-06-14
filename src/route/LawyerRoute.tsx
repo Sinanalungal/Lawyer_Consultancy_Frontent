@@ -20,7 +20,7 @@ function LawyerRoute() {
         <Route path="profile" element={<LawyerProfile/>} />
         <Route path="saved-blogs" element={<LawyerSavedBlogs/>} />
         <Route path="add-subscriptions" element={<AddLawyerSubscription/>} />
-        <Route path="chat/:Id" element={<LawyerChat />} />
+        <Route path="chat/" element={<LawyerChat />} />
         </Route>
       </Routes>
     </>

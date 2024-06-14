@@ -1,18 +1,18 @@
 import React, { ReactElement, useState, lazy, Suspense, useEffect } from "react";
 import { TiThMenu } from "react-icons/ti";
-import { IoClose, IoNotificationsCircleSharp } from "react-icons/io5";
+import { IoClose } from "react-icons/io5";
 import { RiDashboard3Fill } from "react-icons/ri";
-import { GoLaw } from "react-icons/go";
-import { FaUsers, FaMoneyBill } from "react-icons/fa";
+import {  FaMoneyBill } from "react-icons/fa";
 import { MdVideoLabel } from "react-icons/md";
 import { useDispatch, useSelector } from "react-redux";
 import { CgLogOut } from "react-icons/cg";
-import { ImBlog } from "react-icons/im";
 import Dropdown from "../../../components/dropdown/DropDown";
 import { logout } from "../../../redux/slice/LoginActions";
 import { FiLogOut } from 'react-icons/fi';
-import { Route, useNavigate } from "react-router-dom";
+import {  useNavigate } from "react-router-dom";
 import { FaUserCircle } from "react-icons/fa";
+import { IoIosChatboxes } from "react-icons/io";
+
 
 
 
@@ -55,6 +55,11 @@ function LawyerHome({ component, ind }:{ component: ReactElement, ind: number })
       name: "Subscription",
       icon: <FaMoneyBill size={30} />,
       route: "subscriptions",
+    },
+    {
+      name: "Chat",
+      icon: <IoIosChatboxes size={30} />,
+      route: "chat",
     },
     {
       name: "Profile",

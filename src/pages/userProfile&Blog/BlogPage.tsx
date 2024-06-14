@@ -10,6 +10,9 @@ import { BASE_URL, ImgBackendUrl } from "../../constants";
 import { useSelector } from "react-redux";
 import { useEffect, useState } from "react";
 import { toast } from "react-toastify";
+import { MdReportGmailerrorred } from "react-icons/md";
+import Modal from "../../components/modal/Modal";
+
 
 const BlogPage: React.FC = () => {
   const [comment, setComment] = useState("");
@@ -17,6 +20,8 @@ const BlogPage: React.FC = () => {
   // const [newCommentAdded, setNewCommentAdded] = useState<boolean>(false)
   const [liked,setLiked] = useState({liked: false,count:0})
   const [saved,setSaved] = useState({saved: false,count:0})
+  const [modalOpen,setModalOpen] = useState(false)
+  const [report, setReport] = useState('');
   const location = useLocation();
   const navigate = useNavigate()
   const {
@@ -34,6 +39,10 @@ const BlogPage: React.FC = () => {
     profile
   } = location.state;
   const { value, user } = useSelector((state: any) => state.login);
+
+  const handleCommentChange = (event) => {
+    setReport(event.target.value);
+  };
   useEffect(()=>{
     setLiked(is_liked)
     setSaved(is_saved)
@@ -42,7 +51,7 @@ const BlogPage: React.FC = () => {
 
   const addingComment = async () => {
     try {
-      const axiosInstance = await getAxiosInstance(user);
+      const axiosInstance = await getAxiosInstance();
       const response = await axiosInstance.post(
         BASE_URL + "blogsession/comments/",
         { user: value, content: comment, blog: blogId }
@@ -91,19 +100,36 @@ const BlogPage: React.FC = () => {
       console.log(err);
     }
   }
+  const BlogReport = async(event)=>{
+    event.preventDefault()
+    try {
+      const axiosInstance = await getAxiosInstance();
+      const response = await axiosInstance.post(
+        BASE_URL + "blogsession/report-blog/",
+        { note: value, blog: blogId ,report:true}
+      );
+      toast.success(response.data.message)
+      setModalOpen(false)
+    } catch (err) {
+      toast.error('something went wrong')
+      console.log(err);
+    }
+  }
   useEffect(() => {
     const fetchComments = async () => {
-      try {
-        const axiosInstance = await getAxiosInstance();
-        const response = await axiosInstance.get(
-          BASE_URL + `blogsession/comments/?blog_id=${blogId}`,
-        );
-
-        console.log(response.data);
-        setAllComments(response.data);
-        // setNewCommentAdded(false);
-      } catch (err) {
-        console.log(err);
+      if (report.trim() !== '') {
+        try {
+          const axiosInstance = await getAxiosInstance();
+          const response = await axiosInstance.get(
+            BASE_URL + `blogsession/comments/?blog_id=${blogId}`,
+          );
+  
+          console.log(response.data);
+          setAllComments(response.data);
+          // setNewCommentAdded(false);
+        } catch (err) {
+          console.log(err);
+        }
       }
     };
     fetchComments()
@@ -131,13 +157,17 @@ const BlogPage: React.FC = () => {
           </p>
           <div className="w-full space-x-3 flex items-center mt-3 py-3 sm:py-7 border-b ">
            {profile?( <img src={`${ImgBackendUrl}${profile}`} className="w-[50px] max-[400px]:min-w-[40px] max-[400px]:h-[40px] h-[50px] bg-black rounded-full"/>):( <img src='/profile-default.svg' className="w-[50px] max-[400px]:min-w-[40px] max-[400px]:h-[40px] h-[50px] bg-black rounded-full"/>)}
-            <div className="flex h-full w-full  flex-col space-y-1">
+            <div className="flex h-full w-full justify-between  space-y-1">
+              <div>
               <p className="w-full truncate   break-words font-semibold text-sm max-[400px]:text-xs">
                 {bloguser}
               </p>
               <p className="font-semibold break-words text-xs max-[400px]:text-[10px] text-gray-600 ">
                 {blogDate}
               </p>
+              </div>
+              <p onClick={()=>setModalOpen(true)}><MdReportGmailerrorred size={30}/></p>
+
             </div>
           </div>
           <hr />
@@ -194,6 +224,37 @@ const BlogPage: React.FC = () => {
         </div> */}
         </div>
       </div>
+      <Modal isOpen={modalOpen} onClose={()=>setModalOpen(false)} children={
+        <div className="flex justify-center items-center"><div className="xl:w-[70%] f sm:w-[70%] w-[98%] bg-slate-50 rounded-md">
+      <form  onSubmit={BlogReport}>
+        <div className="w-full border border-gray-200 rounded-lg bg-gray-50 dark:bg-gray-700 dark:border-gray-600">
+          <div className="px-4 py-2 bg-white rounded-t-lg dark:bg-gray-800">
+            <label htmlFor="comment" className="sr-only">Your comment</label>
+            <textarea
+              id="comment"
+              rows="4"
+              className="w-full px-0 text-sm focus:outline-none text-gray-900 bg-white border-0 dark:bg-gray-800 focus:ring-0 dark:text-white dark:placeholder-gray-400"
+              placeholder="Write a comment..."
+              required
+              value={report}
+              onChange={handleCommentChange}
+            ></textarea>
+          </div>
+          <div className="flex items-center justify-between px-3 py-2 border-t dark:border-gray-600">
+            <button
+              type="submit"
+              className="inline-flex items-center py-2.5 px-4 text-xs font-medium text-center text-white bg-blue-700 rounded-lg focus:ring-4 focus:ring-blue-200 dark:focus:ring-blue-900 hover:bg-blue-800"
+            >
+              Post comment
+            </button>
+            
+          </div>
+        </div>
+      </form>
+     
+    </div>
+          </div>
+      }/>
     </>
   );
 };

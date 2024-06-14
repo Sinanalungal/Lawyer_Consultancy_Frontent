@@ -20,7 +20,7 @@ const UserProfile: React.FC = () => {
   // const navigate = useNavigate();
   const [index, setIndex] = useState(1);
   const [loader,setLoader] = useState(false)
-  const { value } = useSelector((state: any) => state.login);
+  const { value ,role } = useSelector((state: any) => state.login);
   const navigate = useNavigate()
   useEffect(() => {
     setLoader(true)
@@ -58,7 +58,7 @@ const UserProfile: React.FC = () => {
     <div className="w-full mx-auto p-4 flex text-xs justify-end sm:text-sm font-semibold items-end max-md:flex-col sm:w-[80%]  rounded-lg">
     <div className="items-center space-x-1  flex text-left">
       
-      <Link to='../../../../../../user/user-subscriptions/'><FaCrown size={30}  className="bg-yellow-500 rounded-md p-2"/></Link>
+      {role == 'user' && <Link to='../../../../../../user/user-subscriptions/'><FaCrown size={30}  className="bg-yellow-500 rounded-md p-2"/></Link>}
       <button
         id="dropdownMenuIconHorizontalButton"
         onClick={() => toggleDropdown('dropdownDotsHorizontal')}

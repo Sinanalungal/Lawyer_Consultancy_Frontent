@@ -103,11 +103,11 @@ function AdminHome({ component, ind }:{ component: ReactElement, ind: number }) 
                   handleOptionClick(option.route);
                 }}
                 className={`w-full h-16 flex justify-start items-center p-5 cursor-pointer
-                         ${
-                           ind === index
-                             ? "bg-slate-700 text-white"
-                             : "text-slate-800"
-                         }`}
+                ${
+                  ind === index
+                    ? "bg-slate-700 text-white"
+                    : "text-slate-800"
+                }`}
               >
                 <span>{option.icon}</span>
                 <span className="ml-3 font-semibold">{option.name}</span>

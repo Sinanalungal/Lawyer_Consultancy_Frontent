@@ -15,6 +15,7 @@ import { useSelector } from "react-redux";
 import { getAxiosInstance } from "../../services/axiosInstance/AxiosInstance";
 import Loader from "../../components/loader/loader";
 
+
 const BlogContent: React.FC = () => {
   const { value } = useSelector((state: any) => state.login);
   const [modal, setModal] = useState(false);

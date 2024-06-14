@@ -33,15 +33,17 @@ const ChatComponent = ({ send_to_id, path }) => {
   }, [thread]);
 
   useEffect(() => {
-    if (!send_to_id) {
-      navigate("../");
-    }
+    // if (!send_to_id) {
+    //   navigate("../");
+    // }
 
     const fetchChattedPersons = async () => {
       try {
         const axiosInstance = await getAxiosInstance();
         const response = await axiosInstance.get(`${BASE_URL}chat/messages/`);
         setChattedPersons(response.data);
+        console.log(response.data);
+        
       } catch (error) {
         console.error("Error fetching chatted persons:", error);
       }

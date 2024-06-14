@@ -2,7 +2,9 @@ import React from "react";
 import { Link } from "react-router-dom";
 import "./Team.css";
 
-const TeamSection = ({ teamMembers }) => {
+const TeamSection = ({ teamMembers ,landing=false }) => {
+  console.log(teamMembers);
+  
   return (
     <div className="px-4 rounded-lg py-16 mx-auto sm:max-w-xl md:max-w-full lg:max-w-screen-xl md:px-24 lg:px-8 lg:py-20">
       {(teamMembers.length > 0) && (<><div className="max-w-xl mb-10 md:mx-auto sm:text-center lg:max-w-2xl md:mb-12">
@@ -18,7 +20,7 @@ const TeamSection = ({ teamMembers }) => {
       </div>
 
       <div className="flex justify-end mb-8">
-        <Link to="lawyer-list">
+        <Link to={`${landing?'user/lawyer-list':'lawyer-list'}`}>
           <p className="text-xs font-semibold bg-black text-white p-2 rounded-md">
             view all lawyers
           </p>
