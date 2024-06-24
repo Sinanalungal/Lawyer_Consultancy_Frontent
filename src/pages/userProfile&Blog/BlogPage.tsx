@@ -106,7 +106,7 @@ const BlogPage: React.FC = () => {
       const axiosInstance = await getAxiosInstance();
       const response = await axiosInstance.post(
         BASE_URL + "blogsession/report-blog/",
-        { note: value, blog: blogId ,report:true}
+        { note: report , blog: blogId ,report:true}
       );
       toast.success(response.data.message)
       setModalOpen(false)

@@ -8,12 +8,11 @@ import BlogPage from '../pages/userProfile&Blog/BlogPage';
 import UserProfile from '../pages/userProfile&Blog/UserProfile';
 import UserLayer from '../layer/UserLayer';
 import SavedBlogs from '../pages/userProfile&Blog/SavedBlogs';
-import ChatComponent from '../components/chat/Chat';
 import UserChat from '../pages/user/userChat/UserChat';
 import LawyerList from '../pages/user/lawyerListing/LawyerList';
-import SubscriptionPage from '../pages/user/subscription/SubscriptionPage';
 import UserSession from '../pages/user/userSession/UserSession';
 import UserSubscriptions from '../pages/userProfile&Blog/UserSubscriptions';
+import CasesPlanList from '../pages/user/userCases/CasesPlanList';
 
 function UserRoute() {
   return (
@@ -23,13 +22,12 @@ function UserRoute() {
         <Route path="userprofile" element={<UserProfile />} />
         <Route path="blog" element={<Blog />} />
         <Route path="blogpage" element={<BlogPage />} />
-     
         <Route path="saved-blogs" element={<SavedBlogs />} />
         <Route path="lawyer-list" element={<LawyerList />} />
         <Route path="user-subscriptions" element={<UserSubscriptions />} />
         <Route path="user-session/:lawyerId" element={<UserSession />} />
         <Route path="/chat/:lawyerId" element={<UserChat />} />
-
+        <Route path="user-cases/" element={<CasesPlanList />} />
       </Route>
     </Routes>
   );

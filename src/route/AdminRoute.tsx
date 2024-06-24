@@ -12,6 +12,8 @@ import Blog from '../pages/userProfile&Blog/Blog';
 import BlogPage from '../pages/userProfile&Blog/BlogPage';
 import BlogsView from '../pages/admin/homePages/BlogsView';
 import AddSubscription from '../pages/admin/homePages/AddSubscription';
+import AdminReports from '../pages/admin/homePages/Reports';
+import ReportView from '../pages/admin/homePages/ReportView';
 
 
 function AdminRoute() {
@@ -28,6 +30,8 @@ function AdminRoute() {
         <Route path="blogs" element={<BlogsComponent/>} />
         <Route path="blog/" element={<BlogsView/>} />
         <Route path="blogpage/" element={<BlogPage/>} />
+        <Route path="reports/" element={<AdminReports/>} />
+        <Route path="reports-view/" element={<ReportView/>} />
         <Route path="notification" element={<NotificationComponent/>} />
         </Route>
       </Routes>

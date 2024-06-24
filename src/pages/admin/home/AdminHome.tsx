@@ -11,6 +11,8 @@ import Dropdown from "../../../components/dropdown/DropDown";
 import { logout } from "../../../redux/slice/LoginActions";
 import { Route, useNavigate } from "react-router-dom";
 import { FiLogOut } from 'react-icons/fi';
+import { MdReport } from "react-icons/md";
+
 
 
 function AdminHome({ component, ind }:{ component: ReactElement, ind: number }) {
@@ -64,10 +66,16 @@ function AdminHome({ component, ind }:{ component: ReactElement, ind: number }) 
       route: "blogs",
     },
     {
+      name: "Reports",
+      icon: <MdReport size={30} />,
+      route: "reports",
+    },
+    {
       name: "Notifications",
       icon: <IoNotificationsCircleSharp size={30} />,
       route: "notification",
     },
+
   ];
 
   const handleLogout = () => {

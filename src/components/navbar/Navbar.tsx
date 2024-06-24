@@ -160,7 +160,7 @@ import { toast } from "react-toastify";
 
 const navigation = [
   { name: "Dashboard", href: "#", current: true },
-  { name: "Team", href: "#", current: false },
+  { name: "Services", href: "", current: false },
   { name: "Lawyers", href: "../../../../user/lawyer-list", current: false },
   { name: "Blogs", href: "../../../../user/blog", current: false },
 ];
@@ -209,6 +209,7 @@ export default function Navbar() {
                         <a
                           key={item.name}
                           href={item.href}
+                          onH
                           className={classNames(
                             item.current
                               ? "bg-gray-900 text-white"
